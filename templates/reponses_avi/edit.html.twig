@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ReponsesAvi{% endblock %}
+
+{% block body %}
+    <h1>Edit ReponsesAvi</h1>
+
+    {{ include('reponses_avi/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_reponses_avi_index') }}">back to list</a>
+
+    {{ include('reponses_avi/_delete_form.html.twig') }}
+{% endblock %}

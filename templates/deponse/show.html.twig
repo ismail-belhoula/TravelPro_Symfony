@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deponse{% endblock %}
+
+{% block body %}
+    <h1>Deponse</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id_deponse</th>
+                <td>{{ deponse.idDeponse }}</td>
+            </tr>
+            <tr>
+                <th>Id_produit</th>
+                <td>{{ deponse.idProduit }}</td>
+            </tr>
+            <tr>
+                <th>Prix_achat</th>
+                <td>{{ deponse.prixAchat }}</td>
+            </tr>
+            <tr>
+                <th>Quantite_produit</th>
+                <td>{{ deponse.quantiteProduit }}</td>
+            </tr>
+            <tr>
+                <th>Date_achat</th>
+                <td>{{ deponse.DateAchat ? deponse.DateAchat|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_deponse_index') }}">back to list</a>
+
+    <a href="{{ path('app_deponse_edit', {'id_deponse': deponse.id_deponse}) }}">edit</a>
+
+    {{ include('deponse/_delete_form.html.twig') }}
+{% endblock %}

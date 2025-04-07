@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Revenue{% endblock %}
+
+{% block body %}
+    <h1>Revenue</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id_revenue</th>
+                <td>{{ revenue.idRevenue }}</td>
+            </tr>
+            <tr>
+                <th>Type_revenue</th>
+                <td>{{ revenue.typeRevenue }}</td>
+            </tr>
+            <tr>
+                <th>Date_revenue</th>
+                <td>{{ revenue.dateRevenue ? revenue.dateRevenue|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Montant_total</th>
+                <td>{{ revenue.montantTotal }}</td>
+            </tr>
+            <tr>
+                <th>Commission</th>
+                <td>{{ revenue.commission }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_revenue_index') }}">back to list</a>
+
+    <a href="{{ path('app_revenue_edit', {'id_revenue': revenue.id_revenue}) }}">edit</a>
+
+    {{ include('revenue/_delete_form.html.twig') }}
+{% endblock %}

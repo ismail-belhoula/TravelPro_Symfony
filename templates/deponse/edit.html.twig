@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Deponse{% endblock %}
+
+{% block body %}
+    <h1>Edit Deponse</h1>
+
+    {{ include('deponse/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_deponse_index') }}">back to list</a>
+
+    {{ include('deponse/_delete_form.html.twig') }}
+{% endblock %}
