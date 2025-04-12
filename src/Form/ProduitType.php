@@ -20,16 +20,6 @@ class ProduitType extends AbstractType
             ->add('quantite_produit')
             ->add('prix_vente')
             ->add('image_path')
-            ->add('commandes', EntityType::class, [
-                'class' => Commande::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
-            ->add('paniers', EntityType::class, [
-                'class' => Panier::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
         ;
     }
 

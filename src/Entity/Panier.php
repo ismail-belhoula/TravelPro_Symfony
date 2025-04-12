@@ -6,7 +6,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use App\Repository\PanierRepository;
 
 #[ORM\Entity(repositoryClass: PanierRepository::class)]
@@ -15,8 +14,14 @@ class Panier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id_panier', type: 'integer')]
     private ?int $id_panier = null;
+
+    // 👇 Ajout pour que Doctrine reconnaisse l'identifiant
+    public function getId(): ?int
+    {
+        return $this->id_panier;
+    }
 
     public function getId_panier(): ?int
     {
@@ -79,53 +84,22 @@ class Panier
      */
     public function getProduits(): Collection
     {
-        if (!$this->produits instanceof Collection) {
-            $this->produits = new ArrayCollection();
-        }
         return $this->produits;
     }
 
     public function addProduit(Produit $produit): self
     {
-        if (!$this->getProduits()->contains($produit)) {
-            $this->getProduits()->add($produit);
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
         }
         return $this;
     }
 
     public function removeProduit(Produit $produit): self
     {
-        $this->getProduits()->removeElement($produit);
+        $this->produits->removeElement($produit);
         return $this;
     }
 
-    public function getIdPanier(): ?int
-    {
-        return $this->id_panier;
-    }
-
-    public function getIdClient(): ?int
-    {
-        return $this->id_client;
-    }
-
-    public function setIdClient(?int $id_client): static
-    {
-        $this->id_client = $id_client;
-
-        return $this;
-    }
-
-    public function getMontantTotal(): ?string
-    {
-        return $this->montant_total;
-    }
-
-    public function setMontantTotal(string $montant_total): static
-    {
-        $this->montant_total = $montant_total;
-
-        return $this;
-    }
-
+    // Les autres accesseurs (doublons supprimés pour éviter les conflits)
 }

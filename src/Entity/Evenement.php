@@ -15,7 +15,7 @@ class Evenement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer',name:'idEvent')]
     private ?int $idEvent = null;
 
     public function getIdEvent(): ?int
@@ -29,7 +29,7 @@ class Evenement
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'string', nullable: false,name:'nomEvent')]
     private ?string $nomEvent = null;
 
     public function getNomEvent(): ?string
@@ -57,7 +57,7 @@ class Evenement
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
+    #[ORM\Column(type: 'date', nullable: false,name:'dateDebutE')]
     private ?\DateTimeInterface $dateDebutE = null;
 
     public function getDateDebutE(): ?\DateTimeInterface
@@ -71,7 +71,7 @@ class Evenement
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
+    #[ORM\Column(type: 'date', nullable: false,name:'dateFinE')]
     private ?\DateTimeInterface $dateFinE = null;
 
     public function getDateFinE(): ?\DateTimeInterface
@@ -113,7 +113,7 @@ class Evenement
         return $this;
     }
 
-    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Column(type: 'integer', nullable: false,name:'idReservation')]
     private ?int $idReservation = null;
 
     public function getIdReservation(): ?int

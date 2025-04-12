@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-    <title>Home</title>
+    <title>Accueil</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,7 +59,8 @@
                         <div class="unit-body"><a class="link-phone" href="tel:#">+216 78123123</a></div>
                       </div>
                     </li>
-                  </ul><a class="button button-md button-default-outline-2 button-ujarak" href="#">Sign in</a></ul><a class="button button-md button-default-outline-2 button-ujarak" href="#">Sign up</a>
+                  </ul><a class="button button-md button-default-outline-2 button-ujarak" href="#">Se Connecter</a></ul><a class="button button-md button-default-outline-2 button-ujarak" href="#">S'inscrire
+                  </a>
 
                 </div>
               </div>
@@ -82,10 +83,7 @@
         <a class="rd-nav-link" href="{{ path('about') }}">A Propos</a>
     </li>
     <li class="rd-nav-item">
-        <a class="rd-nav-link" href="{{ path('typography') }}">Typography</a>
-    </li>
-    <li class="rd-nav-item">
-        <a class="rd-nav-link" href="{{ path('contact') }}">Contact Us</a>
+        <a class="rd-nav-link" href="{{ path('contact') }}">Contacter Nous</a>
     </li>
 </ul>
 
@@ -106,7 +104,7 @@
                 <div class="row">
                   <div class="col-md-10">
                     <h6 class="text-uppercase" data-caption-animate="fadeInRight" data-caption-delay="0">Profitez des meilleures destinations avec votre agence de voyages d'affaires</h6>
-                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Explorez</span><span class="font-weight-bold">Le monde</span></h2><a class="button button-default-outline button-ujarak" href="#" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
+                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Explorez</span><span class="font-weight-bold">Le monde</span></h2><a class="button button-default-outline button-ujarak" href="{{ path('contact') }}" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
                   </div>
                 </div>
               </div>
@@ -118,7 +116,7 @@
                 <div class="row">
                   <div class="col-md-10">
                     <h6 class="text-uppercase" data-caption-animate="fadeInRight" data-caption-delay="0">Une équipe d'experts en voyages professionnels</h6>
-                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Faites confiance</span><span class="font-weight-bold">A notre expérience</span></h2><a class="button button-default-outline button-ujarak" href="#" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
+                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Faites confiance</span><span class="font-weight-bold">A notre expérience</span></h2><a class="button button-default-outline button-ujarak" href="{{ path('contact') }}" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
                   </div>
                 </div>
               </div>
@@ -130,7 +128,7 @@
                 <div class="row">
                   <div class="col-md-10">
                     <h6 class="text-uppercase" data-caption-animate="fadeInRight" data-caption-delay="0">Créez votre prochain voyage d'affaires avec nous</h6>
-                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Créez</span><span class="font-weight-bold">Votre visite</span></h2><a class="button button-default-outline button-ujarak" href="#" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
+                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Créez</span><span class="font-weight-bold">Votre visite</span></h2><a class="button button-default-outline button-ujarak" href="{{ path('contact') }}" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
                   </div>
                 </div>
               </div>
@@ -169,7 +167,7 @@
                 </div>
               </div>
             </div>
-          </div><a class="link-classic wow fadeInUp" href="#">Des autres affaires<span></span></a>
+          </div><a class="link-classic wow fadeInUp" href="{{ path('about') }}">A Propos<span></span></a>
           <!-- Owl Carousel-->
         </div>
       </section>
@@ -194,15 +192,15 @@
                   <div class="tab-content">
                     <div class="tab-pane fade show active" id="tabs-7-1">
                       <p>TravelPro s'engage à offrir à ses clients le meilleur rapport qualité-prix et des prestations de voyage de qualité. Passionnés par les voyages d'affaires, nous vous aidons à gérer votre vie professionnelle.</p>
-                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="contact-us.html">Contacter Nous</a><a class="button button-black-outline button-md" href="about.html">En savoir plus</a></div>
+                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="{{ path('contact') }}">Contacter Nous</a><a class="button button-black-outline button-md" href="{{ path('about') }}">En savoir plus</a></div>
                     </div>
                     <div class="tab-pane fade" id="tabs-7-2">
                       <p>Nous sommes fiers d’offrir une excellente qualité et un excellent rapport qualité-prix dans nos services de voyage d’affaires, qui vous permettent de découvrir votre destination choisie de manière authentique et enrichissante.</p>
-                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="contact-us.html">Contacter Nous</a><a class="button button-black-outline button-md" href="about.html">En savoir plus</a></div>
+                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="{{ path('contact') }}">Contacter Nous</a><a class="button button-black-outline button-md" href="{{ path('about') }}">En savoir plus</a></div>
                     </div>
                     <div class="tab-pane fade" id="tabs-7-3">
                       <p>Notre mission est d’offrir une expérience de planification de voyage d’affaires optimale, tout en devenant un guichet unique pour l’ensemble des services de voyage disponibles dans le secteur.</p>
-                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="contact-us.html">Contacter Nous</a><a class="button button-black-outline button-md" href="about.html">En savoir plus</a></div>
+                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="{{ path('contact') }}">Contacter Nous</a><a class="button button-black-outline button-md" href="{{ path('about') }}">En savoir plus</a></div>
                     </div>
                   </div>
                 </div>
@@ -368,7 +366,7 @@
                 <p class="product-big-text">
                   Réservez rapidement vos billets d’avion, transferts en taxi ou en voiture avec chauffeur pour une expérience professionnelle sans stress.
                 </p>
-                <a class="button button-black-outline button-ujarak" href="#">Réserver un Voyages</a>
+                <a class="button button-black-outline button-ujarak" href="#">Réserver un Voyage</a>
                 <div class="product-big-price-wrap"><span class="product-big-price">À partir de 20 TND</span></div>
               </div>
             </div>
@@ -489,7 +487,7 @@
     <div class="parallax-content section-xl section-inset-custom-1 context-dark bg-overlay-2-21">
       <div class="container">
         <h2 class="heading-2 oh font-weight-normal wow slideInDown"><span class="d-block font-weight-semi-bold">Des impressions de première classe</span><span class="d-block font-weight-light">vous attendent !</span></h2>
-        <p class="text-width-medium text-spacing-75 wow fadeInLeft" data-wow-delay=".1s">Notre agence propose aux voyageurs diverses visites et excursions vers des destinations du monde entier. Parcourez notre site web pour trouver votre tour de rêve !</p><a class="button button-secondary button-pipaluk" href="#">Réservez une visite maintenant</a>
+        <p class="text-width-medium text-spacing-75 wow fadeInLeft" data-wow-delay=".1s">Notre agence propose aux voyageurs diverses visites et excursions vers des destinations du monde entier. Parcourez notre site web pour trouver votre tour de rêve !</p><a class="button button-secondary button-pipaluk" href="#">Réservez votre voyage d'affaire maintenant</a>
       </div>
     </div>
   </div>
@@ -556,7 +554,7 @@
                 <li><a href="#">Nos visites</a></li>
                 <li><a href="#">Notre équipe</a></li>
               </ul>
-              <div class="group-md group-middle justify-content-sm-start"><a class="button button-lg button-primary button-ujarak" href="#">Contactez-nous</a></div>
+              <div class="group-md group-middle justify-content-sm-start"><a class="button button-lg button-primary button-ujarak" href="{{ path('contact') }}">Contactez-nous</a></div>
             </div>
           </div>
         </div>
@@ -578,7 +576,7 @@
         </div>
         <div class="col-sm-6 col-md-4 order-sm-first">
           <!-- Droits -->
-          <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>Wonder Tour</span>. Tous droits réservés. Design par <a href="https://www.templatemonster.com">TemplateMonster</a></p>
+          <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>TravelPro</span>. Tous droits réservés.</p>
         </div>
         <div class="col-sm-6 col-md-4 text-md-right">
           <p class="rights"><a href="#">Politique de confidentialité</a></p>

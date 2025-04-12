@@ -15,7 +15,7 @@ class Activite
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer',name:'idActivite')]
     private ?int $idActivite = null;
 
     public function getIdActivite(): ?int
@@ -29,7 +29,7 @@ class Activite
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'string', nullable: false,name:'nomActivite')]
     private ?string $nomActivite = null;
 
     public function getNomActivite(): ?string
@@ -57,7 +57,7 @@ class Activite
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
+    #[ORM\Column(type: 'date', nullable: false,name:'dateDebutA')]
     private ?\DateTimeInterface $dateDebutA = null;
 
     public function getDateDebutA(): ?\DateTimeInterface
@@ -71,7 +71,7 @@ class Activite
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
+    #[ORM\Column(type: 'date', nullable: false,name:'dateFinA')]
     private ?\DateTimeInterface $dateFinA = null;
 
     public function getDateFinA(): ?\DateTimeInterface

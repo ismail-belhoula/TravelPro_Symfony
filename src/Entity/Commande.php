@@ -2,12 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use App\Repository\CommandeRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 #[ORM\Table(name: 'commande')]
@@ -15,11 +13,12 @@ class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'id_commande', type: 'integer')]
     private ?int $id_commande = null;
 
-    public function getId_commande(): ?int
+    public function getId(): ?int
     {
+        // Cette méthode est utilisée par Doctrine comme identifiant
         return $this->id_commande;
     }
 
@@ -33,58 +32,14 @@ class Commande
     #[ORM\JoinColumn(name: 'id_client', referencedColumnName: 'id_client')]
     private ?Client $client = null;
 
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Client $client): self
-    {
-        $this->client = $client;
-        return $this;
-    }
-
     #[ORM\Column(type: 'decimal', nullable: false)]
     private ?float $montant_total = null;
-
-    public function getMontant_total(): ?float
-    {
-        return $this->montant_total;
-    }
-
-    public function setMontant_total(float $montant_total): self
-    {
-        $this->montant_total = $montant_total;
-        return $this;
-    }
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $date_commande = null;
 
-    public function getDate_commande(): ?\DateTimeInterface
-    {
-        return $this->date_commande;
-    }
-
-    public function setDate_commande(?\DateTimeInterface $date_commande): self
-    {
-        $this->date_commande = $date_commande;
-        return $this;
-    }
-
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $status = null;
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): self
-    {
-        $this->status = $status;
-        return $this;
-    }
 
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'commandes')]
     #[ORM\JoinTable(
@@ -103,45 +58,25 @@ class Commande
         $this->produits = new ArrayCollection();
     }
 
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduits(): Collection
+    public function getClient(): ?Client
     {
-        if (!$this->produits instanceof Collection) {
-            $this->produits = new ArrayCollection();
-        }
-        return $this->produits;
+        return $this->client;
     }
 
-    public function addProduit(Produit $produit): self
+    public function setClient(?Client $client): self
     {
-        if (!$this->getProduits()->contains($produit)) {
-            $this->getProduits()->add($produit);
-        }
+        $this->client = $client;
         return $this;
     }
 
-    public function removeProduit(Produit $produit): self
-    {
-        $this->getProduits()->removeElement($produit);
-        return $this;
-    }
-
-    public function getIdCommande(): ?int
-    {
-        return $this->id_commande;
-    }
-
-    public function getMontantTotal(): ?string
+    public function getMontantTotal(): ?float
     {
         return $this->montant_total;
     }
 
-    public function setMontantTotal(string $montant_total): static
+    public function setMontantTotal(float $montant_total): self
     {
         $this->montant_total = $montant_total;
-
         return $this;
     }
 
@@ -150,11 +85,42 @@ class Commande
         return $this->date_commande;
     }
 
-    public function setDateCommande(?\DateTimeInterface $date_commande): static
+    public function setDateCommande(?\DateTimeInterface $date_commande): self
     {
         $this->date_commande = $date_commande;
-
         return $this;
     }
 
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+        }
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): self
+    {
+        $this->produits->removeElement($produit);
+        return $this;
+    }
 }
