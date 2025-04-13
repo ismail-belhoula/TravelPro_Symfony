@@ -18,7 +18,7 @@ class Produit
     #[ORM\Column(type: 'integer')]
     private ?int $id_produit = null;
 
-    public function getId_produit(): ?int
+    public function getId(): ?int
     {
         return $this->id_produit;
     }

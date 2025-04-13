@@ -17,7 +17,7 @@ class Client
     #[ORM\Column(type: 'integer')]
     private ?int $id_client = null;
 
-    public function getId_client(): ?int
+    public function getId(): ?int
     {
         return $this->id_client;
     }

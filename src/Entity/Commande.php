@@ -32,7 +32,7 @@ class Commande
     #[ORM\JoinColumn(name: 'id_client', referencedColumnName: 'id_client')]
     private ?Client $client = null;
 
-    #[ORM\Column(type: 'decimal', nullable: false)]
+    #[ORM\Column(type: 'float', nullable: false)]
     private ?float $montant_total = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

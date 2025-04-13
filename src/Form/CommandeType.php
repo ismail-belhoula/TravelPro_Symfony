@@ -9,28 +9,25 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CommandeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('montant_total')
-            ->add('date_commande', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('status')
-            ->add('client', EntityType::class, [
-                'class' => Client::class,
-                'choice_label' => 'id',
-            ])
-            ->add('produits', EntityType::class, [
-                'class' => Produit::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
-        ;
-    }
+{
+    $builder
+        ->add('montant_total')
+        ->add('date_commande', null, [
+            'widget' => 'single_text',
+        ])
+        ->add('status', ChoiceType::class, [
+            'choices'  => [
+                'Pending' => 'pending',
+                'Shipped' => 'shipped',
+            ],
+        ])
+    ;
+}
 
     public function configureOptions(OptionsResolver $resolver): void
     {

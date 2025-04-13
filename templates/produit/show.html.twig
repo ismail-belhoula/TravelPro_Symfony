@@ -137,8 +137,8 @@
     <a href="{{ path('app_produit_index') }}">⬅️ Back to list</a>
 
     {# Styled delete form to appear like a button #}
-    <form method="post" action="{{ path('app_produit_delete', {'id_produit': produit.id_produit}) }}" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display: inline;">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id_produit) }}">
+    <form method="post" action="{{ path('app_produit_delete', {'id_produit': produit.getId}) }}" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display: inline;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.getId) }}">
         <button type="submit" style="
             background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
             color: white;
