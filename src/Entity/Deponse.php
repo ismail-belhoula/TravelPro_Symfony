@@ -137,5 +137,17 @@ class Deponse
 
         return $this;
     }
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'deponses')]
+    #[ORM\JoinColumn(name: 'id_produit', referencedColumnName: 'id_produit', nullable: false)]
+    private ?Produit $produit = null;
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
 
+    public function setProduit(Produit $produit): self
+    {
+        $this->produit = $produit;
+        return $this;
+    }
 }

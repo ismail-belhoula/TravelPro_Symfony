@@ -57,7 +57,7 @@ class Revenue
         return $this;
     }
 
-    #[ORM\Column(type: 'decimal', nullable: false)]
+    #[ORM\Column(type: 'float', nullable: false)]
     private ?float $montant_total = null;
 
     public function getMontant_total(): ?float
@@ -71,7 +71,7 @@ class Revenue
         return $this;
     }
 
-    #[ORM\Column(type: 'decimal', nullable: false)]
+    #[ORM\Column(type: 'float', nullable: false)]
     private ?float $commission = null;
 
     public function getCommission(): ?float

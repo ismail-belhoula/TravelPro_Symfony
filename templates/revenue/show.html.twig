@@ -3,36 +3,146 @@
 {% block title %}Revenue{% endblock %}
 
 {% block body %}
+    <style>
+        .product-image {
+            width: 420px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+        :root {
+            --blue-light: #4e73df;
+            --blue-dark: #224abe;
+            --gray-light: #f8f9fc;
+            --text-dark: #343a40;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue-dark);
+        }
+
+        .revenue-container {
+            display: flex;
+            flex-direction: row; /* Force side-by-side layout */
+            align-items: flex-start;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .revenue-table {
+            flex-grow: 1;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .table th {
+            background: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .table td {
+            background-color: white;
+        }
+
+        .actions {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .actions a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+            color: white;
+            background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            transition: var(--transition);
+        }
+
+        .actions a:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+    </style>
+
     <h1>Revenue</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id_revenue</th>
-                <td>{{ revenue.idRevenue }}</td>
-            </tr>
-            <tr>
-                <th>Type_revenue</th>
-                <td>{{ revenue.typeRevenue }}</td>
-            </tr>
-            <tr>
-                <th>Date_revenue</th>
-                <td>{{ revenue.dateRevenue ? revenue.dateRevenue|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Montant_total</th>
-                <td>{{ revenue.montantTotal }}</td>
-            </tr>
-            <tr>
-                <th>Commission</th>
-                <td>{{ revenue.commission }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="revenue-container">
+        <img src="{{ asset('images/motive.png') }}" alt="Image du produit" class="product-image" />
+        <div class="revenue-table">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Type_revenue</th>
+                        <td>{{ revenue.typeRevenue }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date_revenue</th>
+                        <td>{{ revenue.dateRevenue ? revenue.dateRevenue|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Montant_total</th>
+                        <td>{{ revenue.montantTotal }}</td>
+                    </tr>
+                    <tr>
+                        <th>Commission</th>
+                        <td>{{ revenue.commission }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <a href="{{ path('app_revenue_index') }}">back to list</a>
+    <div class="actions">
+        <a href="{{ path('app_revenue_index') }}">⬅️ Retour</a>
+        <a href="{{ path('app_revenue_edit', {'id_revenue': revenue.idRevenue}) }}">✏️ Modifer</a>
 
-    <a href="{{ path('app_revenue_edit', {'id_revenue': revenue.id_revenue}) }}">edit</a>
+        {# Styled delete form to appear like a button #}
+        <form method="post" action="{{ path('app_revenue_delete', {'id_revenue': revenue.idRevenue}) }}" onsubmit="return confirm('Are you sure you want to delete this revenue?');" style="display: inline;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ revenue.idRevenue) }}">
+            <button type="submit" style="
+                background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+                color: white;
+                border: none;
+                padding: 0.6rem 1.2rem;
+                border-radius: var(--radius);
+                cursor: pointer;
+                font-size: 1rem;
+                transition: var(--transition);
+            ">
+                🗑️ Supprimer
+            </button>
+        </form>
+    </div>
 
-    {{ include('revenue/_delete_form.html.twig') }}
 {% endblock %}
