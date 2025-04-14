@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DemandeValidation{% endblock %}
+
+{% block body %}
+    <h1>Create new DemandeValidation</h1>
+
+    {{ include('demande_validation/_form.html.twig') }}
+
+    <a href="{{ path('app_demande_validation_index') }}">back to list</a>
+{% endblock %}

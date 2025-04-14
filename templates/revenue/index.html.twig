@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Revenue index{% endblock %}
+
+{% block body %}
+    <h1>Revenue index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id_revenue</th>
+                <th>Type_revenue</th>
+                <th>Date_revenue</th>
+                <th>Montant_total</th>
+                <th>Commission</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for revenue in revenues %}
+            <tr>
+                <td>{{ revenue.idRevenue }}</td>
+                <td>{{ revenue.typeRevenue }}</td>
+                <td>{{ revenue.dateRevenue ? revenue.dateRevenue|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ revenue.montantTotal }}</td>
+                <td>{{ revenue.commission }}</td>
+                <td>
+                    <a href="{{ path('app_revenue_show', {'id_revenue': revenue.id_revenue}) }}">show</a>
+                    <a href="{{ path('app_revenue_edit', {'id_revenue': revenue.id_revenue}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_revenue_new') }}">Create new</a>
+{% endblock %}

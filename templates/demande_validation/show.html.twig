@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DemandeValidation{% endblock %}
+
+{% block body %}
+    <h1>DemandeValidation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demande_validation.id }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ demande_validation.statut }}</td>
+            </tr>
+            <tr>
+                <th>Date_demande</th>
+                <td>{{ demande_validation.dateDemande ? demande_validation.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_validation_index') }}">back to list</a>
+
+    <a href="{{ path('app_demande_validation_edit', {'id': demande_validation.id}) }}">edit</a>
+
+    {{ include('demande_validation/_delete_form.html.twig') }}
+{% endblock %}

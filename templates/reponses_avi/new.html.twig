@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ReponsesAvi{% endblock %}
+
+{% block body %}
+    <h1>Create new ReponsesAvi</h1>
+
+    {{ include('reponses_avi/_form.html.twig') }}
+
+    <a href="{{ path('app_reponses_avi_index') }}">back to list</a>
+{% endblock %}

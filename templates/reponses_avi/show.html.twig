@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ReponsesAvi{% endblock %}
+
+{% block body %}
+    <h1>ReponsesAvi</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id_reponse</th>
+                <td>{{ reponses_avi.idReponse }}</td>
+            </tr>
+            <tr>
+                <th>Reponse</th>
+                <td>{{ reponses_avi.reponse }}</td>
+            </tr>
+            <tr>
+                <th>Date_reponse</th>
+                <td>{{ reponses_avi.dateReponse ? reponses_avi.dateReponse|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reponses_avi_index') }}">back to list</a>
+
+    <a href="{{ path('app_reponses_avi_edit', {'id_reponse': reponses_avi.id_reponse}) }}">edit</a>
+
+    {{ include('reponses_avi/_delete_form.html.twig') }}
+{% endblock %}

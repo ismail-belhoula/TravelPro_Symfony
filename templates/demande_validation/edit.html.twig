@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DemandeValidation{% endblock %}
+
+{% block body %}
+    <h1>Edit DemandeValidation</h1>
+
+    {{ include('demande_validation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_demande_validation_index') }}">back to list</a>
+
+    {{ include('demande_validation/_delete_form.html.twig') }}
+{% endblock %}

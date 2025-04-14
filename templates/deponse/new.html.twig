@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Deponse{% endblock %}
+
+{% block body %}
+    <h1>Create new Deponse</h1>
+
+    {{ include('deponse/_form.html.twig') }}
+
+    <a href="{{ path('app_deponse_index') }}">back to list</a>
+{% endblock %}
