@@ -35,15 +35,18 @@
                     <ul class="list-unstyled fs-5">
                         
                         <li class="mb-3">
-                            <strong class="text-muted">Lieu :</strong> {{ evenement.lieu }}
+                            <strong class="text-muted">📍Lieu :</strong> {{ evenement.lieu }}
                         </li>
                         <li class="mb-3">
-                            <strong class="text-muted">Date de début :</strong> 
+                            <strong class="text-muted">🧭Type :</strong> {{ evenement.type }}
+                        </li>
+                        <li class="mb-3">
+                            <strong class="text-muted">🗓️Date de début :</strong> 
                             {{ evenement.date_debut|date('d F Y à H:i') }}
                         </li>
                         {% if evenement.date_fin %}
                         <li class="mb-3">
-                            <strong class="text-muted">Date de fin :</strong> 
+                            <strong class="text-muted">🗓️Date de fin :</strong> 
                             {{ evenement.date_fin|date('d F Y à H:i') }}
                         </li>
                         {% endif %}
