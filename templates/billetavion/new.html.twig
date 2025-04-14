@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Billetavion{% endblock %}
+
+{% block body %}
+    <h1>Create new Billetavion</h1>
+
+    {{ include('billetavion/_form.html.twig') }}
+
+    <a href="{{ path('app_billetavion_index') }}">back to list</a>
+{% endblock %}

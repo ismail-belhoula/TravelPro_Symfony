@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+    <h1>Admin</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id_admin</th>
+                <td>{{ admin.idAdmin }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_edit', {'id_admin': admin.id_admin}) }}">edit</a>
+
+    {{ include('admin/_delete_form.html.twig') }}
+{% endblock %}

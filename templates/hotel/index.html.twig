@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hotel index{% endblock %}
+
+{% block body %}
+    <h1>Hotel index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id_hotel</th>
+                <th>Nom</th>
+                <th>Ville</th>
+                <th>PrixParNuit</th>
+                <th>Disponible</th>
+                <th>NombreEtoile</th>
+                <th>TypeDeChambre</th>
+                <th>DateCheckIn</th>
+                <th>DateCheckOut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hotel in hotels %}
+            <tr>
+                <td>{{ hotel.idHotel }}</td>
+                <td>{{ hotel.nom }}</td>
+                <td>{{ hotel.ville }}</td>
+                <td>{{ hotel.prixParNuit }}</td>
+                <td>{{ hotel.disponible ? 'Yes' : 'No' }}</td>
+                <td>{{ hotel.nombreEtoile }}</td>
+                <td>{{ hotel.typeDeChambre }}</td>
+                <td>{{ hotel.dateCheckIn ? hotel.dateCheckIn|date('Y-m-d') : '' }}</td>
+                <td>{{ hotel.dateCheckOut ? hotel.dateCheckOut|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_hotel_show', {'id_hotel': hotel.id_hotel}) }}">show</a>
+                    <a href="{{ path('app_hotel_edit', {'id_hotel': hotel.id_hotel}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_hotel_new') }}">Create new</a>
+{% endblock %}

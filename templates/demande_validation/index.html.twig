@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DemandeValidation index{% endblock %}
+
+{% block body %}
+    <h1>DemandeValidation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Statut</th>
+                <th>Date_demande</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demande_validation in demande_validations %}
+            <tr>
+                <td>{{ demande_validation.id }}</td>
+                <td>{{ demande_validation.statut }}</td>
+                <td>{{ demande_validation.dateDemande ? demande_validation.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_demande_validation_show', {'id': demande_validation.id}) }}">show</a>
+                    <a href="{{ path('app_demande_validation_edit', {'id': demande_validation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_validation_new') }}">Create new</a>
+{% endblock %}

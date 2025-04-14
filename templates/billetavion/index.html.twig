@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Billetavion index{% endblock %}
+
+{% block body %}
+    <h1>Billetavion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id_billetavion</th>
+                <th>Compagnie</th>
+                <th>Class_Billet</th>
+                <th>VilleDepart</th>
+                <th>VilleArrivee</th>
+                <th>DateDepart</th>
+                <th>DateArrivee</th>
+                <th>Prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for billetavion in billetavions %}
+            <tr>
+                <td>{{ billetavion.idBilletavion }}</td>
+                <td>{{ billetavion.compagnie }}</td>
+                <td>{{ billetavion.classBillet }}</td>
+                <td>{{ billetavion.villeDepart }}</td>
+                <td>{{ billetavion.villeArrivee }}</td>
+                <td>{{ billetavion.dateDepart ? billetavion.dateDepart|date('Y-m-d') : '' }}</td>
+                <td>{{ billetavion.dateArrivee ? billetavion.dateArrivee|date('Y-m-d') : '' }}</td>
+                <td>{{ billetavion.prix }}</td>
+                <td>
+                    <a href="{{ path('app_billetavion_show', {'id_billetavion': billetavion.id_billetavion}) }}">show</a>
+                    <a href="{{ path('app_billetavion_edit', {'id_billetavion': billetavion.id_billetavion}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_billetavion_new') }}">Create new</a>
+{% endblock %}

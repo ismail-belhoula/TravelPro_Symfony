@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Billetavion{% endblock %}
+
+{% block body %}
+    <h1>Edit Billetavion</h1>
+
+    {{ include('billetavion/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_billetavion_index') }}">back to list</a>
+
+    {{ include('billetavion/_delete_form.html.twig') }}
+{% endblock %}

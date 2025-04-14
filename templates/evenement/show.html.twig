@@ -1,0 +1,106 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}{{ evenement.nomEvent }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Bannière avec image et overlay -->
+    <div class="position-relative" style="height: 450px; overflow: hidden;">
+        <img src="{{ asset('uploads/' ~ evenement.image) }}" 
+             class="w-100 h-100 object-fit-cover" 
+             alt="{{ evenement.nomEvent }}">
+        <div class="position-absolute bottom-0 start-0 end-0 text-white p-4" 
+             style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+            <h1 class="display-4 fw-bold">{{ evenement.nomEvent }}</h1>
+            <div class="d-flex flex-wrap gap-3 align-items-center mt-2">
+                <span><i class="fas fa-map-marker-alt me-2"></i> {{ evenement.lieu }}</span>
+                <span><i class="fas fa-calendar-day me-2"></i> 
+                    {{ evenement.date_debut|date('d M Y') }}
+                    {% if evenement.date_fin and evenement.date_fin != evenement.date_debut %}
+                        – {{ evenement.date_fin|date('d M Y') }}
+                    {% endif %}
+                </span>
+                <span class="badge bg-light text-dark">{{ evenement.type }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="container py-5">
+        <div class="row g-4">
+            <!-- Détails -->
+            <div class="col-lg-8">
+                <div class="p-4 bg-white shadow rounded-4">
+                    <h2 class="mb-4"><i class="fas fa-info-circle text-primary me-2"></i>Détails</h2>
+                    <ul class="list-unstyled fs-5">
+                        
+                        <li class="mb-3">
+                            <strong class="text-muted">Lieu :</strong> {{ evenement.lieu }}
+                        </li>
+                        <li class="mb-3">
+                            <strong class="text-muted">Date de début :</strong> 
+                            {{ evenement.date_debut|date('d F Y à H:i') }}
+                        </li>
+                        {% if evenement.date_fin %}
+                        <li class="mb-3">
+                            <strong class="text-muted">Date de fin :</strong> 
+                            {{ evenement.date_fin|date('d F Y à H:i') }}
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="col-lg-4">
+                <div class="p-4 bg-light shadow rounded-4 sticky-top" style="top: 100px;">
+                    <h3 class="fw-semibold mb-4">Actions</h3>
+                    <div class="d-grid gap-3">
+                        <a href="{{ path('front_event') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+                        </a>
+                        <a href="{{ path('activite_par_evenement', { id: evenement.idEvent }) }}" class="btn btn-primary mt-3">
+    Voir les activités associées
+</a>
+
+                        <button class="btn btn-success">
+                            <i class="fas fa-ticket-alt me-2"></i>Réserver
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="far fa-heart me-2"></i>Ajouter aux favoris
+                        </button>
+                    </div>
+
+                    <!-- Réseaux sociaux -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h5 class="mb-3">Partager</h5>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-info rounded-circle">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-danger rounded-circle">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-dark rounded-circle">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    .sticky-top {
+        top: 90px !important;
+    }
+</style>
+{% endblock %}
