@@ -1,26 +1,216 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reservation{% endblock %}
+{% block title %}Détails de la Réservation{% endblock %}
 
 {% block body %}
-    <h1>Reservation</h1>
+    <style>
+        :root {
+            --blue-light: #4e73df;
+            --blue-dark: #224abe;
+            --gray-light: #f8f9fc;
+            --text-dark: #343a40;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id_reservation</th>
-                <td>{{ reservation.idReservation }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ reservation.statut }}</td>
-            </tr>
-        </tbody>
-    </table>
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue-dark);
+        }
 
-    <a href="{{ path('app_reservation_edit', {'id_reservation': reservation.idReservation}) }}">edit</a>
+        .reservation-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
 
-    {{ include('reservation/_delete_form.html.twig') }}
+        .section-title {
+            color: var(--blue-dark);
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--blue-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            flex: 0 0 200px;
+            font-weight: 600;
+            color: var(--blue-dark);
+        }
+
+        .info-value {
+            flex: 1;
+            background-color: #f1f3f5;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+        }
+
+        .actions {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .actions a,
+        .actions button {
+            display: inline-block;
+            margin: 0 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+            color: white;
+            background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .actions a:hover,
+        .actions button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+    </style>
+
+    <h1>Détails de la Réservation</h1>
+
+    <div class="reservation-container">
+        <!-- Réservation -->
+        <div class="section-title">Informations Réservation</div>
+        
+        <div class="info-item">
+            <div class="info-label">Statut:</div>
+            <div class="info-value">{{ reservation.statut }}</div>
+        </div>
+
+        <!-- Voiture -->
+        {% if reservation.voiture %}
+            <div class="section-title">Voiture</div>
+            <div class="info-item">
+                <div class="info-label">Marque:</div>
+                <div class="info-value">{{ reservation.voiture.marque }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Modèle:</div>
+                <div class="info-value">{{ reservation.voiture.modele }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Année:</div>
+                <div class="info-value">{{ reservation.voiture.annee }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prix par jour:</div>
+                <div class="info-value">{{ reservation.voiture.prixParJour }} €</div>
+            </div>
+            {% if reservation.voiture.dateDeLocation %}
+                <div class="info-item">
+                    <div class="info-label">Date de location:</div>
+                    <div class="info-value">{{ reservation.voiture.dateDeLocation|date('d/m/Y') }}</div>
+                </div>
+            {% endif %}
+            {% if reservation.voiture.dateDeRemise %}
+                <div class="info-item">
+                    <div class="info-label">Date de remise:</div>
+                    <div class="info-value">{{ reservation.voiture.dateDeRemise|date('d/m/Y') }}</div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Hôtel -->
+        {% if reservation.hotel %}
+            <div class="section-title">Hôtel</div>
+            <div class="info-item">
+                <div class="info-label">Nom:</div>
+                <div class="info-value">{{ reservation.hotel.nom }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Ville:</div>
+                <div class="info-value">{{ reservation.hotel.ville }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Type de chambre:</div>
+                <div class="info-value">{{ reservation.hotel.typeDeChambre }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prix par nuit:</div>
+                <div class="info-value">{{ reservation.hotel.prixParNuit }} €</div>
+            </div>
+            {% if reservation.hotel.dateCheckIn %}
+                <div class="info-item">
+                    <div class="info-label">Check-in:</div>
+                    <div class="info-value">{{ reservation.hotel.dateCheckIn|date('d/m/Y') }}</div>
+                </div>
+            {% endif %}
+            {% if reservation.hotel.dateCheckOut %}
+                <div class="info-item">
+                    <div class="info-label">Check-out:</div>
+                    <div class="info-value">{{ reservation.hotel.dateCheckOut|date('d/m/Y') }}</div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Billet d'avion -->
+        {% if reservation.billetAvion %}
+            <div class="section-title">Billet d'Avion</div>
+            <div class="info-item">
+                <div class="info-label">Compagnie:</div>
+                <div class="info-value">{{ reservation.billetAvion.compagnie }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Classe:</div>
+                <div class="info-value">{{ reservation.billetAvion.classBillet }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Départ de:</div>
+                <div class="info-value">{{ reservation.billetAvion.villeDepart }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Arrivée à:</div>
+                <div class="info-value">{{ reservation.billetAvion.villeArrivee }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Date de départ:</div>
+                <div class="info-value">{{ reservation.billetAvion.dateDepart|date('d/m/Y H:i') }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Date d'arrivée:</div>
+                <div class="info-value">{{ reservation.billetAvion.dateArrivee|date('d/m/Y H:i') }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prix:</div>
+                <div class="info-value">{{ reservation.billetAvion.prix }} €</div>
+            </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="actions">
+            <a href="{{ path('app_reservation_index') }}">Retour à la liste</a>
+            <a href="{{ path('app_reservation_edit', {'id_reservation': reservation.idReservation}) }}">Modifier</a>
+
+            <form method="post" action="{{ path('app_reservation_delete', {'id_reservation': reservation.idReservation}) }}"
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');"
+                  style="display: inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.idReservation) }}">
+                <button type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

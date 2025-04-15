@@ -8,17 +8,26 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Hotel>
- *
- * @method Hotel|null find($id, $lockMode = null, $lockVersion = null)
- * @method Hotel|null findOneBy(array $criteria, array $orderBy = null)
- * @method Hotel[]    findAll()
- * @method Hotel[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class HotelRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Hotel::class);
+    }
+
+    public function findByCriteria(?string $ville, ?string $typeChambre): array
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->where('h.ville = :ville')
+            ->andWhere('h.typeDeChambre = :typeChambre')
+            ->andWhere('h.disponible = :disponible')
+            ->setParameter('ville', $ville)
+            ->setParameter('typeChambre', $typeChambre)
+            ->setParameter('disponible', true)
+            ->orderBy('h.prixParNuit', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findAvailableHotels(): array

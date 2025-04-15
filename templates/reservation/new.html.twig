@@ -1,11 +1,351 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Reservation{% endblock %}
+{% block title %}Nouvelle Réservation{% endblock %}
 
 {% block body %}
-    <h1>Create new Reservation</h1>
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #224abe;
+            --light-gray: #f8f9fc;
+            --dark-text: #343a40;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    {{ include('reservation/_form.html.twig') }}
+        .reservation-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+        h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            width: 80%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-search {
+            grid-column: span 2;
+            margin-top: 1rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .results-section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .items-list {
+            margin-bottom: 2rem;
+        }
+
+        .item-card {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-card:hover {
+            box-shadow: var(--box-shadow);
+        }
+
+        .item-info {
+            flex-grow: 1;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .item-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-left: 1rem;
+            white-space: nowrap;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-left: 1rem;
+        }
+
+        .checkbox-container input {
+            margin-right: 0.5rem;
+            transform: scale(1.3);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-style: italic;
+            border: 1px dashed #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        .reservation-summary {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .summary-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .total-price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+
+    <div class="reservation-container">
+        <h1>Créer une nouvelle réservation</h1>
+
+        {# Formulaire de recherche #}
+        <form id="searchForm" class="search-form" method="get" action="{{ path('app_reservation_new') }}">
+            <div class="form-group">
+                <label for="villeDepart">Ville de départ</label>
+                <input type="text" id="villeDepart" name="villeDepart" class="form-control" 
+                       value="{{ app.request.query.get('villeDepart') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="villeArrivee">Ville d'arrivée</label>
+                <input type="text" id="villeArrivee" name="villeArrivee" class="form-control" 
+                       value="{{ app.request.query.get('villeArrivee') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dateDepart">Date de départ</label>
+                <input type="date" id="dateDepart" name="dateDepart" class="form-control" 
+                       value="{{ app.request.query.get('dateDepart') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dateArrivee">Date d'arrivée</label>
+                <input type="date" id="dateArrivee" name="dateArrivee" class="form-control" 
+                       value="{{ app.request.query.get('dateArrivee') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="typeChambre">Type de chambre</label>
+                <select id="typeChambre" name="typeChambre" class="form-control" required>
+                    <option value="single" {{ app.request.query.get('typeChambre') == 'single' ? 'selected' }}>Single</option>
+                    <option value="double" {{ app.request.query.get('typeChambre') == 'double' ? 'selected' }}>Double</option>
+                    <option value="triple" {{ app.request.query.get('typeChambre') == 'triple' ? 'selected' }}>Triple</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-search">Rechercher</button>
+        </form>
+
+        {# Formulaire de réservation #}
+        {% if app.request.query.has('villeDepart') %}
+            <form id="reservationForm" method="post" action="{{ path('app_reservation_new') }}">
+                {# Hôtels disponibles #}
+                <div class="results-section">
+                    <h2 class="section-title">Hôtels disponibles</h2>
+                    <div class="items-list">
+                        {% if hotels is not empty %}
+                            {% for hotel in hotels %}
+                                <div class="item-card">
+                                    <div class="item-info">
+                                        <div class="item-title">{{ hotel.nom }}</div>
+                                        <div class="item-details">
+                                            {{ hotel.ville }} - {{ hotel.nombreEtoile }} étoiles - 
+                                            Type: {{ hotel.typeDeChambre }}
+                                        </div>
+                                    </div>
+                                    <div class="item-price">{{ hotel.prixParNuit }} €/nuit</div>
+                                    <div class="checkbox-container">
+                                        <input type="radio" id="hotel_{{ hotel.idHotel }}" 
+                                               name="hotel_id" value="{{ hotel.idHotel }}" required>
+                                        <label for="hotel_{{ hotel.idHotel }}">Choisir</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-results">Aucun hôtel trouvé pour ces critères</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Billets d'avion disponibles #}
+                <div class="results-section">
+                    <h2 class="section-title">Billets d'avion disponibles</h2>
+                    <div class="items-list">
+                        {% if billets is not empty %}
+                            {% for billet in billets %}
+                                <div class="item-card">
+                                    <div class="item-info">
+                                        <div class="item-title">{{ billet.compagnie }}</div>
+                                        <div class="item-details">
+                                            {{ billet.villeDepart }} → {{ billet.villeArrivee }} - 
+                                            Départ: {{ billet.dateDepart|date('d/m/Y') }} - 
+                                            Classe: {{ billet.classBillet }}
+                                        </div>
+                                    </div>
+                                    <div class="item-price">{{ billet.prix }} €</div>
+                                    <div class="checkbox-container">
+                                        <input type="radio" id="billet_{{ billet.idBilletavion }}" 
+                                               name="billet_id" value="{{ billet.idBilletavion }}" required>
+                                        <label for="billet_{{ billet.idBilletavion }}">Choisir</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-results">Aucun billet d'avion trouvé pour ces critères</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Voitures disponibles #}
+                <div class="results-section">
+                    <h2 class="section-title">Voitures disponibles</h2>
+                    <div class="items-list">
+                        {% if voitures is not empty %}
+                            {% for voiture in voitures %}
+                                <div class="item-card">
+                                    <div class="item-info">
+                                        <div class="item-title">{{ voiture.marque }} {{ voiture.modele }}</div>
+                                        <div class="item-details">
+                                            Année: {{ voiture.annee }} - 
+                                            Disponible du {{ voiture.dateDeLocation|date('d/m/Y') }} 
+                                            au {{ voiture.dateDeRemise|date('d/m/Y') }}
+                                        </div>
+                                    </div>
+                                    <div class="item-price">{{ voiture.prixParJour }} €/jour</div>
+                                    <div class="checkbox-container">
+                                        <input type="radio" id="voiture_{{ voiture.id_voiture }}" 
+                                               name="voiture_id" value="{{ voiture.id_voiture }}" required>
+                                        <label for="voiture_{{ voiture.id_voiture }}">Choisir</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-results">Aucune voiture trouvée pour ces critères</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Résumé et soumission #}
+                <div class="reservation-summary">
+                    <h3 class="summary-title">Confirmation de réservation</h3>
+                    
+                    <input type="hidden" name="villeDepart" value="{{ app.request.query.get('villeDepart') }}">
+                    <input type="hidden" name="villeArrivee" value="{{ app.request.query.get('villeArrivee') }}">
+                    <input type="hidden" name="dateDepart" value="{{ app.request.query.get('dateDepart') }}">
+                    <input type="hidden" name="dateArrivee" value="{{ app.request.query.get('dateArrivee') }}">
+                    <input type="hidden" name="typeChambre" value="{{ app.request.query.get('typeChambre') }}">
+                    
+                    <button type="submit" class="btn btn-submit">Enregistrer la réservation</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Changement des checkboxes en radio buttons pour forcer une seule sélection
+            // Le script n'est plus nécessaire car nous utilisons directement des radio buttons
+        });
+    </script>
 {% endblock %}

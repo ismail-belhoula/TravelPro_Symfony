@@ -1,13 +1,194 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Reservation{% endblock %}
+{% block title %}Modifier Statut Réservation{% endblock %}
 
 {% block body %}
-    <h1>Edit Reservation</h1>
+    <style>
+        :root {
+            --blue-light: #4e73df;
+            --blue-dark: #224abe;
+            --gray-light: #f8f9fc;
+            --text-dark: #343a40;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    {{ include('reservation/_form.html.twig', {'button_label': 'Update'}) }}
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue-dark);
+        }
 
-    {{ include('reservation/_delete_form.html.twig') }}
+        .reservation-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: var(--blue-dark);
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--blue-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            flex: 0 0 200px;
+            font-weight: 600;
+            color: var(--blue-dark);
+        }
+
+        .info-value {
+            flex: 1;
+            background-color: #f1f3f5;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+        }
+
+        .status-form {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--gray-light);
+            border-radius: var(--radius);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input {
+            margin-right: 0.5rem;
+        }
+
+        .actions {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+            color: white;
+            background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin: 0 0.5rem;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+    </style>
+
+    <h1>Modifier Statut de la Réservation</h1>
+
+    <div class="reservation-container">
+        <!-- Informations Réservation -->
+       
+
+        <!-- Voiture -->
+        {% if reservation.voiture %}
+            <div class="section-title">Voiture Réservée</div>
+            <div class="info-item">
+                <div class="info-label">Modèle:</div>
+                <div class="info-value">{{ reservation.voiture.marque }} {{ reservation.voiture.modele }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prix/jour:</div>
+                <div class="info-value">{{ reservation.voiture.prixParJour }} €</div>
+            </div>
+        {% endif %}
+
+        <!-- Hôtel -->
+        {% if reservation.hotel %}
+            <div class="section-title">Hôtel Réservé</div>
+            <div class="info-item">
+                <div class="info-label">Nom:</div>
+                <div class="info-value">{{ reservation.hotel.nom }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Type chambre:</div>
+                <div class="info-value">{{ reservation.hotel.typeDeChambre }}</div>
+            </div>
+        {% endif %}
+
+        <!-- Billet d'avion -->
+        {% if reservation.billetAvion %}
+            <div class="section-title">Vol Réservé</div>
+            <div class="info-item">
+                <div class="info-label">Compagnie:</div>
+                <div class="info-value">{{ reservation.billetAvion.compagnie }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Trajet:</div>
+                <div class="info-value">
+                    {{ reservation.billetAvion.villeDepart }} → {{ reservation.billetAvion.villeArrivee }}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Formulaire de modification du statut -->
+        <div class="status-form">
+            <div class="section-title">Modifier le Statut</div>
+            
+            <form method="post">
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="statut_attente" name="statut" value="en_attente" 
+                               {% if reservation.statut == 'en_attente' %}checked{% endif %}>
+                        <label for="statut_attente">En attente</label>
+                    </div>
+                    
+                    <div class="radio-option">
+                        <input type="radio" id="statut_confirme" name="statut" value="confirme" 
+                               {% if reservation.statut == 'confirme' %}checked{% endif %}>
+                        <label for="statut_confirme">Confirmé</label>
+                    </div>
+                    
+                    <div class="radio-option">
+                        <input type="radio" id="statut_annule" name="statut" value="annule" 
+                               {% if reservation.statut == 'annule' %}checked{% endif %}>
+                        <label for="statut_annule">Annulé</label>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_token" value="{{ csrf_token('update' ~ reservation.idReservation) }}">
+
+                <div class="actions">
+                    <button type="submit" class="btn">Enregistrer</button>
+                    <a href="{{ path('app_reservation_show', {'id_reservation': reservation.idReservation}) }}" class="btn">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
