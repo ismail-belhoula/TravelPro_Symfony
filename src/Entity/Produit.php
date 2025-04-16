@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ProduitRepository;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -31,6 +31,7 @@ class Produit
 
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $nom_produit = null;
+    
 
     public function getNom_produit(): ?string
     {
@@ -43,7 +44,8 @@ class Produit
         return $this;
     }
 
-    #[ORM\Column(type: 'decimal', nullable: false)]
+    #[ORM\Column(type: 'decimal', nullable: true)]
+    #[Assert\NotBlank]
     private ?float $prix_achat = null;
 
     public function getPrix_achat(): ?float
@@ -58,7 +60,8 @@ class Produit
     }
 
     #[ORM\Column(type: 'integer', nullable: false)]
-    private ?int $quantite_produit = null;
+    #[Assert\NotBlank]
+    private ?int $quantite_produit = null;    
 
     public function getQuantite_produit(): ?int
     {
@@ -72,7 +75,7 @@ class Produit
     }
 
     #[ORM\Column(type: 'decimal', nullable: true)]
-    private ?float $prix_vente = null;
+    private ?float $prix_vente = null;    
 
     public function getPrix_vente(): ?float
     {
@@ -86,6 +89,9 @@ class Produit
     }
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\NotBlank( 
+        message: 'il faut choisir un photo nom du produit.'
+    )]
     private ?string $image_path = null;
 
     public function getImage_path(): ?string

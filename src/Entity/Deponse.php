@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 
 use App\Repository\DeponseRepository;
@@ -44,6 +45,10 @@ class Deponse
     }
 
     #[ORM\Column(type: 'decimal', nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Positive(
+        message: 'Le prix de achat doit être un nombre positif.'
+    )]
     private ?float $prix_achat = null;
 
     public function getPrix_achat(): ?float
@@ -58,6 +63,10 @@ class Deponse
     }
 
     #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Positive(
+        message: 'La quantite doit être un nombre positif.'
+    )]
     private ?int $quantite_produit = null;
 
     public function getQuantite_produit(): ?int

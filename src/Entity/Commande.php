@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
@@ -33,12 +34,16 @@ class Commande
     private ?Client $client = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
+    #[Assert\NotBlank]
     private ?float $montant_total = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $date_commande = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\NotBlank( 
+        message: 'il faut remplir la status.'
+    )]
     private ?string $status = null;
 
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'commandes')]

@@ -1,0 +1,149 @@
+/* Search bar styles */
+.search-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 40px 12px 20px;
+  border: 2px solid #01b3a7;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(1, 179, 167, 0.2);
+}
+
+.search-bar input::placeholder {
+  color: #999;
+}
+
+.search-bar .search-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #01b3a7;
+  cursor: pointer;
+}
+
+/* Products Grid Container */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Forces 3 columns */
+  gap: 30px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual Product Card */
+.product {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0; /* Remove any bottom margin */
+}
+
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-figure {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+  overflow: hidden;
+}
+
+.product-figure img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-caption {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  font-size: 20px;
+  color: #01b3a7;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.product-button {
+  margin-top: auto;
+}
+
+.button-primary {
+  background: #01b3a7;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+  font-size: 16px;
+}
+
+.button-primary:hover {
+  background: #018f86;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-container {
+    justify-content: center;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+

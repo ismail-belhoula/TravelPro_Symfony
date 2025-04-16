@@ -1,4 +1,44 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+<div class="card shadow-sm p-4">
+
+    <div class="mb-3">
+        {{ form_label(form.nom_produit, 'Nom du Produit :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.nom_produit, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'}}) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.nom_produit) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.prix_achat, 'Prix d\'Achat :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.prix_achat, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le prix (ex: 10.99)'}}) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.prix_achat) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.quantite_produit, 'Quantité :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.quantite_produit, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la quantité'}}) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.quantite_produit) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.imageFile, 'Image du Produit :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.imageFile) }}
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-success btn-lg">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+</div>
+
 {{ form_end(form) }}

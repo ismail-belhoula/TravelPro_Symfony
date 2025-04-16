@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block body %}
+<section class="section section-lg bg-default">
+    <div class="container">
+        <h2>Mon Panier</h2>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically inserted here by JavaScript -->
+        </div>
+        <div class="cart-total">
+            <h4>Total: <span id="cart-total-amount">0</span> TND</h4>
+            <button class="button button-primary button-pipaluk" id="checkout-button">
+                Passer la commande
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsContainer = document.querySelector('.cart-items');
+    let total = 0;
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+        cartItemsContainer.innerHTML += `
+            <div class="cart-item">
+                <h5>${item.name}</h5>
+                <p>Prix: ${item.price} TND</p>
+                <p>Quantité: ${item.quantity}</p>
+                <button class="remove-item" data-id="${item.id}">Supprimer</button>
+            </div>
+        `;
+    });
+
+    document.getElementById('cart-total-amount').textContent = total.toFixed(2);
+});
+</script>
+{% endblock %}

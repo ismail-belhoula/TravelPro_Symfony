@@ -11,6 +11,7 @@
     {% block title %}
         <title>Gestion D'Achat</title>
     {% endblock %}
+    
 
     <!-- Custom fonts for this template -->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -210,6 +211,18 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     {% block body %}
+                    <style>
+                         .image-hover {
+        transition: transform 0.3s ease;
+    }
+
+    .image-hover:hover {
+        transform: scale(2); /* or 1.5 for smaller zoom */
+        z-index: 10;
+        position: relative;
+    }
+    </style>
+
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Gestion des Produits</h1>
 
@@ -240,7 +253,9 @@
                                             <td>{{ produit.prixVente }} TND</td>
                                             <td>
                                                 {% if produit.imagePath %}
-                                                <img src="{{ asset('uploads/' ~ produit.imagePath) }}" alt="Image produit" width="50">
+                                                    <img src="{{ asset('uploads/' ~ produit.imagePath) }}" alt="Image produit" width="80" class="image-hover">
+                                                {% else %}
+                                                    <span class="text-muted">Pas d'image</span>
                                                 {% endif %}
                                             </td>
                                             <td>
