@@ -43,9 +43,12 @@ class Admin
         return $this;
     }
 
+
     public function getIdAdmin(): ?int
     {
         return $this->id_admin;
     }
+
+
 
 }

@@ -1,0 +1,82 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Avis Clients - TravelPro{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .testimonials-section { padding: 60px 0; }
+    .section-title { text-align: center; margin-bottom: 50px; }
+    .section-title h2 { font-size: 36px; font-weight: 600; color: #3a3a3a; }
+    .testimonial-card {
+      background: #fff; border-radius: 8px; border: 1px solid #e1e1e1;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 30px;
+      transition: all 0.3s ease; position: relative;
+    }
+    .testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .testimonial-rating { color: #ffc107; font-size: 20px; }
+    .testimonial-date { color: #777; font-size: 14px; }
+    .card-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; }
+    .btn-action { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .btn-show { background: #3498db; color: white; }
+    .btn-edit { background: #3a3a3a; color: white; }
+    .btn-delete { background: #e74c3c; color: white; }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url({{ asset('frontoffice/images/breadcrumbs-bg.jpg') }});">
+    <div class="container">
+      <div class="breadcrumbs-custom-inner">
+        <h2 class="breadcrumbs-custom-title">Avis Clients</h2>
+        <ul class="breadcrumbs-custom-path">
+          <li><a href="">Accueil</a></li>
+          <li class="active">Avis Clients</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Ce que nos clients disent</h2>
+        <a href="{{ path('app_avi_front_new') }}" class="button button-primary button-ujarak">Ajouter un avis</a>
+      </div>
+
+      <div class="row">
+        {% for avi in avis %}
+          <div class="col-md-4 mb-4">
+            <div class="testimonial-card">
+              <div class="card-actions">
+                <a href="{{ path('app_avi_front_show', {'id_avis': avi.idavis}) }}" class="btn-action btn-show" title="Voir">
+                  <i class="fas fa-eye"></i>
+                </a>
+                <a href="{{ path('app_avi_front_edit', {'id_avis': avi.idavis}) }}" class="btn-action btn-edit" title="Modifier">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+                <form method="post" action="{{ path('app_avi_front_delete', {'id_avis': avi.idavis}) }}" onsubmit="return confirm('Supprimer cet avis?')">
+                  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.idavis) }}">
+                  <button class="btn-action btn-delete" title="Supprimer"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+
+              <div class="testimonial-rating">
+                {% for i in 1..5 %}
+                  {% if i <= avi.note %}★{% else %}☆{% endif %}
+                {% endfor %}
+              </div>
+              <p class="testimonial-date">{{ avi.datePublication|date('d/m/Y') }}</p>
+              <p>{{ avi.commentaire|slice(0, 100) }}{% if avi.commentaire|length > 100 %}...{% endif %}</p>
+              <a href="{{ path('app_avi_front_show', {'id_avis': avi.idavis}) }}" class="button button-sm button-default-outline-2 button-ujarak">Lire plus</a>
+            </div>
+          </div>
+        {% else %}
+          <div class="col-12 text-center">
+            <p>Aucun avis pour le moment.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

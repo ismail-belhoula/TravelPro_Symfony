@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html.twig' %}
 
 {% block title %}Avi index{% endblock %}
@@ -38,4 +39,360 @@
     </table>
 
     <a href="{{ path('app_avi_new') }}">Create new</a>
+=======
+{% extends 'basebackoffice.html.twig' %}
+
+{% block title %}Gestion des Avis{% endblock %}
+
+{% block body %}
+  <!-- Page Heading with Gradient -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">
+      <i class="fas fa-comments mr-2"></i>Gestion des Avis
+    </h1>
+    <a href="{{ path('app_avi_new') }}" class="d-none d-sm-inline-block btn btn-primary btn-icon-split shadow-sm">
+      <span class="icon text-white-50">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span class="text">Nouvel Avis</span>
+    </a>
+  </div>
+
+  <!-- Card with Enhanced Shadow -->
+  <div class="card shadow-lg mb-4 border-0">
+    <!-- Card Header with Gradient Background -->
+    <div class="card-header py-3 bg-gradient-primary d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-white">
+        <i class="fas fa-list-ol mr-2"></i>Liste des Avis
+      </h6>
+      <div class="dropdown no-arrow">
+        <a class="dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+             aria-labelledby="dropdownMenuLink">
+          <div class="dropdown-header">Actions rapides :</div>
+          <a class="dropdown-item" href="{{ path('app_avi_new') }}">
+            <i class="fas fa-plus mr-2 text-primary"></i> Ajouter un avis
+          </a>
+          <a class="dropdown-item" href="#" id="exportBtn">
+            <i class="fas fa-file-export mr-2 text-info"></i> Exporter
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#filterModal">
+            <i class="fas fa-filter mr-2 text-warning"></i> Filtres avancés
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0" id="dataTable" width="100%" cellspacing="0">
+          <thead class="thead-light">
+          <tr>
+            <th class="text-center">ID</th>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th>Date</th>
+            <th class="text-center">Statut</th>
+            <th class="text-center">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for avi in avis %}
+            <tr class="align-middle">
+              <td class="text-center font-weight-bold text-primary">{{ avi.idAvis }}</td>
+
+              <!-- Rating Column -->
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="rating mr-2">
+                    {% for i in 1..5 %}
+                      <i class="fas fa-star {{ i <= avi.note ? 'text-warning' : 'text-gray-300' }}"></i>
+                    {% endfor %}
+                  </div>
+                  <span class="badge badge-pill badge-light">{{ avi.note }}/5</span>
+                </div>
+              </td>
+
+              <!-- Comment Column with Expandable Content - CORRIGÉ -->
+              <td>
+                <div class="comment-container">
+                  {% if avi.commentaire|length > 60 %}
+                    <span class="comment-preview d-inline-block text-truncate" style="max-width: 200px;">
+                      {{ avi.commentaire|slice(0, 60) }}...
+                    </span>
+                    <a href="#" class="text-primary expand-comment"
+                       data-fulltext="{{ avi.commentaire }}"
+                       data-toggle="tooltip" title="Voir tout">
+                      <i class="fas fa-expand-alt ml-1"></i>
+                    </a>
+                  {% else %}
+                    {{ avi.commentaire }}
+                  {% endif %}
+                </div>
+              </td>
+
+              <!-- Date Column -->
+              <td class="text-nowrap">
+                <i class="far fa-calendar-alt mr-1 text-secondary"></i>
+                {{ avi.datePublication ? avi.datePublication|date('d/m/Y') : '' }}
+                <br>
+                <small class="text-muted">
+                  <i class="far fa-clock mr-1"></i>
+                  {{ avi.datePublication ? avi.datePublication|date('H:i') : '' }}
+                </small>
+              </td>
+
+              <!-- Status Column -->
+              <td class="text-center">
+                  <span class="badge badge-pill badge-{{ avi.estAccepte ? 'success' : 'warning' }} py-1 px-3">
+                    <i class="{{ avi.estAccepte ? 'fas fa-check' : 'fas fa-hourglass-half' }} mr-1"></i>
+                    {{ avi.estAccepte ? 'Accepté' : 'En attente' }}
+                  </span>
+              </td>
+
+              <!-- Actions Column -->
+              <td class="text-center">
+                <div class="btn-group btn-group-sm" role="group">
+                  <!-- Voir détails -->
+                  <a href="{{ path('app_avi_show', {'id_avis': avi.idavis}) }}"
+                     class="btn btn-circle btn-outline-info"
+                     data-toggle="tooltip" title="Voir détails">
+                    <i class="fas fa-eye"></i>
+                  </a>
+
+                  <!-- Modifier -->
+                  <a href="{{ path('app_avi_edit', {'id_avis': avi.idavis}) }}"
+                     class="btn btn-circle btn-outline-primary"
+                     data-toggle="tooltip" title="Modifier">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+
+                  <!-- Supprimer (ouvre modale) -->
+                  <button type="button"
+                          class="btn btn-circle btn-outline-danger"
+                          data-toggle="modal"
+                          data-target="#deleteModal{{ avi.idavis }}"
+                          title="Supprimer">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+
+                  <!-- Changer statut -->
+                  <form method="post"
+                        action="{{ path('app_avi_toggle_status', {'id_avis': avi.idavis}) }}"
+                        class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle-status' ~ avi.idavis) }}">
+                    <button type="submit"
+                            class="btn btn-circle btn-outline-{{ avi.estAccepte ? 'warning' : 'success' }}"
+                            title="{{ avi.estAccepte ? 'Mettre en attente' : 'Accepter' }}">
+                      <i class="fas {{ avi.estAccepte ? 'fa-hourglass-half' : 'fa-check' }}"></i>
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deleteModal{{ avi.idavis }}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Confirmer la suppression</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Êtes-vous sûr de vouloir supprimer cet avis ? Cette action est irréversible.</p>
+                        <div class="alert alert-warning mt-3">
+                          <i class="fas fa-exclamation-triangle mr-2"></i>
+                          L'avis #{{ avi.idavis }} sera définitivement supprimé.
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <form method="post" action="{{ path('app_avi_delete', {'id_avis': avi.idavis}) }}" class="d-inline">
+                          <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.idavis) }}">
+                          <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt mr-1"></i> Confirmer
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <div class="empty-state">
+                  <i class="fas fa-comment-slash fa-3x text-gray-400 mb-3"></i>
+                  <h4 class="text-muted">Aucun avis trouvé</h4>
+                  <p class="text-muted mb-4">Vous n'avez aucun avis pour le moment.</p>
+                  <a href="{{ path('app_avi_new') }}" class="btn btn-primary">
+                    <i class="fas fa-plus mr-2"></i>Créer un nouvel avis
+                  </a>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Card Footer with Pagination -->
+    <div class="card-footer bg-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted small">
+          Affichage de <span class="font-weight-bold">{{ avis|length }}</span> avis
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Comment Modal -->
+  <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Commentaire complet</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="fullCommentContent">
+          <!-- Content will be inserted via JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script>
+    $(document).ready(function() {
+      // Initialize DataTables
+      $('#dataTable').DataTable({
+        language: {
+          url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
+        },
+        responsive: true,
+        order: [[3, 'desc']],
+        columnDefs: [
+          { orderable: false, targets: [5] }
+        ]
+      });
+
+      // Tooltip initialization
+      $('[data-toggle="tooltip"]').tooltip();
+
+      // Comment expansion functionality - CORRIGÉ
+      $(document).on('click', '.expand-comment', function(e) {
+        e.preventDefault();
+        const fullText = $(this).data('fulltext');
+        $('#fullCommentContent').text(fullText);
+        $('#commentModal').modal('show');
+      });
+
+      // Export button handler
+      $('#exportBtn').click(function(e) {
+        e.preventDefault();
+        // You can implement export to CSV/Excel here
+        alert('Fonctionnalité d\'export à implémenter');
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    /* Custom styles for the ratings */
+    .rating {
+      unicode-bidi: bidi-override;
+      direction: ltr;
+      display: inline-block;
+    }
+    .rating > .fas.fa-star {
+      font-size: 0.9rem;
+    }
+
+    /* Button circles */
+    .btn-circle {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Card styling */
+    .card {
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      border-bottom: none;
+    }
+
+    /* Hover effects */
+    tr:hover {
+      background-color: rgba(0, 0, 0, 0.02) !important;
+    }
+
+    /* Empty state styling */
+    .empty-state {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* Comment container - STYLE CORRIGÉ */
+    .comment-container {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+    }
+    .comment-preview {
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 767.98px) {
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
+      .dropdown.no-arrow {
+        margin-top: 0.5rem;
+        align-self: flex-end;
+      }
+      .comment-preview {
+        max-width: 100px !important;
+      }
+      .btn-group {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+      .btn-circle {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+>>>>>>> d69ad05 (initial commit)
 {% endblock %}

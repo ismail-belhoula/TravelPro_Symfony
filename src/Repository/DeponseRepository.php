@@ -43,6 +43,7 @@ class DeponseRepository extends ServiceEntityRepository
 
 
 
+
     public function findByDateRange(?\DateTimeInterface $startDate, ?\DateTimeInterface $endDate): array
 {
     $qb = $this->createQueryBuilder('d');
@@ -67,4 +68,5 @@ class DeponseRepository extends ServiceEntityRepository
     
     
     
+
 }

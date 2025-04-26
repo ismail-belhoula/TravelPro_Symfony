@@ -18,52 +18,64 @@ class BilletavionRepository extends ServiceEntityRepository
 
     public function findByCriteria(?string $villeDepart, ?string $villeArrivee, ?string $dateDepart): array
     {
-        $qb = $this->createQueryBuilder('b')
-            ->where('b.villeDepart = :villeDepart')
-            ->andWhere('b.villeArrivee = :villeArrivee')
-            ->andWhere('b.dateDepart >= :dateDepart')
-            ->setParameter('villeDepart', $villeDepart)
-            ->setParameter('villeArrivee', $villeArrivee)
-            ->setParameter('dateDepart', new \DateTime($dateDepart))
-            ->orderBy('b.prix', 'ASC');
+        try {
+            $qb = $this->createQueryBuilder('b')
+                ->where('b.villeDepart = :villeDepart')
+                ->andWhere('b.villeArrivee = :villeArrivee')
+                ->andWhere('b.dateDepart >= :dateDepart')
+                ->setParameter('villeDepart', $villeDepart)
+                ->setParameter('villeArrivee', $villeArrivee)
+                ->setParameter('dateDepart', new \DateTime($dateDepart))
+                ->orderBy('b.prix', 'ASC');
 
-        return $qb->getQuery()->getResult();
+            return $qb->getQuery()->getResult();
+        } catch (\Exception $e) {
+            error_log("Error in findByCriteria: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function searchByQuery(string $query): array
     {
-        $qb = $this->createQueryBuilder('b')
-            ->where('b.compagnie LIKE :query')
-            ->orWhere('b.classBillet LIKE :query')
-            ->orWhere('b.villeDepart LIKE :query')
-            ->orWhere('b.villeArrivee LIKE :query')
-            ->setParameter('query', '%' . $query . '%')
-            ->orderBy('b.prix', 'ASC');
+        try {
+            $qb = $this->createQueryBuilder('b')
+                ->where('b.compagnie LIKE :query')
+                ->orWhere('b.classBillet LIKE :query')
+                ->orWhere('b.villeDepart LIKE :query')
+                ->orWhere('b.villeArrivee LIKE :query')
+                ->setParameter('query', '%' . $query . '%')
+                ->orderBy('b.prix', 'ASC');
 
-        // Log the query for debugging
-        $sql = $qb->getQuery()->getSQL();
-        $parameters = $qb->getQuery()->getParameters();
-        error_log("searchByQuery SQL: $sql");
-        error_log("searchByQuery Parameters: " . print_r($parameters, true));
-
-        return $qb->getQuery()->getResult();
+            return $qb->getQuery()->getResult();
+        } catch (\Exception $e) {
+            error_log("Error in searchByQuery: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function save(Billetavion $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        try {
+            $this->getEntityManager()->persist($entity);
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
+        } catch (\Exception $e) {
+            error_log("Error saving Billetavion: " . $e->getMessage());
+            throw $e;
         }
     }
 
     public function remove(Billetavion $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        try {
+            $this->getEntityManager()->remove($entity);
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
+        } catch (\Exception $e) {
+            error_log("Error removing Billetavion: " . $e->getMessage());
+            throw $e;
         }
     }
 }

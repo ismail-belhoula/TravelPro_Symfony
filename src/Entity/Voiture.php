@@ -17,6 +17,35 @@ class Voiture
     #[ORM\Column(name: "id_voiture", type: 'integer')]
     private ?int $id_voiture = null;
 
+    #[ORM\Column(name: "Marque", type: 'string', nullable: false)]
+    private ?string $marque = null;
+
+    #[ORM\Column(name: "Modele", type: 'string', nullable: false)]
+    private ?string $modele = null;
+
+    #[ORM\Column(name: "Annee", type: 'integer', nullable: false)]
+    private ?int $annee = null;
+
+    #[ORM\Column(name: "PrixParJour", type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    private ?float $prixParJour = null;
+
+    #[ORM\Column(name: "Disponible", type: 'boolean', nullable: false)]
+    private ?bool $disponible = true;
+
+    #[ORM\Column(name: "DateDeLocation", type: 'date', nullable: true)]
+    private ?\DateTimeInterface $dateDeLocation = null;
+
+    #[ORM\Column(name: "DateDeRemise", type: 'date', nullable: true)]
+    private ?\DateTimeInterface $dateDeRemise = null;
+
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'voiture', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+
     public function getId_voiture(): ?int
     {
         return $this->id_voiture;
@@ -27,9 +56,6 @@ class Voiture
         $this->id_voiture = $id_voiture;
         return $this;
     }
-
-    #[ORM\Column(name: "Marque", type: 'string', nullable: false)]
-    private ?string $marque = null;
 
     public function getMarque(): ?string
     {
@@ -42,9 +68,6 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(name: "Modele", type: 'string', nullable: false)]
-    private ?string $modele = null;
-
     public function getModele(): ?string
     {
         return $this->modele;
@@ -55,9 +78,6 @@ class Voiture
         $this->modele = $modele;
         return $this;
     }
-
-    #[ORM\Column(name: "Annee", type: 'integer', nullable: false)]
-    private ?int $annee = null;
 
     public function getAnnee(): ?int
     {
@@ -70,9 +90,6 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(name: "PrixParJour", type: 'float', nullable: false)]
-    private ?float $prixParJour = null;
-
     public function getPrixParJour(): ?float
     {
         return $this->prixParJour;
@@ -83,9 +100,6 @@ class Voiture
         $this->prixParJour = $prixParJour;
         return $this;
     }
-
-    #[ORM\Column(name: "Disponible", type: 'boolean', nullable: true)]
-    private ?bool $disponible = null;
 
     public function isDisponible(): ?bool
     {
@@ -98,9 +112,6 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(name: "DateDeLocation", type: 'date', nullable: false)]
-    private ?\DateTimeInterface $dateDeLocation = null;
-
     public function getDateDeLocation(): ?\DateTimeInterface
     {
         return $this->dateDeLocation;
@@ -111,9 +122,6 @@ class Voiture
         $this->dateDeLocation = $dateDeLocation;
         return $this;
     }
-
-    #[ORM\Column(name: "DateDeRemise", type: 'date', nullable: false)]
-    private ?\DateTimeInterface $dateDeRemise = null;
 
     public function getDateDeRemise(): ?\DateTimeInterface
     {
@@ -126,14 +134,6 @@ class Voiture
         return $this;
     }
 
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'voiture', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $reservations;
-    
-    public function __construct()
-    {
-        $this->reservations = new ArrayCollection();
-    }
-    
     /**
      * @return Collection<int, Reservation>
      */
@@ -141,7 +141,7 @@ class Voiture
     {
         return $this->reservations;
     }
-    
+
     public function addReservation(Reservation $reservation): self
     {
         if (!$this->reservations->contains($reservation)) {
@@ -150,7 +150,7 @@ class Voiture
         }
         return $this;
     }
-    
+
     public function removeReservation(Reservation $reservation): self
     {
         if ($this->reservations->removeElement($reservation)) {

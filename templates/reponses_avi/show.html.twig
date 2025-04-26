@@ -1,30 +1,76 @@
-{% extends 'base.html.twig' %}
+{% extends 'basebackoffice.html.twig' %}
 
-{% block title %}ReponsesAvi{% endblock %}
+{% block title %}Détails Réponse Avis{% endblock %}
 
 {% block body %}
-    <h1>ReponsesAvi</h1>
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Détails de la réponse</h1>
+    <div class="btn-group">
+      <a href="{{ path('app_reponses_avi_index') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left mr-1"></i> Retour à la liste
+      </a>
+      <a href="{{ path('app_reponses_avi_edit', {'id_reponse': reponses_avi.idReponse}) }}" class="btn btn-primary">
+        <i class="fas fa-edit mr-1"></i> Modifier
+      </a>
+    </div>
+  </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id_reponse</th>
-                <td>{{ reponses_avi.idReponse }}</td>
-            </tr>
-            <tr>
-                <th>Reponse</th>
-                <td>{{ reponses_avi.reponse }}</td>
-            </tr>
-            <tr>
-                <th>Date_reponse</th>
-                <td>{{ reponses_avi.dateReponse ? reponses_avi.dateReponse|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+  <!-- Content Row -->
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary">Informations de la réponse #{{ reponses_avi.idReponse }}</h6>
+          <span class="badge badge-info">
+            <i class="far fa-clock mr-1"></i>
+            {{ reponses_avi.dateReponse ? reponses_avi.dateReponse|date('d/m/Y H:i') : 'Date non définie' }}
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="mb-4">
+            <h5 class="text-muted font-weight-bold mb-2">Avis original</h5>
+            <div class="p-3 bg-light rounded border">
+              {% if reponses_avi.avi %}
+                <blockquote class="mb-0">
+                  <i class="fas fa-quote-left text-secondary mr-2"></i>
+                  {{ reponses_avi.avi.commentaire }}
+                  <footer class="blockquote-footer mt-2">
+                    Note: <span class="text-warning">
+                      {% for i in 1..5 %}
+                        <i class="fas fa-star {{ i <= reponses_avi.avi.note ? 'text-warning' : 'text-gray-300' }}"></i>
+                      {% endfor %}
+                    </span>
+                  </footer>
+                </blockquote>
+              {% else %}
+                <p class="text-muted mb-0"><i class="fas fa-info-circle mr-1"></i> Aucun avis associé</p>
+              {% endif %}
+            </div>
+          </div>
 
-    <a href="{{ path('app_reponses_avi_index') }}">back to list</a>
+          <div>
+            <h5 class="text-muted font-weight-bold mb-2">Réponse</h5>
+            <div class="p-3 bg-white rounded border">
+              {{ reponses_avi.reponse }}
+            </div>
+          </div>
 
-    <a href="{{ path('app_reponses_avi_edit', {'id_reponse': reponses_avi.id_reponse}) }}">edit</a>
+          <div class="mt-4 text-right">
+            {{ include('reponses_avi/_delete_form.html.twig') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
 
-    {{ include('reponses_avi/_delete_form.html.twig') }}
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    .blockquote-footer { font-size: 0.875rem; }
+    .fa-star { font-size: 0.875rem; }
+    .badge { font-size: 0.875rem; padding: 0.5rem 0.75rem; }
+    .card { border-radius: 0.5rem; }
+  </style>
 {% endblock %}

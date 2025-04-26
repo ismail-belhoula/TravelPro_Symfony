@@ -1,4 +1,69 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{ form_title|default('Formulaire Réponse Avis') }}</h6>
+  </div>
+  <div class="card-body">
+    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    
+    <div class="form-group">
+      {{ form_label(form.reponse, 'Réponse', {'label_attr': {'class': 'form-label'}}) }}
+      {{ form_widget(form.reponse, {
+        'attr': {
+          'class': 'form-control' ~ (form.reponse.vars.errors|length > 0 ? ' is-invalid' : ''),
+          'rows': 4,
+          'placeholder': 'Entrez votre réponse ici...'
+        }
+      }) }}
+      {% if form.reponse.vars.errors|length > 0 %}
+        <div class="invalid-feedback">
+          {{ form_errors(form.reponse) }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.date_reponse, 'Date de réponse', {'label_attr': {'class': 'form-label'}}) }}
+      {{ form_widget(form.date_reponse, {
+        'attr': {
+          'class': 'form-control' ~ (form.date_reponse.vars.errors|length > 0 ? ' is-invalid' : ''),
+          'placeholder': 'Sélectionnez une date'
+        }
+      }) }}
+      {% if form.date_reponse.vars.errors|length > 0 %}
+        <div class="invalid-feedback">
+          {{ form_errors(form.date_reponse) }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.avi, 'Avis associé', {'label_attr': {'class': 'form-label'}}) }}
+      {{ form_widget(form.avi, {
+        'attr': {
+          'class': 'form-control' ~ (form.avi.vars.errors|length > 0 ? ' is-invalid' : ''),
+          'placeholder': 'Sélectionnez un avis'
+        }
+      }) }}
+      {% if form.avi.vars.errors|length > 0 %}
+        <div class="invalid-feedback">
+          {{ form_errors(form.avi) }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group mt-4">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save mr-1"></i>
+        {{ button_label|default('Enregistrer') }}
+      </button>
+      <a href="{{ path('app_reponses_avi_index') }}" class="btn btn-secondary ml-2">
+        <i class="fas fa-arrow-left mr-1"></i>
+        Retour à la liste
+      </a>
+    </div>
+
+    {{ form_end(form) }}
+  </div>
+</div>
+
+{# Move styles to the parent template #}

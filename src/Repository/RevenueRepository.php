@@ -40,6 +40,7 @@ class RevenueRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
     public function findByDateRange(?\DateTimeInterface $startDate, ?\DateTimeInterface $endDate): array
     {
         $qb = $this->createQueryBuilder('r');
@@ -60,4 +61,6 @@ class RevenueRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
     
+
+
 }

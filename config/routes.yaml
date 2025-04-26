@@ -9,8 +9,6 @@ create_checkout_session:
     controller: App\Controller\PaymentController::createCheckoutSession
     methods: [POST]
 
-
-
 app_register:
-  path: /inscription
-  controller: App\Controller\UtilisateurController::register
+    path: /inscription
+    controller: App\Controller\UtilisateurController::register

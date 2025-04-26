@@ -1,0 +1,49 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Réponse #{{ reponse.idreponse }} - TravelPro{% endblock %}
+
+{% block body %}
+  <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url({{ asset('frontoffice/images/breadcrumbs-bg.jpg') }});">
+    <div class="container">
+      <div class="breadcrumbs-custom-inner">
+        <h2 class="breadcrumbs-custom-title">Détails de la réponse</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-lg bg-default">
+    <div class="container">
+      <div class="card shadow-sm p-4">
+        <div class="card-body">
+          <h4 class="card-title">Réponse à l'avis #{{ reponse.avi.idavis }}</h4>
+          <p class="text-muted">
+            <i class="far fa-calendar-alt me-2"></i>
+            {{ reponse.datereponse|date('d/m/Y à H:i') }}
+          </p>
+          <hr>
+          <div class="mb-4">
+            <h5>Contenu de la réponse :</h5>
+            <p class="lead">{{ reponse.reponse }}</p>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <a href="{{ path('app_avi_front_show', {'id_avis': reponse.avi.idavis}) }}" class="btn btn-light">
+              <i class="fas fa-arrow-left me-2"></i> Retour à l'avis
+            </a>
+            <div>
+              <a href="{{ path('app_reponses_avi_front_edit', {'id_reponse': reponse.idreponse}) }}" class="btn btn-warning">
+                <i class="fas fa-edit me-2"></i> Modifier
+              </a>
+              <form method="post" action="{{ path('app_reponses_avi_front_delete', {'id_reponse': reponse.idreponse}) }}" class="d-inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reponse.idreponse) }}">
+                <button class="btn btn-danger" onclick="return confirm('Supprimer cette réponse ?')">
+                  <i class="fas fa-trash me-2"></i> Supprimer
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM ;
 use Symfony\Component\Validator\Constraints as Assert;
+
+
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\Common\Collections\Collection;
 
 use App\Repository\RevenueRepository;
@@ -31,9 +35,12 @@ class Revenue
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+
     #[Assert\NotBlank( 
         message: 'il faut remplir le type.'
     )]
+
+
     private ?string $type_revenue = null;
 
     public function getType_revenue(): ?string
@@ -61,11 +68,15 @@ class Revenue
         return $this;
     }
 
+
     #[ORM\Column(type: 'float', nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Positive(
         message: 'Le montant total doit être un nombre positif.'
     )]
+
+    #[ORM\Column(type: 'decimal', nullable: false)]
+
     private ?float $montant_total = null;
 
     public function getMontant_total(): ?float
@@ -79,10 +90,14 @@ class Revenue
         return $this;
     }
 
+
     #[ORM\Column(type: 'float', nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Positive( message: 'La commission doit être un entier positif.'
     )]
+
+    #[ORM\Column(type: 'decimal', nullable: false)]
+
     private ?float $commission = null;
 
     public function getCommission(): ?float
@@ -95,6 +110,7 @@ class Revenue
         $this->commission = $commission;
         return $this;
     }
+
 
     public function getIdRevenue(): ?int
     {
@@ -137,4 +153,6 @@ class Revenue
         return $this;
     }
 
+
 }
+;

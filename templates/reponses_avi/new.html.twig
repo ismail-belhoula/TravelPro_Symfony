@@ -1,11 +1,40 @@
-{% extends 'base.html.twig' %}
+{% extends 'basebackoffice.html.twig' %}
 
-{% block title %}New ReponsesAvi{% endblock %}
+{% block title %}Nouvelle Réponse Avis{% endblock %}
 
 {% block body %}
-    <h1>Create new ReponsesAvi</h1>
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Créer une nouvelle réponse</h1>
+    <a href="{{ path('app_reponses_avi_index') }}" class="btn btn-secondary btn-sm">
+      <i class="fas fa-arrow-left fa-sm mr-2"></i>Retour à la liste
+    </a>
+  </div>
 
-    {{ include('reponses_avi/_form.html.twig') }}
+  <!-- Content Row -->
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          {{ include('reponses_avi/_form.html.twig', {
+            'form_title': 'Nouvelle Réponse',
+            'button_label': 'Créer la réponse'
+          }) }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
 
-    <a href="{{ path('app_reponses_avi_index') }}">back to list</a>
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    .card {
+      border-radius: 0.35rem;
+      border: none;
+    }
+    .btn-secondary:hover {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
 {% endblock %}

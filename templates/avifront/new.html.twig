@@ -1,0 +1,157 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Ajouter un avis - TravelPro{% endblock %}
+
+{% block body %}
+  <section class="section section-lg bg-default">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h3 class="text-center">Ajouter un avis</h3>
+          <a href="{{ path('app_avi_front_index') }}" class="button button-secondary button-ujarak">
+            <i class="fas fa-arrow-left me-2"></i> Retour à la liste
+          </a>
+          <div class="card shadow-sm p-4 mt-4">
+            {{ form_start(form, {'attr': {'class': 'rd-form rd-mailform'}}) }}
+            <div class="form-group">
+              <label class="form-label">Note</label>
+              <div class="rating-container mb-3">
+                <div class="rating-stars">
+                  {% for i in 1..5 %}
+                    <span class="star" data-value="{{ i }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="{{ form.note.vars.value >= i ? '#ffc107' : '#ddd' }}" stroke="#ffc107" stroke-width="1">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                      </span>
+                  {% endfor %}
+                </div>
+                {{ form_widget(form.note) }}
+                <div class="text-danger">
+                  {{ form_errors(form.note) }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              {{ form_label(form.commentaire) }}
+              {{ form_widget(form.commentaire) }}
+              <div class="text-danger">
+                {{ form_errors(form.commentaire) }}
+              </div>
+            </div>
+
+            <div class="form-group d-none">
+              {{ form_widget(form.date_publication) }}
+              {{ form_widget(form.est_accepte) }}
+            </div>
+
+            <button type="submit" class="button button-lg button-primary button-ujarak">Soumettre l'avis</button>
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% block javascripts %}
+    {{ parent() }}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Gestion du système de notation avec étoiles SVG
+        const stars = document.querySelectorAll('.star');
+        const hiddenNoteInput = document.querySelector('.rating-value');
+        const form = document.getElementById('avis-form');
+
+        // Validation initiale des étoiles
+        if (!hiddenNoteInput.value) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'text-danger';
+          errorDiv.textContent = 'La note est obligatoire';
+          hiddenNoteInput.parentNode.appendChild(errorDiv);
+        }
+
+        stars.forEach(star => {
+          star.addEventListener('click', function() {
+            const value = this.getAttribute('data-value');
+            hiddenNoteInput.value = value;
+
+            // Supprimer les messages d'erreur existants
+            const existingErrors = hiddenNoteInput.parentNode.querySelectorAll('.text-danger');
+            existingErrors.forEach(error => error.remove());
+
+            // Mise à jour de l'affichage des étoiles
+            stars.forEach((s, index) => {
+              const starIcon = s.querySelector('svg');
+              if (index < value) {
+                starIcon.setAttribute('fill', '#ffc107');
+              } else {
+                starIcon.setAttribute('fill', '#ddd');
+              }
+            });
+          });
+
+          // Effet hover
+          star.addEventListener('mouseover', function() {
+            const value = this.getAttribute('data-value');
+            stars.forEach((s, index) => {
+              const starIcon = s.querySelector('svg');
+              if (index < value) {
+                starIcon.setAttribute('fill', '#ffc107');
+              }
+            });
+          });
+
+          star.addEventListener('mouseout', function() {
+            const currentValue = hiddenNoteInput.value || 0;
+            stars.forEach((s, index) => {
+              const starIcon = s.querySelector('svg');
+              if (index >= currentValue) {
+                starIcon.setAttribute('fill', '#ddd');
+              }
+            });
+          });
+        });
+
+        // Validation spécifique pour les étoiles avant soumission
+        rm.addEventListener('submit', function(event) {
+          if (!hiddenNoteInput.value || hiddenNoteInput.value < 1) {
+            event.preventDefault();
+            hiddenNoteInput.classList.add('is-invalid');
+            if (noteErrorContainer) {
+              noteErrorContainer.style.display = 'block';
+              noteErrorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        });
+      });
+    </script>
+    <style>
+      .rating-container {
+        text-align: center;
+      }
+      .rating-stars {
+        display: inline-flex;
+        flex-direction: row;
+      }
+      .star {
+        cursor: pointer;
+        margin: 0 5px;
+        transition: transform 0.2s;
+      }
+      .star:hover {
+        transform: scale(1.2);
+      }
+      .rating-stars svg {
+        vertical-align: middle;
+      }
+      .text-danger {
+        color: #dc3545;
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+      }
+      .is-invalid {
+        border-color: #dc3545;
+      }
+    </style>
+  {% endblock %}
+{% endblock %}
