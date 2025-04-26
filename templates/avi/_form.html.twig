@@ -1,0 +1,138 @@
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{ form_title|default('Formulaire Avis') }}</h6>
+  </div>
+  <div class="card-body">
+    {{ form_start(form) }}
+
+    <div class="form-group">
+      <label class="form-label required">Note</label>
+      <div class="rating-stars mb-2">
+        {% for i in 5..1 %}
+          <i class="fas fa-star rating-star" data-value="{{ i }}"></i>
+        {% endfor %}
+      </div>
+      {{ form_widget(form.note) }}
+      <div class="invalid-feedback">
+        {{ form_errors(form.note) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.commentaire) }}
+      {{ form_widget(form.commentaire, {
+        'attr': {'class': 'form-control' ~ (form.commentaire.vars.errors|length > 0 ? ' is-invalid' : '')}
+      }) }}
+      <div class="invalid-feedback">
+        {{ form_errors(form.commentaire) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.date_publication) }}
+      {{ form_widget(form.date_publication, {
+        'attr': {'class': 'form-control' ~ (form.date_publication.vars.errors|length > 0 ? ' is-invalid' : '')}
+      }) }}
+      <div class="invalid-feedback">
+        {{ form_errors(form.date_publication) }}
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      {{ form_widget(form.est_accepte) }}
+      {{ form_label(form.est_accepte) }}
+      {{ form_errors(form.est_accepte) }}
+    </div>
+
+    <div class="form-group mt-4">
+      <button type="submit" class="btn btn-primary mr-2">{{ button_label|default('Enregistrer') }}</button>
+      <a href="{{ path('app_avi_index') }}" class="btn btn-secondary">Annuler</a>
+    </div>
+
+    {{ form_end(form) }}
+  </div>
+</div>
+
+
+{% block javascripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Système de notation par étoiles
+      const stars = document.querySelectorAll('.rating-star');
+      const ratingInput = document.querySelector('.rating-value');
+
+      // Fonction pour mettre à jour les étoiles
+      function updateStars(value) {
+        stars.forEach((star, index) => {
+          if (index < value) {
+            star.classList.add('text-warning');
+            star.classList.remove('text-muted');
+          } else {
+            star.classList.add('text-muted');
+            star.classList.remove('text-warning');
+          }
+        });
+      }
+
+      // Initialisation des étoiles
+      if (ratingInput.value) {
+        updateStars(ratingInput.value);
+      } else {
+        stars.forEach(star => star.classList.add('text-muted'));
+      }
+
+      // Gestion des événements
+      stars.forEach(star => {
+        star.addEventListener('click', function() {
+          const value = parseInt(this.getAttribute('data-value'));
+          ratingInput.value = value;
+          updateStars(value);
+        });
+
+        star.addEventListener('mouseover', function() {
+          const hoverValue = parseInt(this.getAttribute('data-value'));
+          updateStars(hoverValue);
+        });
+
+        star.addEventListener('mouseout', function() {
+          const currentValue = ratingInput.value ? parseInt(ratingInput.value) : 0;
+          updateStars(currentValue);
+        });
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block stylesheets %}
+  <style>
+    .invalid-feedback {
+      color: #dc3545;
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.875em;
+    }
+
+    .rating-stars {
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .rating-star {
+      transition: all 0.2s ease;
+    }
+    .text-warning {
+      color: #ffc107 !important;
+    }
+    .text-muted {
+      color: #d1d3e2 !important;
+    }
+    .form-control.is-invalid {
+      border-color: #dc3545 !important;
+    }
+    .invalid-feedback {
+      color: #dc3545;
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.875em;
+    }
+  </style>
+{% endblock %}

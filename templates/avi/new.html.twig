@@ -1,0 +1,14 @@
+{% extends 'basebackoffice.html.twig' %}
+
+{% block title %}Nouvel Avis{% endblock %}
+
+{% block body %}
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Créer un nouvel avis</h1>
+    <a href="{{ path('app_avi_index') }}" class="btn btn-sm btn-secondary shadow-sm">
+      <i class="fas fa-arrow-left fa-sm text-white-50"></i> Retour à la liste
+    </a>
+  </div>
+
+  {{ include('avi/_form.html.twig', {'form_title': 'Création d\'un avis'}) }}
+{% endblock %}

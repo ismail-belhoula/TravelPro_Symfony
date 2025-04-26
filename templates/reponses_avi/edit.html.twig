@@ -1,0 +1,16 @@
+{% extends 'basebackoffice.html.twig' %}
+{% block title %}Modifier Réponse Avis{% endblock %}
+
+{% block body %}
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Modifier la réponse</h1>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <div class="col-lg-8">
+      {{ include('reponses_avi/_form.html.twig', {'form_title': 'Modifier Réponse', 'button_label': 'Mettre à jour'}) }}
+    </div>
+  </div>
+{% endblock %}

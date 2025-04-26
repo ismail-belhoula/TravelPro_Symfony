@@ -1,0 +1,18 @@
+{# templates/reponses_avi/new.html.twig #}
+{% extends 'basebackoffice.html.twig' %}
+
+{% block title %}Nouvelle Réponse Avis{% endblock %}
+
+{% block body %}
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Créer une nouvelle réponse</h1>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <div class="col-lg-8">
+      {{ include('reponses_avi/_form.html.twig', {'form_title': 'Nouvelle Réponse'}) }}
+    </div>
+  </div>
+{% endblock %}

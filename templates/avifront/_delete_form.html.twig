@@ -1,0 +1,8 @@
+<form method="post" action="{{ path('app_avi_front_delete', {'id_avis': avi.idavis}) }}"
+      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet avis?');"
+      class="d-inline">
+  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.idavis) }}">
+  <button class="button button-danger button-ujarak button-sm">
+    <i class="fas fa-trash me-2"></i> Supprimer
+  </button>
+</form>

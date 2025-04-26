@@ -1,0 +1,7 @@
+{# templates/reponses_avi/_delete_form.html.twig #}
+<form method="post" action="{{ path('app_reponses_avi_delete', {'id_reponse': reponses_avi.idReponse}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réponse ?');" class="d-inline">
+  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reponses_avi.idReponse) }}">
+  <button class="btn btn-danger">
+    <i class="fas fa-trash"></i> Supprimer
+  </button>
+</form>

@@ -1,0 +1,48 @@
+{# templates/reponses_avi/_form.html.twig #}
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{{ form_title|default('Formulaire Réponse Avis') }}</h6>
+  </div>
+  <div class="card-body">
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="form-group">
+      {{ form_label(form.reponse, 'Réponse') }}
+      {{ form_widget(form.reponse, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+      <div class="text-danger">
+        {{ form_errors(form.reponse) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.date_reponse, 'Date de réponse') }}
+      {{ form_widget(form.date_reponse, {'attr': {'class': 'form-control'}}) }}
+      <div class="text-danger">
+        {{ form_errors(form.date_reponse) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.avi, 'Avis associé') }}
+      {{ form_widget(form.avi, {'attr': {'class': 'form-control'}}) }}
+      <div class="text-danger">
+        {{ form_errors(form.avi) }}
+      </div>
+    </div>
+
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    <a href="{{ path('app_reponses_avi_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    {{ form_end(form) }}
+  </div>
+</div>
+{% block stylesheets %}
+  <style>
+    .form-error {
+      color: #dc3545;
+      font-size: 0.875em;
+      margin-top: 0.25rem;
+    }
+    .form-control.is-invalid {
+      border-color: #dc3545;
+    }
+  </style>
+{% endblock %}

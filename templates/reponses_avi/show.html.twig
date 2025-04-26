@@ -1,0 +1,55 @@
+{% extends 'basebackoffice.html.twig' %}
+
+
+
+{% block title %}Détails Réponse Avis{% endblock %}
+
+{% block body %}
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Détails de la réponse</h1>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Informations</h6>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <tbody>
+            <tr>
+              <th>ID</th>
+              <td>{{ reponses_avi.idReponse }}</td>
+            </tr>
+            <tr>
+              <th>Réponse</th>
+              <td>{{ reponses_avi.reponse }}</td>
+            </tr>
+            <tr>
+              <th>Date de réponse</th>
+              <td>{{ reponses_avi.dateReponse ? reponses_avi.dateReponse|date('d/m/Y H:i') : '' }}</td>
+            </tr>
+            <tr>
+              <th>Avis associé</th>
+              <td>{{ reponses_avi.avi.commentaire|default('') }}</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <div class="mt-4">
+            <a href="{{ path('app_reponses_avi_edit', {'id_reponse': reponses_avi.idReponse}) }}" class="btn btn-primary">
+              <i class="fas fa-edit"></i> Modifier
+            </a>
+            <a href="{{ path('app_reponses_avi_index') }}" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+            {{ include('reponses_avi/_delete_form.html.twig') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
