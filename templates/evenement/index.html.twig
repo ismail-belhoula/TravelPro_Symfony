@@ -23,7 +23,7 @@
 
         {# Grille d'événements #}
         <div class="row" id="eventsContainer">
-            {% for evenement in evenements %}
+            {% for evenement in pagination.items %}
                 <div class="col-lg-4 col-md-6 mb-4 event-card" data-type="{{ evenement.type }}">
                     <div class="card h-100 shadow-sm">
                         {# Image de l'événement #}
@@ -59,11 +59,17 @@
                         </div>
                     </div>
                 </div>
+                
             {% else %}
                 <div class="col-12">
                     <div class="alert alert-info">Aucun événement disponible pour le moment.</div>
                 </div>
             {% endfor %}
+        </div>
+
+        {# Pagination #}
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(pagination) }}
         </div>
     </div>
 

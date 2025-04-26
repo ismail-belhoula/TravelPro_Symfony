@@ -60,6 +60,12 @@ class Evenement
     #[Assert\Image(maxSize: "50M")]
     private ?File $imageFile = null;
 
+    #[ORM\Column(type: 'float')]
+private ?float $latitude = null;
+
+#[ORM\Column(type: 'float')]
+private ?float $longitude = null;
+
     #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'evenement')]
     private Collection $activites;
 
@@ -158,6 +164,27 @@ class Evenement
         return $this->imageFile;
     }
 
+    public function getLatitude(): ?float
+{
+    return $this->latitude;
+}
+
+public function setLatitude(float $latitude): static
+{
+    $this->latitude = $latitude;
+    return $this;
+}
+
+public function getLongitude(): ?float
+{
+    return $this->longitude;
+}
+
+public function setLongitude(float $longitude): static
+{
+    $this->longitude = $longitude;
+    return $this;
+}
     /**
      * @return Collection<int, Activite>
      */

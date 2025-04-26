@@ -34,6 +34,8 @@
                     {{ form_errors(form.date_debut) }}
                 </div>
             </div>
+            {{form_row(form.latitude)}}
+            {{form_row(form.longitude)}}
             
             <div class="mb-3">
                 {{ form_label(form.date_fin, 'Date de fin', {'label_attr': {'class': 'form-label'}}) }}
@@ -50,10 +52,36 @@
             </div>
         </div>
     </div>
+     <!-- Button to trigger modal -->
+<div class=" mb-3">
+    <label>Location</label><br>
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#mapModal">
+        Select Location on Map
+    </button>
+    <div class="form-text">Current location: 
+        Lat: <span id="current-lat">{{ form.latitude.vars.value }}</span>, 
+        Lng: <span id="current-lon">{{ form.longitude.vars.value }}</span>
+    </div>
+</div>
     
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
             <i class="fas fa-save me-2"></i> {{ button_label|default('Enregistrer') }}
         </button>
     </div>
+
+    <!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mapModalLabel">Select Location</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="map" style="height: 500px; width: 100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 {{ form_end(form) }}
