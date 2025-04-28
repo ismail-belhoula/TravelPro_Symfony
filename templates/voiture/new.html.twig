@@ -129,40 +129,6 @@
             align-items: center;
             margin-top: 2rem;
         }
-        .validation-error {
-            display: block;
-            color: #d32f2f;
-            background-color: #ffebee;
-            border-left: 4px solid #d32f2f;
-            padding: 8px 12px;
-            margin: 5px 0 0 120px;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            width: calc(100% - 120px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .invalid-field {
-            border-color: #d32f2f !important;
-            background-color: #fff3f3;
-        }
-
-        .invalid-label {
-            color: #d32f2f !important;
-            font-weight: 600;
-        }
-
-        /* Style spécifique pour la checkbox */
-        .form-group-checkbox .validation-error {
-            margin-left: 120px;
-            width: auto;
-        }
     </style>
 
     <h1>Ajouter une nouvelle voiture</h1>
@@ -173,125 +139,45 @@
         <div class="product-form">
             {{ form_start(form) }}
                 <div class="form-group-horizontal">
-                    {{ form_label(form.marque, null, {
-                        'label_attr': {'class': form.marque.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
-                    {{ form_widget(form.marque, {
-                        'attr': {
-                            'class': 'form-control' ~ (form.marque.vars.errors|length ? ' invalid-field' : '')
-                        }
-                    }) }}
-                    {% if form.marque.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.marque.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_label(form.marque) }}
+                    {{ form_widget(form.marque, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.marque) }}
                 </div>
 
                 <div class="form-group-horizontal">
-                    {{ form_label(form.modele, null, {
-                        'label_attr': {'class': form.modele.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
-                    {{ form_widget(form.modele, {
-                        'attr': {
-                            'class': 'form-control' ~ (form.modele.vars.errors|length ? ' invalid-field' : '')
-                        }
-                    }) }}
-                    {% if form.modele.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.modele.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_label(form.modele) }}
+                    {{ form_widget(form.modele, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.modele) }}
                 </div>
 
                 <div class="form-group-horizontal">
-                    {{ form_label(form.annee, null, {
-                        'label_attr': {'class': form.annee.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
-                    {{ form_widget(form.annee, {
-                        'attr': {
-                            'class': 'form-control' ~ (form.annee.vars.errors|length ? ' invalid-field' : '')
-                        }
-                    }) }}
-                    {% if form.annee.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.annee.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_label(form.annee) }}
+                    {{ form_widget(form.annee, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.annee) }}
                 </div>
 
                 <div class="form-group-horizontal">
-                    {{ form_label(form.prixParJour, null, {
-                        'label_attr': {'class': form.prixParJour.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
-                    {{ form_widget(form.prixParJour, {
-                        'attr': {
-                            'class': 'form-control' ~ (form.prixParJour.vars.errors|length ? ' invalid-field' : '')
-                        }
-                    }) }}
-                    {% if form.prixParJour.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.prixParJour.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_label(form.prixParJour) }}
+                    {{ form_widget(form.prixParJour, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.prixParJour) }}
                 </div>
 
                 <div class="form-group-checkbox">
-                    {{ form_label(form.disponible, null, {
-                        'label_attr': {'class': form.disponible.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
+                    {{ form_label(form.disponible) }}
                     {{ form_widget(form.disponible) }}
-                    {% if form.disponible.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.disponible.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_errors(form.disponible) }}
                 </div>
 
                 <div class="form-group-horizontal">
-                    {{ form_label(form.dateDeLocation, null, {
-                        'label_attr': {'class': form.dateDeLocation.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
-                    {{ form_widget(form.dateDeLocation, {
-                        'attr': {
-                            'class': 'form-control' ~ (form.dateDeLocation.vars.errors|length ? ' invalid-field' : '')
-                        }
-                    }) }}
-                    {% if form.dateDeLocation.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.dateDeLocation.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_label(form.dateDeLocation) }}
+                    {{ form_widget(form.dateDeLocation, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateDeLocation) }}
                 </div>
 
                 <div class="form-group-horizontal">
-                    {{ form_label(form.dateDeRemise, null, {
-                        'label_attr': {'class': form.dateDeRemise.vars.errors|length ? 'invalid-label' : ''}
-                    }) }}
-                    {{ form_widget(form.dateDeRemise, {
-                        'attr': {
-                            'class': 'form-control' ~ (form.dateDeRemise.vars.errors|length ? ' invalid-field' : '')
-                        }
-                    }) }}
-                    {% if form.dateDeRemise.vars.errors|length %}
-                        <div style="margin-left: 120px;">
-                            {% for error in form.dateDeRemise.vars.errors %}
-                                <span class="error-message">{{ error.message }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_label(form.dateDeRemise) }}
+                    {{ form_widget(form.dateDeRemise, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateDeRemise) }}
                 </div>
 
                 <div class="form-actions">
@@ -301,4 +187,28 @@
             {{ form_end(form) }}
         </div>
     </div>
+
+    {# Ajoutez ce style pour les messages d'erreur #}
+    <style>
+        .form-error {
+            color: #e74a3b;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            padding-left: 120px; /* Alignement avec les champs */
+        }
+
+        .form-group-horizontal .form-error {
+            padding-left: 0;
+            margin-left: 120px; /* Largeur du label */
+        }
+
+        .form-group-checkbox .form-error {
+            padding-left: 0;
+            margin-left: 120px; /* Largeur du label */
+        }
+
+        input.is-invalid {
+            border-color: #e74a3b !important;
+        }
+    </style>
 {% endblock %}

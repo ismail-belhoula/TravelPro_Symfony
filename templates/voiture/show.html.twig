@@ -138,6 +138,8 @@
                 <div class="info-value">{{ voiture.dateDeRemise ? voiture.dateDeRemise|date('Y-m-d') : '-' }}</div>
             </div>
             <div class="actions">
+
+
         <a href="{{ path('app_voiture_index') }}">Retour à la liste</a>
 
         <form method="post" action="{{ path('app_voiture_delete', {'id_voiture': voiture.id_voiture}) }}"
@@ -146,6 +148,8 @@
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ voiture.id_voiture) }}">
             <button type="submit">Supprimer</button>
         </form>
+
+        
     </div>
         </div>
         

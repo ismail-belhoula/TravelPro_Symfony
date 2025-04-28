@@ -155,30 +155,53 @@
     <h1>Modifier une voiture</h1>
 
     <div class="product-container">
-        <img src="{{ asset('images/motive.png') }}" alt="Image du produit" class="product-image" />
+        <img src="{{ asset('images/motive.png') }}" alt="Image du motive" class="product-image" />
 
         <div class="product-form">
-            {{ form_start(form) }}
-                {% for field in form %}
-                    {% if field.vars.name != '_token' %}
-                        {% set isCheckbox = field.vars.block_prefixes|last == 'checkbox' %}
-                        <div class="{{ isCheckbox ? 'form-group-checkbox' : 'form-group-horizontal' }}">
-                            {{ form_label(field, null, {
-                                'label_attr': {'class': not field.vars.valid ? 'invalid-label' : ''}
-                            }) }}
-                            {{ form_widget(field, {
-                                'attr': {
-                                    'class': 'form-control' ~ (not field.vars.valid ? ' invalid-field' : '')
-                                }
-                            }) }}
-                            {% if not field.vars.valid %}
-                                <div class="validation-error">
-                                    {{ form_errors(field) }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+             {{ form_start(form) }}
+                <div class="form-group-horizontal">
+                    {{ form_label(form.marque) }}
+                    {{ form_widget(form.marque, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.marque) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.modele) }}
+                    {{ form_widget(form.modele, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.modele) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.annee) }}
+                    {{ form_widget(form.annee, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.annee) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.prixParJour) }}
+                    {{ form_widget(form.prixParJour, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.prixParJour) }}
+                </div>
+
+                <div class="form-group-checkbox">
+                    {{ form_label(form.disponible) }}
+                    {{ form_widget(form.disponible) }}
+                    <div class="validation-error">
+                        {{ form_errors(form.disponible) }}
+                    </div>
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.dateDeLocation) }}
+                    {{ form_widget(form.dateDeLocation, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateDeLocation) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.dateDeRemise) }}
+                    {{ form_widget(form.dateDeRemise, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateDeRemise) }}
+                </div>
 
                 <div class="form-actions">
                     <a href="{{ path('app_voiture_index') }}" class="btn">Retour à la liste</a>

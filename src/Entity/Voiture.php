@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Repository\VoitureRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
 #[ORM\Table(name: 'voiture')]
@@ -30,11 +29,6 @@ class Voiture
     }
 
     #[ORM\Column(name: "Marque", type: 'string', nullable: false)]
-    #[Assert\NotBlank(message: "La marque est obligatoire")]
-    #[Assert\Regex(
-        pattern: "/^[a-zA-Z0-9\s]+$/",
-        message: "La marque ne doit pas contenir de caractères spéciaux"
-    )]
     private ?string $marque = null;
 
     public function getMarque(): ?string
@@ -49,11 +43,6 @@ class Voiture
     }
 
     #[ORM\Column(name: "Modele", type: 'string', nullable: false)]
-    #[Assert\NotBlank(message: "Le modèle est obligatoire")]
-    #[Assert\Regex(
-        pattern: "/^[a-zA-Z0-9\s]+$/",
-        message: "Le modèle ne doit pas contenir de caractères spéciaux"
-    )]
     private ?string $modele = null;
 
     public function getModele(): ?string
@@ -68,12 +57,6 @@ class Voiture
     }
 
     #[ORM\Column(name: "Annee", type: 'integer', nullable: false)]
-    #[Assert\NotBlank(message: "L'année est obligatoire")]
-    #[Assert\Range(
-        min: 2000,
-        max: 2025,
-        notInRangeMessage: "L'année doit être comprise entre {{ min }} et {{ max }}"
-    )]
     private ?int $annee = null;
 
     public function getAnnee(): ?int
@@ -88,14 +71,6 @@ class Voiture
     }
 
     #[ORM\Column(name: "PrixParJour", type: 'float', nullable: false)]
-    #[Assert\NotBlank(message: "Le prix par jour est obligatoire")]
-    #[Assert\Type(
-        type: 'float',
-        message: "Le prix par jour doit être un nombre décimal."
-    )]
-    #[Assert\Positive(
-        message: "Le prix par jour doit être positif."
-    )]
     private ?float $prixParJour = null;
 
     public function getPrixParJour(): ?float
@@ -109,7 +84,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(name: "Disponible", type: 'boolean', nullable: false)]
+    #[ORM\Column(name: "Disponible", type: 'boolean', nullable: true)]
     private ?bool $disponible = null;
 
     public function isDisponible(): ?bool
@@ -123,11 +98,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(name: "DateDeLocation", type: 'date', nullable: true)]
-    #[Assert\GreaterThanOrEqual(
-        value: "today",
-        message: "La date de location doit être supérieure ou égale à aujourd'hui"
-    )]
+    #[ORM\Column(name: "DateDeLocation", type: 'date', nullable: false)]
     private ?\DateTimeInterface $dateDeLocation = null;
 
     public function getDateDeLocation(): ?\DateTimeInterface
@@ -141,11 +112,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(name: "DateDeRemise", type: 'date', nullable: true)]
-    #[Assert\Expression(
-        "this.getDateDeLocation() === null or this.getDateDeRemise() === null or this.getDateDeRemise() > this.getDateDeLocation()",
-        message: "La date de remise doit être supérieure à la date de location"
-    )]
+    #[ORM\Column(name: "DateDeRemise", type: 'date', nullable: false)]
     private ?\DateTimeInterface $dateDeRemise = null;
 
     public function getDateDeRemise(): ?\DateTimeInterface

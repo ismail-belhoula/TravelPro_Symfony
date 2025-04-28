@@ -16,21 +16,34 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    public function save(Reservation $entity, bool $flush = false): void
+    /**
+     * Search reservations by query string.
+     *
+     * @param string $query
+     * @return Reservation[]
+     */
+    public function searchByQuery(string $query): array
     {
-        $this->getEntityManager()->persist($entity);
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->leftJoin('c.utilisateur', 'u')
+            ->leftJoin('r.voiture', 'v')
+            ->leftJoin('r.billetAvion', 'b')
+            ->leftJoin('r.hotel', 'h')
+            ->where('u.nomUtilisateur LIKE :query')
+            ->orWhere('u.prenom LIKE :query')
+            ->orWhere('v.marque LIKE :query')
+            ->orWhere('b.compagnie LIKE :query')
+            ->orWhere('h.nom LIKE :query')
+            ->orWhere('r.statut LIKE :query')
+            ->setParameter('query', '%' . $query . '%');
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+        // Log the query for debugging
+        $sql = $qb->getQuery()->getSQL();
+        $parameters = $qb->getQuery()->getParameters();
+        error_log("searchByQuery SQL: $sql");
+        error_log("searchByQuery Parameters: " . print_r($parameters, true));
 
-    public function remove(Reservation $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        return $qb->getQuery()->getResult();
     }
 }

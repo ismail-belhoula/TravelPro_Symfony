@@ -16,28 +16,35 @@ class BilletavionRepository extends ServiceEntityRepository
         parent::__construct($registry, Billetavion::class);
     }
 
-    //    /**
-    //     * @return Billetavion[] Returns an array of Billetavion objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByCriteria(?string $villeDepart, ?string $villeArrivee, ?string $dateDepart): array
+{
+    $qb = $this->createQueryBuilder('b')
+        ->where('b.villeDepart = :villeDepart')
+        ->andWhere('b.villeArrivee = :villeArrivee')
+        ->andWhere('b.dateDepart >= :dateDepart')
+        ->setParameter('villeDepart', $villeDepart)
+        ->setParameter('villeArrivee', $villeArrivee)
+        ->setParameter('dateDepart', new \DateTime($dateDepart))
+        ->orderBy('b.prix', 'ASC');
 
-    //    public function findOneBySomeField($value): ?Billetavion
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    return $qb->getQuery()->getResult();
+}
+
+    public function save(Billetavion $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Billetavion $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }

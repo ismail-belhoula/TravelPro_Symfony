@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de réservation</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #f8f8f8; padding: 10px; text-align: center; }
+        .content { padding: 20px; }
+        .footer { font-size: 12px; color: #777; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Confirmation de réservation</h1>
+        </div>
+        <div class="content">
+            <p>Bonjour {{ clientName }},</p>
+            <p>Nous vous confirmons la création de votre réservation. Voici les détails :</p>
+            <ul>
+                {% if reservationDetails.hotel %}
+                    <li><strong>Hôtel :</strong> {{ reservationDetails.hotel.nom }} ({{ reservationDetails.hotel.ville }})</li>
+                    <li><strong>Type de chambre :</strong> {{ reservationDetails.hotel.typeDeChambre }}</li>
+                    <li><strong>Prix par nuit :</strong> {{ reservationDetails.hotel.prixParNuit }} €</li>
+                {% endif %}
+                {% if reservationDetails.billet %}
+                    <li><strong>Billet d'avion :</strong> {{ reservationDetails.billet.compagnie }}</li>
+                    <li><strong>Départ :</strong> {{ reservationDetails.billet.villeDepart }} vers {{ reservationDetails.billet.villeArrivee }}</li>
+                    <li><strong>Date de départ :</strong> {{ reservationDetails.billet.dateDepart | date('d/m/Y') }}</li>
+                {% endif %}
+                {% if reservationDetails.voiture %}
+                    <li><strong>Voiture :</strong> {{ reservationDetails.voiture.marque }} {{ reservationDetails.voiture.modele }}</li>
+                    <li><strong>Période de location :</strong> du {{ reservationDetails.voiture.dateDeLocation | date('d/m/Y') }} au {{ reservationDetails.voiture.dateDeRemise | date('d/m/Y') }}</li>
+                {% endif %}
+            </ul>
+            <p>Merci de votre confiance !</p>
+        </div>
+        <div class="footer">
+            <p>TravelPro - Votre partenaire voyage</p>
+        </div>
+    </div>
+</body>
+</html>
