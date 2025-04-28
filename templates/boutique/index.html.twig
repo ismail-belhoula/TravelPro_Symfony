@@ -35,179 +35,34 @@
             </div>
           </div>
 
-          <!-- Filter Options -->
-          <div class="row justify-content-center mb-5">
+          <!-- Sort Options -->
+          <div class="row justify-content-center mb-4">
             <div class="col-md-8">
-              <div class="filter-options d-flex justify-content-center gap-3">
-                <select class="form-select" id="categoryFilter">
-                  <option value="">Toutes les catégories</option>
-                  <option value="bagages">Bagages</option>
-                  <option value="accessoires">Accessoires</option>
-                  <option value="electronics">Électronique</option>
-                </select>
-                <select class="form-select" id="priceFilter">
-                  <option value="">Prix</option>
-                  <option value="low">Moins cher</option>
-                  <option value="high">Plus cher</option>
+              <div class="d-flex justify-content-end">
+                <select id="priceSort" class="form-select" style="width: auto;">
+                  <option value="">Trier par prix</option>
+                  <option value="asc">Prix croissant</option>
+                  <option value="desc">Prix décroissant</option>
                 </select>
               </div>
             </div>
           </div>
 
           <!-- Products Grid -->
-          <div class="row products-grid">
-            {% for produit in produits %}
-              <div class="col-sm-6 col-lg-4 mb-4">
-                <article class="product-card h-100">
-                  <div class="product-image">
-                    {% if produit.imagePath %}
-                      <img src="{{ asset('uploads/' ~ produit.imagePath) }}" 
-                           alt="{{ produit.nomProduit }}"
-                           class="img-fluid"/>
-                    {% else %}
-                      <img src="{{ asset('images/no-image.jpg') }}" 
-                           alt="No image"
-                           class="img-fluid"/>
-                    {% endif %}
-                  </div>
-                  <div class="product-details p-3">
-                    <h4 class="product-title">{{ produit.nomProduit }}</h4>
-                    <div class="product-price mb-3">
-                      <span class="price">{{ produit.prixVente }} TND</span>
-                      {% if produit.quantiteProduit > 0 %}
-                        <span class="badge bg-success">En stock</span>
-                      {% else %}
-                        <span class="badge bg-danger">Rupture de stock</span>
-                      {% endif %}
-                    </div>
-                    <div class="product-actions">
-                      <button class="btn btn-primary btn-block add-to-cart" 
-                              data-product-id="{{ produit.idProduit }}"
-                              {% if produit.quantiteProduit <= 0 %}disabled{% endif %}>
-                        <i class="fas fa-shopping-cart me-2"></i>
-                        Ajouter au panier
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              </div>
-            {% else %}
-              <div class="col-12 text-center">
-                <p class="no-products">Aucun produit disponible pour le moment.</p>
-              </div>
-            {% endfor %}
+          <div class="row products-grid" id="productsContainer">
+            {% include 'boutique/_products.html.twig' with {'produits': produits} %}
           </div>
         </div>
       </section>
 {% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<style>
-  .product-card {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: white;
-  }
-
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  }
-
-  .product-image {
-    height: 200px;
-    overflow: hidden;
-    border-radius: 8px 8px 0 0;
-  }
-
-  .product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .product-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-
-  .product-price {
-    font-size: 1.2rem;
-    color: #2196F3;
-    font-weight: bold;
-  }
-
-  .form-select {
-    min-width: 150px;
-  }
-
-  .gap-3 {
-    gap: 1rem;
-  }
-
-  .badge {
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
-  }
-
-  .no-products {
-    padding: 2rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    color: #6c757d;
-  }
-</style>
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/boutique.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Search functionality
-    const searchInput = document.getElementById('productSearch');
-    const products = document.querySelectorAll('.product-card');
-
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        
-        products.forEach(product => {
-            const title = product.querySelector('.product-title').textContent.toLowerCase();
-            if (title.includes(searchTerm)) {
-                product.style.display = '';
-            } else {
-                product.style.display = 'none';
-            }
-        });
-    });
-
-    // Add to cart functionality
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.dataset.productId;
-            const productCard = this.closest('.product-card');
-            const productName = productCard.querySelector('.product-title').textContent;
-            const productPrice = parseFloat(productCard.querySelector('.price').textContent);
-
-            // Add animation effect
-            this.innerHTML = '<i class="fas fa-check me-2"></i>Ajouté!';
-            this.classList.add('btn-success');
-
-            // Reset button after 2 seconds
-            setTimeout(() => {
-                this.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Ajouter au panier';
-                this.classList.remove('btn-success');
-            }, 2000);
-
-            // Add to cart logic here
-            // You can implement your cart functionality
-        });
-    });
-});
-</script>
+    {{ parent() }}
+    <script src="{{ asset('js/boutique.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
 {% endblock %}

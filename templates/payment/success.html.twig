@@ -1,0 +1,72 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Commande confirmée{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h1 class="card-title mb-4">Merci pour votre commande!</h1>
+                    <p class="lead">Votre commande #{{ order_id }} a été confirmée et sera traitée sous peu.</p>
+                    <p>Un email de confirmation vous sera envoyé avec les détails de votre commande.</p>
+                    <hr class="my-4">
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ path('download_invoice', {'id': order_id}) }}" class="btn btn-success" id="downloadInvoice">
+                            <i class="fas fa-file-pdf me-2"></i>Télécharger la facture
+                        </a>
+                        <a href="{{ path('boutique') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-store me-2"></i>Continuer mes achats
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const downloadButton = document.getElementById('downloadInvoice');
+    if (downloadButton) {
+        downloadButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const invoiceUrl = this.href;
+            
+            // First trigger the download
+            fetch(invoiceUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'facture.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    
+                    // Then redirect to boutique page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '{{ path('boutique') }}';
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Redirect anyway if there's an error
+                    window.location.href = '{{ path('boutique') }}';
+                });
+        });
+    }
+});
+</script>
+{% endblock %}
+
+
+

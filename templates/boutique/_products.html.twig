@@ -1,0 +1,60 @@
+{% for produit in produits %}
+    <div class="col-sm-6 col-lg-4 mb-4">
+                <article class="product-card h-100">
+                  <div class="product-image">
+                    {% if produit.imagePath %}
+                      <img src="{{ asset('uploads/' ~ produit.imagePath) }}" 
+                           alt="{{ produit.nomProduit }}"
+                           class="img-fluid"/>
+                    {% else %}
+                      <img src="{{ asset('images/no-image.jpg') }}" 
+                           alt="No image"
+                           class="img-fluid"/>
+                    {% endif %}
+                  </div>
+                  <div class="product-details p-3">
+                    <h4 class="product-title">{{ produit.nomProduit }}</h4>
+                    <div class="product-price mb-3">
+                      <span class="price">{{ produit.prixVente }} TND</span>
+                      {% if produit.quantiteProduit > 0 %}
+                        <span class="badge bg-success">En stock</span>
+                      {% else %}
+                        <span class="badge bg-danger">Rupture de stock</span>
+                      {% endif %}
+                    </div>
+                    <div class="quantity-wrapper mb-3">
+                      <div class="quantity-controls d-flex align-items-center justify-content-center">
+                        <button class="quantity-btn" data-action="decrease" 
+                                {% if produit.quantiteProduit <= 0 %}disabled{% endif %}>
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" 
+                               class="quantity-input mx-2" 
+                               value="1" 
+                               min="1" 
+                               max="{{ produit.quantiteProduit }}"
+                               data-max-stock="{{ produit.quantiteProduit }}"
+                               {% if produit.quantiteProduit <= 0 %}disabled{% endif %}>
+                        <button class="quantity-btn" data-action="increase"
+                                {% if produit.quantiteProduit <= 0 %}disabled{% endif %}>
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="product-actions">
+                      <button class="btn btn-primary btn-block add-to-cart" 
+                              data-product-id="{{ produit.idProduit }}"
+                              {% if produit.quantiteProduit <= 0 %}disabled{% endif %}>
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Ajouter au panier
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            {% else %}
+              <div class="col-12 text-center">
+                <p class="no-products">Aucun produit disponible pour le moment.</p>
+              </div>
+{% endfor %}
+
