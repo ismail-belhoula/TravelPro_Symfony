@@ -123,6 +123,8 @@
     <div class="actions">
         <a href="{{ path('app_deponse_index') }}">⬅️ Back to list</a>
         <a href="{{ path('app_deponse_edit', {'id_deponse': deponse.idDeponse}) }}">✏️ Edit</a>
+        <a href="{{ path('app_deponse_export_pdf', { 'id_deponse': deponse.idDeponse }) }}" class="btn btn-primary">Exporter en PDF</a>
+
 
         {# Styled delete form to appear like a button #}
         <form method="post" action="{{ path('app_deponse_delete', {'id_deponse': deponse.idDeponse}) }}" onsubmit="return confirm('Are you sure you want to delete this deponse?');" style="display: inline;">

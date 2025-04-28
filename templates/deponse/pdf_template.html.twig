@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Déponse {{ deponse.id_deponse }}</title>
+    <style>
+        body {
+            font-family: Garamond, serif;
+            font-size: 14px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+        .deponse-info {
+            margin-top: 30px;
+        }
+        .deponse-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .deponse-info table, .deponse-info th, .deponse-info td {
+            border: 1px solid black;
+        }
+        .deponse-info th, .deponse-info td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Details de la Déponse {{ deponse.idDeponse }}</h1>
+    
+    <div class="deponse-info">
+        <table>
+            <tr>
+                <th>ID</th>
+                <td>{{ deponse.idDeponse }}</td>
+            </tr>
+            <tr>
+                <th>Produit</th>
+                <td>{{ deponse.produit.nom_produit }}</td>
+            </tr>
+            <tr>
+                <th>Date d'achat</th>
+                <td>{{ deponse.date_achat|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Prix Unité</th>
+                <td>{{ deponse.prix_achat }} TND</td>
+            </tr>
+            <tr>
+                <th>Quantité</th>
+                <td>{{ deponse.quantite_produit }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ deponse.prix_achat * deponse.quantite_produit }} TND</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
