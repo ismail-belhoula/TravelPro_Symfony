@@ -65,6 +65,31 @@ class HotelRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Search hotels by query string.
+     *
+     * @param string $query Search query
+     * @return Hotel[] Array of Hotel entities
+     */
+    public function searchByQuery(string $query): array
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->where('h.nom LIKE :query')
+            ->orWhere('h.ville LIKE :query')
+            ->orWhere('h.typeDeChambre LIKE :query')
+            ->orWhere('CAST(h.nombreEtoile AS string) LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('h.nom', 'ASC');
+
+        // Log the query for debugging
+        $sql = $qb->getQuery()->getSQL();
+        $parameters = $qb->getQuery()->getParameters();
+        error_log("searchByQuery SQL: $sql");
+        error_log("searchByQuery Parameters: " . print_r($parameters, true));
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function save(Hotel $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
