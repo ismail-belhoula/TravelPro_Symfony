@@ -126,20 +126,25 @@
             </div>
 
              <!-- Nav Item - Tables -->
-            <li class="nav-item active">
-                <a class="nav-link" href="voiture">
+             <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_voiture_index') }}">
                      <i class="fas fa-fw fa-chart-area"></i>
                     <span>Table voitures</span></a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="hotel">
+           <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_hotel_index') }}">
                      <i class="fas fa-fw fa-chart-area"></i>
                     <span>Table hotel</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="billetavion">
+                <a class="nav-link" href="{{ path('app_billetavion_index') }}">
                      <i class="fas fa-fw fa-chart-area"></i>
                     <span>Table billet avion</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_reservation_index') }}">
+                     <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Table reservation</span></a>
             </li>
             <!-- Nav Item - Charts -->
 
