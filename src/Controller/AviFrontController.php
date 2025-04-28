@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Avi;
 use App\Form\AviFrontType;
 use App\Repository\AviRepository;
+use App\Service\ProfanityFilterService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ class AviFrontController extends AbstractController
   }
 
   #[Route('/avis/ajouter', name: 'app_avi_front_new', methods: ['GET', 'POST'])]
-  public function newFront(Request $request, EntityManagerInterface $entityManager): Response
+  public function newFront(Request $request, EntityManagerInterface $entityManager, ProfanityFilterService $profanityFilter): Response
   {
     $avi = new Avi();
     $avi->setEstaccepte(false);
@@ -36,6 +37,10 @@ class AviFrontController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      // Filter the comment text before saving
+      $filteredComment = $profanityFilter->filterText($avi->getCommentaire());
+      $avi->setCommentaire($filteredComment);
+      
       $entityManager->persist($avi);
       $entityManager->flush();
 
@@ -61,12 +66,16 @@ class AviFrontController extends AbstractController
   }
 
   #[Route('/avis/{id_avis}/modifier', name: 'app_avi_front_edit', methods: ['GET', 'POST'])]
-  public function editFront(Request $request, Avi $avi, EntityManagerInterface $entityManager): Response
+  public function editFront(Request $request, Avi $avi, EntityManagerInterface $entityManager, ProfanityFilterService $profanityFilter): Response
   {
     $form = $this->createForm(AviFrontType::class, $avi);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      // Filter the comment text before saving
+      $filteredComment = $profanityFilter->filterText($avi->getCommentaire());
+      $avi->setCommentaire($filteredComment);
+      
       $entityManager->flush();
 
       $this->addFlash('success', 'L\'avis a été modifié avec succès!');

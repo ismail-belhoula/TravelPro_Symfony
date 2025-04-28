@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/avi')]
 final class AviController extends AbstractController
@@ -90,4 +93,34 @@ final class AviController extends AbstractController
 
     return $this->redirectToRoute('app_avi_index', [], Response::HTTP_SEE_OTHER);
   }
+
+#[Route('search', name: 'app_avi_search', methods: ['GET'])] 
+  public function search(Request $request, AviRepository $aviRepository): JsonResponse
+  {
+      $searchTerm = $request->query->get('q', '');
+      
+      $avis = $aviRepository->search($searchTerm);
+      
+      $results = [];
+      foreach ($avis as $avi) {
+          $results[] = [
+              'id' => $avi->getIdAvis(), // Assurez-vous que c'est getIdAvis() et non getIdavis()
+              'note' => $avi->getNote(),
+              'commentaire' => $avi->getCommentaire(),
+              'date' => $avi->getDatePublication() ? $avi->getDatePublication()->format('d/m/Y H:i') : '',
+              'statut' => $avi->isEstAccepte() ? 'Accepté' : 'En attente',
+              'statutClass' => $avi->isEstAccepte() ? 'success' : 'warning',
+              'statutIcon' => $avi->isEstAccepte() ? 'fa-check' : 'fa-hourglass-half',
+              'deleteUrl' => $this->generateUrl('app_avi_delete', ['id_avis' => $avi->getIdAvis()]),
+              'editUrl' => $this->generateUrl('app_avi_edit', ['id_avis' => $avi->getIdAvis()]),
+              'showUrl' => $this->generateUrl('app_avi_show', ['id_avis' => $avi->getIdAvis()]),
+              'toggleStatusUrl' => $this->generateUrl('app_avi_toggle_status', ['id_avis' => $avi->getIdAvis()]),
+              'deleteToken' => $this->container->get('security.csrf.token_manager')->getToken('delete'.$avi->getIdAvis())->getValue(),
+              'toggleToken' => $this->container->get('security.csrf.token_manager')->getToken('toggle-status'.$avi->getIdAvis())->getValue()
+          ];
+      }
+      
+      return $this->json($results);
+  }
+
 }
