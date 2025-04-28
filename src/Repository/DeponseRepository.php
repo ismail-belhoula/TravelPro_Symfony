@@ -40,4 +40,31 @@ class DeponseRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+
+    public function findByDateRange(?\DateTimeInterface $startDate, ?\DateTimeInterface $endDate): array
+{
+    $qb = $this->createQueryBuilder('d');
+
+    // Utiliser 'BETWEEN' pour filtrer les dates
+    if ($startDate && $endDate) {
+        $qb->where('d.Date_achat BETWEEN :startDate AND :endDate');
+        $qb->setParameter('startDate', $startDate->format('Y-m-d'));
+        $qb->setParameter('endDate', $endDate->format('Y-m-d'));
+    } elseif ($startDate) {
+        $qb->where('d.Date_achat >= :startDate');
+        $qb->setParameter('startDate', $startDate->format('Y-m-d'));
+    } elseif ($endDate) {
+        $qb->where('d.Date_achat <= :endDate');
+        $qb->setParameter('endDate', $endDate->format('Y-m-d'));
+    }
+
+    return $qb->getQuery()->getResult();
+}
+
+    
+    
+    
+    
 }

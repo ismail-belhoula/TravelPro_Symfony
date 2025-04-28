@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Deponse;
-use App\Form\DeponseType;
+use App\Service\PdfService;
 use App\Repository\DeponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/deponse')]
 final class DeponseController extends AbstractController
@@ -77,5 +77,28 @@ final class DeponseController extends AbstractController
         }
 
         return $this->redirectToRoute('app_deponse_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // Route pour exporter une dépense en PDF
+    #[Route('/{id_deponse}/export-pdf', name: 'app_deponse_export_pdf', methods: ['GET'])]
+    public function exportPdf(Deponse $deponse, PdfService $pdfService): Response
+    {
+        // Générer le contenu HTML pour le PDF
+        $html = $this->renderView('deponse/pdf_template.html.twig', [
+            'deponse' => $deponse,
+        ]);
+
+        // Générer le PDF en binaire
+        $pdfBinary = $pdfService->generateBinaryPDF($html);
+
+        // Créer la réponse pour télécharger le PDF
+        return new Response(
+            $pdfBinary,
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="deponse_'.$deponse->getId_deponse().'.pdf"',
+            ]
+        );
     }
 }
