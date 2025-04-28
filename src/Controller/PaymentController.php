@@ -13,15 +13,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Service\EmailService;
+use Symfony\Component\Mailer\MailerInterface;
 
 class PaymentController extends AbstractController
 {
     private $logger;
     private const TND_TO_USD_RATE = 0.32; // Conversion rate: 1 TND = 0.32 USD
+    private $emailService;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, EmailService $emailService)
     {
         $this->logger = $logger;
+        $this->emailService = $emailService;
     }
 
     private function convertTNDtoUSD(float $amountTND): int
@@ -189,6 +193,25 @@ class PaymentController extends AbstractController
                 $commande = $result->fetchAssociative();
                 $logger->info('Commande verification', ['commande' => $commande]);
 
+                // Generate invoice PDF
+                $orderDetails = $this->getOrderDetails($em, $newCommandeId);
+                $pdfContent = $this->generateInvoicePdf($orderDetails);
+
+                // Send invoice by email
+                try {
+                    $this->emailService->sendInvoiceEmail(
+                        'ismailbelhoula711@gmail.com',
+                        $pdfContent,
+                        $newCommandeId
+                    );
+                    $logger->info('Invoice email sent successfully', ['order_id' => $newCommandeId]);
+                } catch (\Exception $e) {
+                    $logger->error('Failed to send invoice email', [
+                        'order_id' => $newCommandeId,
+                        'error' => $e->getMessage()
+                    ]);
+                }
+
                 return $this->render('payment/success.html.twig', [
                     'order_id' => $newCommandeId
                 ]);
@@ -271,6 +294,44 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('boutique');
         }
     }
+
+    private function getOrderDetails(EntityManagerInterface $em, int $orderId): array
+    {
+        $conn = $em->getConnection();
+        $sql = "SELECT c.*, cp.quantite, cp.prix_vente, p.nom_produit
+                FROM commande c
+                JOIN commande_produit cp ON c.id_commande = cp.id_commande
+                JOIN produit p ON cp.id_produit = p.id_produit
+                WHERE c.id_commande = :id";
+        
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->executeQuery(['id' => $orderId]);
+        return $result->fetchAllAssociative();
+    }
+
+    private function generateInvoicePdf(array $orderDetails): string
+    {
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        $dompdf = new Dompdf($options);
+
+        // Generate HTML for the invoice
+        $html = $this->renderView('payment/invoice_template.html.twig', [
+            'order' => $orderDetails[0],
+            'items' => $orderDetails,
+            'date' => new \DateTime($orderDetails[0]['date_commande'])
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->output();
+    }
 }
+
+
 
 
