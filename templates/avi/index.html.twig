@@ -76,6 +76,9 @@
           <a class="dropdown-item" href="{{ path('app_avi_new') }}">
             <i class="fas fa-plus mr-2 text-primary"></i> Ajouter un avis
           </a>
+          <button class="btn btn-sm btn-info ml-2" data-toggle="modal" data-target="#statsModal">
+    <i class="fas fa-chart-bar mr-1"></i> Statistiques
+</button>
           <a class="dropdown-item" href="#" id="exportBtn">
             <i class="fas fa-file-export mr-2 text-info"></i> Exporter
           </a>
@@ -89,6 +92,9 @@
 
     <!-- Card Body -->
     <div class="card-body p-0">
+      <div class="p-3">
+  <input type="text" id="searchInput" class="form-control" placeholder="Rechercher dans les avis...">
+</div>
       <div class="table-responsive">
         <table class="table table-hover mb-0" id="dataTable" width="100%" cellspacing="0">
           <thead class="thead-light">
@@ -273,28 +279,194 @@
       </div>
     </div>
   </div>
+  
 {% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
   <script>
     $(document).ready(function() {
-      // Initialize DataTables
-      $('#dataTable').DataTable({
-        language: {
-          url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
-        },
-        responsive: true,
-        order: [[3, 'desc']],
-        columnDefs: [
-          { orderable: false, targets: [5] }
-        ]
-      });
+      // Fonction debounce pour limiter les appels AJAX
+      function debounce(func, wait) {
+        let timeout;
+        return function() {
+          const context = this, args = arguments;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            func.apply(context, args);
+          }, wait);
+        };
+      }
 
-      // Tooltip initialization
-      $('[data-toggle="tooltip"]').tooltip();
+      // Recherche en temps réel avec debounce
+      $('#searchInput').on('input', debounce(function() {
+        const searchTerm = $(this).val().trim();
+        
+        // Déclencher la recherche si:
+        // - C'est un nombre (recherche de note)
+        // - OU longueur >= 2 (recherche textuelle)
+        // - OU vide (reset)
+        if (/^\d+$/.test(searchTerm) || searchTerm.length >= 2 || searchTerm.length === 0) {
+          $.ajax({
+            url: '{{ path('app_avi_search') }}',
+            method: 'GET',
+            data: { q: searchTerm },
+            beforeSend: function() {
+              // Afficher un indicateur de chargement
+              $('#dataTable tbody').html(`
+                <tr>
+                  <td colspan="6" class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="sr-only">Chargement...</span>
+                    </div>
+                  </td>
+                </tr>
+              `);
+            },
+            success: function(data) {
+              updateTable(data);
+            },
+            error: function(xhr) {
+              console.error('Erreur de recherche:', xhr.responseText);
+              $('#dataTable tbody').html(`
+                <tr>
+                  <td colspan="6" class="text-center py-5 text-danger">
+                    Erreur lors de la recherche
+                  </td>
+                </tr>
+              `);
+            }
+          });
+        }
+      }, 300)); // Délai réduit à 300ms pour plus de réactivité
 
-      // Comment expansion functionality - CORRIGÉ
+      // Fonction pour mettre à jour le tableau avec les résultats
+      function updateTable(avis) {
+        const tbody = $('#dataTable tbody');
+        tbody.empty();
+
+        if (avis.length === 0) {
+          tbody.append(`
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <div class="empty-state">
+                  <i class="fas fa-comment-slash fa-3x text-gray-400 mb-3"></i>
+                  <h4 class="text-muted">Aucun avis trouvé</h4>
+                  <p class="text-muted mb-4">Aucun résultat pour votre recherche.</p>
+                </div>
+              </td>
+            </tr>
+          `);
+          return;
+        }
+
+        // Construction des lignes du tableau
+        avis.forEach(avi => {
+          // Génération des étoiles pour la note
+          const stars = Array.from({length: 5}, (_, i) => 
+            `<i class="fas fa-star ${i < avi.note ? 'text-warning' : 'text-gray-300'}"></i>`
+          ).join('');
+
+          // Prévisualisation du commentaire (tronqué si trop long)
+          const commentPreview = avi.commentaire.length > 60 ? 
+            `${avi.commentaire.substring(0, 60)}... <a href="#" class="text-primary expand-comment" data-fulltext="${avi.commentaire}" data-toggle="tooltip" title="Voir tout"><i class="fas fa-expand-alt ml-1"></i></a>` : 
+            avi.commentaire;
+
+          // Construction de la ligne
+          const row = `
+            <tr class="align-middle">
+              <td class="text-center font-weight-bold text-primary">${avi.id}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="rating mr-2">${stars}</div>
+                  <span class="badge badge-pill badge-light">${avi.note}/5</span>
+                </div>
+              </td>
+              <td>
+                <div class="comment-container">${commentPreview}</div>
+              </td>
+              <td class="text-nowrap">
+                <i class="far fa-calendar-alt mr-1 text-secondary"></i>
+                ${avi.date.split(' ')[0]}
+                <br>
+                <small class="text-muted">
+                  <i class="far fa-clock mr-1"></i>
+                  ${avi.date.split(' ')[1]}
+                </small>
+              </td>
+              <td class="text-center">
+                <span class="badge badge-pill badge-${avi.statutClass} py-1 px-3">
+                  <i class="${avi.statutIcon} mr-1"></i>
+                  ${avi.statut}
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="btn-group btn-group-sm" role="group">
+                  <a href="${avi.showUrl}"
+                     class="btn btn-circle btn-outline-info"
+                     data-toggle="tooltip" title="Voir détails">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  <a href="${avi.editUrl}"
+                     class="btn btn-circle btn-outline-primary"
+                     data-toggle="tooltip" title="Modifier">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <button type="button"
+                          class="btn btn-circle btn-outline-danger"
+                          data-toggle="modal"
+                          data-target="#deleteModal${avi.id}"
+                          title="Supprimer">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                  <form method="post"
+                        action="${avi.toggleStatusUrl}"
+                        class="d-inline">
+                    <input type="hidden" name="_token" value="${avi.toggleToken}">
+                    <button type="submit"
+                            class="btn btn-circle btn-outline-${avi.statut === 'Accepté' ? 'warning' : 'success'}"
+                            title="${avi.statut === 'Accepté' ? 'Mettre en attente' : 'Accepter'}">
+                      <i class="fas ${avi.statut === 'Accepté' ? 'fa-hourglass-half' : 'fa-check'}"></i>
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Modal de suppression -->
+                <div class="modal fade" id="deleteModal${avi.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Confirmer la suppression</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Êtes-vous sûr de vouloir supprimer cet avis ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <form method="post" action="${avi.deleteUrl}">
+                          <input type="hidden" name="_token" value="${avi.deleteToken}">
+                          <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt mr-1"></i> Supprimer
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          `;
+          tbody.append(row);
+        });
+
+        // Réinitialisation des tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+      }
+
+      // Affichage complet des commentaires
       $(document).on('click', '.expand-comment', function(e) {
         e.preventDefault();
         const fullText = $(this).data('fulltext');
@@ -302,16 +474,11 @@
         $('#commentModal').modal('show');
       });
 
-      // Export button handler
-      $('#exportBtn').click(function(e) {
-        e.preventDefault();
-        // You can implement export to CSV/Excel here
-        alert('Fonctionnalité d\'export à implémenter');
-      });
+      // Focus automatique sur le champ de recherche
+      $('#searchInput').focus();
     });
   </script>
 {% endblock %}
-
 {% block stylesheets %}
   {{ parent() }}
   <style>
@@ -396,3 +563,8 @@
   </style>
 >>>>>>> d69ad05 (initial commit)
 {% endblock %}
+
+
+
+ 
+
