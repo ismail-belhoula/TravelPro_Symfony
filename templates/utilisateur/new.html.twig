@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un utilisateur{% endblock %}
+
+{% block stylesheets %}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
+
+  <style>
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+      display: block;
+    }
+
+    .alert {
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background-color: #ffe5e5;
+      color: #cc0000;
+      font-weight: 500;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+  <a href="{{ path('app_utilisateur_index') }}" class="return-link">← Retour à la page d’accueil</a>
+
+  <div class="login_box">
+    <div class="login-header">
+      <span>S'inscrire</span>
+    </div>
+
+    
+
+    {{ form_start(form) }}
+
+    <div class="input_box">
+      {{ form_widget(form.nom_utilisateur, {'attr': {'class': 'input-field', 'placeholder': ' '}}) }}
+      <label class="label">Nom d'utilisateur</label>
+      <i class="bx bx-user icon"></i>
+      {{ form_errors(form.nom_utilisateur) }}
+    </div>
+
+
+
+
+    <div class="input_box">
+      {{ form_widget(form.prenom, {'attr': {'class': 'input-field' ,'placeholder': ' '}}) }}
+      <label class="label">Prénom</label>
+      <i class="bx bx-user icon"></i>
+      {{ form_errors(form.prenom) }}
+    </div>
+
+    <div class="input_box">
+      {{ form_widget(form.mail_utilisateur, {'attr': {'class': 'input-field','placeholder': ' '}}) }}
+      <label class="label">Email</label>
+      <i class="bx bx-envelope icon"></i>
+      {{ form_errors(form.mail_utilisateur) }}
+    </div>
+
+    <div class="input_box">
+      {{ form_widget(form.mot_de_passe_utilisateur, {'attr': {'class': 'input-field','placeholder': ' '}}) }}
+      <label class="label">Mot de passe</label>
+      <i class="bx bx-lock icon"></i>
+      {{ form_errors(form.mot_de_passe_utilisateur) }}
+    </div>
+
+    <div class="input_box">
+      {{ form_widget(form.adresse, {'attr': {'class': 'input-field', 'placeholder': ' '}}) }}
+      <label class="label">Adresse</label>
+      <i class="bx bx-map icon"></i>
+      {{ form_errors(form.adresse) }}
+    </div>
+
+    <div class="input_box">
+      {{ form_widget(form.telephone, {'attr': {'class': 'input-field', 'placeholder': ' '}}) }}
+      <label class="label">Téléphone</label>
+      <i class="bx bx-phone icon"></i>
+      {{ form_errors(form.telephone) }}
+    </div>
+
+    <div class="input_box">
+      <input type="submit" class="input-submit" value="Enregistrer">
+    </div>
+
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}

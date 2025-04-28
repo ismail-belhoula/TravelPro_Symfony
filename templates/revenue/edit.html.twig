@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Revenue{% endblock %}
+
+{% block body %}
+    <h1>Edit Revenue</h1>
+
+    {{ include('revenue/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_revenue_index') }}">back to list</a>
+
+    {{ include('revenue/_delete_form.html.twig') }}
+{% endblock %}

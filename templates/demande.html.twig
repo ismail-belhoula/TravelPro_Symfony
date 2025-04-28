@@ -1,0 +1,59 @@
+  {% for demande in demandes %}
+   {% if demande.statut == 'En attente' %}
+    <li class="blog-post-item" >
+
+
+
+
+
+      <a href="#">
+        
+    <div style="margin-top: 1.5rem; padding: 5px;">
+  <p class="blog-text" style="margin: 0;">{{ demande.description }}</p>
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 10px 0;" />
+  <p class="blog-category" style="margin: 0;">{{ demande.descriptionfr }}</p>
+</div>
+
+
+
+        <div class="blog-content">
+          <div class="blog-meta">
+            <p class="blog-category"> {{demande.statut}} </p>
+            <span class="dot"></span>
+          <time datetime="{{ demande.dateDemande|date('Y-m-d') }}">
+  {{ demande.dateDemande|date('M d, Y') }}
+</time>
+
+          </div>
+          <h3 class="h3 blog-item-title">Tu peux modifier l'état de demande</h3>
+<div class="simple-buttons">
+  <button class="btn-accept">Accepter</button>
+  <button class="btn-reject">Refuser</button>
+</div>
+
+<style>
+.simple-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.simple-buttons button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-accept { background: #2E7D32; } /* Vert foncé */
+.btn-reject { background: #C62828; } /* Rouge foncé */
+</style>
+        </div>
+      </a>
+    </li>
+      {% endif %}
+      {% else %}
+    <li class="no-demandes">
+      <p>Aucune demande en attente pour le moment.</p>
+    </li>
+  {% endfor %}

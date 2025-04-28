@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deponse index{% endblock %}
+
+{% block body %}
+    <h1>Deponse index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id_deponse</th>
+                <th>Id_produit</th>
+                <th>Prix_achat</th>
+                <th>Quantite_produit</th>
+                <th>Date_achat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for deponse in deponses %}
+            <tr>
+                <td>{{ deponse.idDeponse }}</td>
+                <td>{{ deponse.idProduit }}</td>
+                <td>{{ deponse.prixAchat }}</td>
+                <td>{{ deponse.quantiteProduit }}</td>
+                <td>{{ deponse.DateAchat ? deponse.DateAchat|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_deponse_show', {'id_deponse': deponse.id_deponse}) }}">show</a>
+                    <a href="{{ path('app_deponse_edit', {'id_deponse': deponse.id_deponse}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_deponse_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
+    <style>
+        .error-message { color: red; margin-bottom: 15px; }
+        .success-message { color: green; margin-bottom: 15px; }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <a href="{{ path('app_utilisateur_index') }}" class="return-link">
+        <i class='bx bx-chevron-left'></i> Retour à l'accueil
+    </a>
+
+    <div class="login_box">
+        <div class="login-header">
+            <h1>Mot de passe oublié</h1>
+        </div>
+
+        {# Affiche les messages flash #}
+        {% for message in app.flashes('error') %}
+            <div class="error-message">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="success-message">{{ message }}</div>
+        {% endfor %}
+
+        <form method="post" action="{{ path('app_utilisateur_forgot_password') }}">
+            <div class="input_box">
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    required
+                    class="input-field"
+                    placeholder=" "
+                    value="{{ last_email|default('') }}"
+                />
+                <label for="email" class="label">Adresse e-mail</label>
+                <i class="bx bx-envelope icon"></i>
+            </div>
+
+            <div class="input_box">
+                <button type="submit" class="input-submit">
+                    <i class='bx bx-paper-plane'></i> Envoyer le code
+                </button>
+            </div>
+        </form>
+
+        <div class="login-footer">
+            <p>Vous n'avez pas de compte ? <a href="{{ path('app_inscription') }}">S'inscrire</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
