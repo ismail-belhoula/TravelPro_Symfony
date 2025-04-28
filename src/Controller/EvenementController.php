@@ -18,21 +18,24 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 #[Route('/evenement')]
 final class EvenementController extends AbstractController
 {
-    #[Route( name: 'app_evenement_index', methods: ['GET'])]
+    #[Route(name: 'app_evenement_index', methods: ['GET'])]
     public function index(EvenementRepository $evenementRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $query = $evenementRepository->createQueryBuilder('e')->getQuery();
-    
+        $queryBuilder = $evenementRepository->createQueryBuilder('e')
+            ->orderBy('e.id_event', 'ASC'); // ⚡ On trie par ID
+
         $pagination = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1), // page actuelle
-            6 // nombre d'éléments par page
+            $queryBuilder, // PAS besoin de faire ->getQuery()
+            $request->query->getInt('page', 1),
+            6
         );
-    
+
         return $this->render('backoffice/evenement/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
+
+
     
 
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
@@ -178,7 +181,32 @@ public function export(EvenementRepository $evenementRepository): Response
         ResponseHeaderBag::DISPOSITION_ATTACHMENT
     );
 }
+#[Route('/statistics', name: 'app_evenement_stats', methods: ['GET'])]
+public function statistics(EvenementRepository $evenementRepository): Response
+{
+    $stats = $evenementRepository->getEventStatistics();
     
+    // Debug
+    dump($stats);
+    
+    // Normalisation des données
+    $chartData = [
+        'types' => [],
+        'counts' => [],
+        'avg_durations' => []
+    ];
+    
+    foreach ($stats as $stat) {
+        $chartData['types'][] = $stat['type'];
+        $chartData['counts'][] = $stat['total_events'];
+        $chartData['avg_durations'][] = (float) $stat['avg_duration'];
+    }
+    
+    return $this->render('backoffice/evenement/statistics.html.twig', [
+        'stats' => $stats,
+        'chart_data' => $chartData,
+    ]);
+}
     
     
 }
