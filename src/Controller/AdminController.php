@@ -78,4 +78,5 @@ final class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

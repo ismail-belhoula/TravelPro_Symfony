@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+
 class DashboardController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_dashboard')]
@@ -58,8 +60,12 @@ class DashboardController extends AbstractController
             'end_date' => $endDate,
         ]);
     }
+
+    #[Route('/dashboard2', name: 'dashboard')]
+    public function index2(): Response
+    {
+        return $this->render('backoffice/admin/index.html.twig', [
+            'controller_name' => 'AdminController',
+        ]);
+    }
 }
-
-
-
-

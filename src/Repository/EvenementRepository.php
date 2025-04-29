@@ -40,4 +40,18 @@ class EvenementRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function getEventStatistics(): array
+{
+    return $this->createQueryBuilder('e')
+        ->select([
+            'COUNT(e.id_event) as total_events',
+            'e.type',
+            'AVG(DATE_DIFF(e.date_fin, e.date_debut)) as avg_duration',
+            'MIN(DATE_DIFF(e.date_fin, e.date_debut)) as min_duration',
+            'MAX(DATE_DIFF(e.date_fin, e.date_debut)) as max_duration'
+        ])
+        ->groupBy('e.type')
+        ->getQuery()
+        ->getResult();
+}
 }

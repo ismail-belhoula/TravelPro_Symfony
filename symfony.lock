@@ -26,6 +26,22 @@
             "./migrations/.gitignore"
         ]
     },
+
+    "exercise/htmlpurifier-bundle": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "99590c5352b58fadacd5535337589aba7e44f5a7"
+        },
+        "files": [
+            "./config/packages/exercise_html_purifier.yaml"
+        ]
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v6.8.0"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
@@ -111,6 +127,7 @@
             "./src/Kernel.php"
         ]
     },
+
     "symfony/google-mailer": {
         "version": "6.4",
         "recipe": {
@@ -120,6 +137,7 @@
             "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
         }
     },
+
     "symfony/mailer": {
         "version": "6.4",
         "recipe": {
@@ -294,5 +312,14 @@
     },
     "twig/extra-bundle": {
         "version": "v3.20.0"
+    },
+    "vich/uploader-bundle": {
+        "version": "2.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.13",
+            "ref": "1b3064c2f6b255c2bc2f56461aaeb76b11e07e36"
+        }
     }
 }

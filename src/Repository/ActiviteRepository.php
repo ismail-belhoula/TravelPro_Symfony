@@ -15,6 +15,7 @@ class ActiviteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Activite::class);
     }
+    
 
     //    /**
     //     * @return Activite[] Returns an array of Activite objects
@@ -25,6 +26,7 @@ class ActiviteRepository extends ServiceEntityRepository
     //            ->andWhere('a.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->orderBy('a.id', 'ASC')
+    
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()

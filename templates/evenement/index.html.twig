@@ -1,51 +1,137 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
-{% block title %}Evenement index{% endblock %}
+{% block title %}Événements{% endblock %}
 
-{% block body %}
-    <h1>Evenement index</h1>
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Nos Événements</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>IdEvent</th>
-                <th>NomEvent</th>
-                <th>Lieu</th>
-                <th>DateDebutE</th>
-                <th>DateFinE</th>
-                <th>Type</th>
-                <th>Image</th>
-                <th>IdReservation</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for evenement in evenements %}
-            <tr>
-                <td>{{ evenement.idEvent }}</td>
-                <td>{{ evenement.nomEvent }}</td>
-                <td>{{ evenement.lieu }}</td>
-                <td>{{ evenement.dateDebutE ? evenement.dateDebutE|date('Y-m-d') : '' }}</td>
-                <td>{{ evenement.dateFinE ? evenement.dateFinE|date('Y-m-d') : '' }}</td>
-                <td>{{ evenement.type }}</td>
-                <td>{{ evenement.image }}</td>
-                <td>{{ evenement.idReservation }}</td>
-                <td>{{ evenement.latitude }}</td>
-                <td>{{ evenement.longitude }}</td>
-                <td>
-                    <a href="{{ path('app_evenement_show', {'idEvent': evenement.idEvent}) }}">show</a>
-                    <a href="{{ path('app_evenement_edit', {'idEvent': evenement.idEvent}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {# Barre de recherche et filtres #}
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un événement...">
+            </div>
+            <div class="col-md-6">
+                <select id="typeFilter" class="form-control">
+                    <option value="">Tous les types</option>
+                        <option value="Conférence">Conférence</option>
+                        <option value="Atelier">Atelier</option>
+                        <option value="Exposition">Exposition</option>
+                </select>
+            </div>
+        </div>
 
-    <a href="{{ path('app_evenement_new') }}">Create new</a>
+        {# Grille d'événements #}
+        <div class="row" id="eventsContainer">
+            {% for evenement in pagination.items %}
+                <div class="col-lg-4 col-md-6 mb-4 event-card" data-type="{{ evenement.type }}">
+                    <div class="card h-100 shadow-sm">
+                        {# Image de l'événement #}
+                        <img src="{{ asset('uploads/' ~ evenement.image) }}" class="card-img-top" alt="{{ evenement.nom_event }}" style="height: 200px; object-fit: cover;">
+                        
+                        <div class="card-body">
+                            {# Type et badge de date #}
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-primary">{{ evenement.type }}</span>
+                                <span class="text-muted small">
+                                    {{ evenement.date_debut ? evenement.date_debut|date('d M') : '' }}
+                                    {% if evenement.date_fin and evenement.date_fin != evenement.date_debut %}
+                                        - {{ evenement.date_fin|date('d M') }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            
+                            {# Titre et lieu #}
+                            <h5 class="card-title">{{ evenement.nom_event }}</h5>
+                            <p class="card-text text-muted">
+                                <i class="fas fa-map-marker-alt"></i> {{ evenement.lieu }}
+                            </p>
+                            
+                            {# Boutons d'action #}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ path('app_evenement_showfront', {'id_event': evenement.id_event}) }}" class="btn btn-outline-primary btn-sm">
+                                    Voir détails
+                                </a>
+                                <button class="btn btn-link text-danger" data-bs-toggle="tooltip" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info">Aucun événement disponible pour le moment.</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# Pagination #}
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+
+    {# Styles personnalisés #}
+    <style>
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .badge {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+        }
+        .event-card {
+            transition: all 0.3s ease;
+        }
+    </style>
+
+    {# Scripts pour la recherche et le filtrage #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtrage par type
+            document.getElementById('typeFilter').addEventListener('change', function() {
+                const type = this.value.toLowerCase();
+                const events = document.querySelectorAll('.event-card');
+                
+                events.forEach(event => {
+                    const eventType = event.dataset.type.toLowerCase();
+                    if (type === '' || eventType.includes(type)) {
+                        event.style.display = 'block';
+                    } else {
+                        event.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Recherche par nom
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const events = document.querySelectorAll('.event-card');
+                
+                events.forEach(event => {
+                    const eventName = event.querySelector('.card-title').textContent.toLowerCase();
+                    if (eventName.includes(searchTerm)) {
+                        event.style.display = 'block';
+                    } else {
+                        event.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Initialiser les tooltips Bootstrap
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 {% endblock %}
