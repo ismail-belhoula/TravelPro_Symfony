@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Voiture;
 use App\Entity\Billetavion;
@@ -17,15 +18,18 @@ use App\Entity\Hotel;
 use App\Entity\Client;
 use App\Service\EmailService;
 use Psr\Log\LoggerInterface;
+use Knp\Snappy\Pdf;
 
 #[Route('/reservation')]
 final class ReservationController extends AbstractController
 {
     private $logger;
+    private $pdf;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, Pdf $pdf)
     {
         $this->logger = $logger;
+        $this->pdf = $pdf;
     }
 
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
@@ -363,5 +367,54 @@ final class ReservationController extends AbstractController
         return $this->render('reservation/reservations_client.html.twig', [
             'reservations' => $reservations,
         ]);
+    }
+
+    #[Route('/{id_reservation}/pdf', name: 'app_reservation_pdf', methods: ['GET'])]
+    public function downloadPdf($id_reservation, EntityManagerInterface $entityManager): Response
+    {
+        $reservation = $entityManager->getRepository(Reservation::class)->findOneBy(['id_reservation' => $id_reservation]);
+
+        if (!$reservation) {
+            $this->logger->error("Reservation with ID $id_reservation not found for PDF generation");
+            throw $this->createNotFoundException('La réservation n\'existe pas');
+        }
+
+        // Vérifier que la réservation appartient au client (ID 1 pour cet exemple)
+        $client = $entityManager->getRepository(Client::class)->find(1);
+        if ($reservation->getClient() !== $client) {
+            $this->logger->error("Client ID 1 not authorized to access reservation $id_reservation");
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à télécharger ce PDF.');
+        }
+
+        // Rendre le template HTML pour le PDF
+        $html = $this->renderView('reservation/pdf.html.twig', [
+            'reservation' => $reservation,
+            'client' => $client,
+        ]);
+
+        // Générer le PDF
+        $filename = sprintf('reservation-%s.pdf', $reservation->getIdReservation());
+        $pdfContent = $this->pdf->getOutputFromHtml($html, [
+            'encoding' => 'UTF-8',
+            'margin-top' => 10,
+            'margin-bottom' => 10,
+            'margin-left' => 15,
+            'margin-right' => 15,
+            'disable-smart-shrinking' => true, // Reduces rendering complexity
+            'dpi' => 96, // Lower DPI for faster rendering
+            'no-outline' => true, // Disables outlines for faster processing
+        ]);
+
+        // Créer la réponse avec le PDF
+        $response = new Response($pdfContent);
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', $disposition);
+
+        $this->logger->info("PDF generated for reservation $id_reservation");
+        return $response;
     }
 }

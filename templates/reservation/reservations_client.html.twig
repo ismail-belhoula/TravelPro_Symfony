@@ -106,10 +106,18 @@
             background: #c82333;
             transform: translateY(-2px);
         }
+        .btn-pdf {
+            background: #28a745;
+            margin-left: 10px;
+        }
+        .btn-pdf:hover {
+            background: #218838;
+        }
         .action-container {
             margin-left: 15px;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
         .flash-message {
             padding: 15px;
@@ -136,6 +144,11 @@
             .item-status, .action-container {
                 margin-left: 0;
                 margin-top: 10px;
+            }
+            .action-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
         }
     </style>
@@ -203,7 +216,7 @@
                                 </ul>
                                 <ul class="rd-navbar-nav">
                                     <li class="rd-nav-item">
-                                        <a class="rd-nav-link" href="{{ path('home') }}">Acceuil</a>
+                                        <a class="rd-nav-link" href="{{ path('home') }}">Accueil</a>
                                     </li>
                                     <li class="rd-nav-item">
                                         <a class="rd-nav-link" href="{{ path('about') }}">A Propos</a>
@@ -254,7 +267,7 @@
                                         {% for reservation in reservations %}
                                             <div class="item-card">
                                                 <div class="item-info">
-                                                    <div class="item-title">Réservation </div>
+                                                    <div class="item-title">Réservation #{{ reservation.idReservation }}</div>
                                                     <div class="item-details">
                                                         {% if reservation.hotel %}
                                                             Hôtel: {{ reservation.hotel.nom }} - {{ reservation.hotel.ville }} - {{ reservation.hotel.typeDeChambre }} - {{ reservation.hotel.prixParNuit }} TND/nuit<br>
@@ -281,6 +294,7 @@
                                                 </div>
                                                 <div class="action-container">
                                                     {% include 'reservation/_delete_form.html.twig' with {'reservation': reservation, 'redirect_to': 'app_reservations_client'} %}
+                                                    <a href="{{ path('app_reservation_pdf', {'id_reservation': reservation.idReservation}) }}" class="btn btn-pdf">Télécharger PDF</a>
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -299,8 +313,6 @@
             <!-- Footer content -->
         </footer>
     </div>
-
-    <div class="snackbars" id="form-output-global"></div>
 
     <script src="{{ asset('js/core.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Réservation TravelPro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #4e73df;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 200px;
+        }
+        .header h1 {
+            color: #224abe;
+            margin: 10px 0;
+            font-size: 24px;
+        }
+        .section-title {
+            color: #224abe;
+            font-size: 18px;
+            margin: 20px 0 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .details {
+            margin-bottom: 20px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .details strong {
+            display: inline-block;
+            width: 150px;
+            color: #555;
+        }
+        .status {
+            font-weight: bold;
+            color: #4e73df;
+            font-size: 16px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background: #f8f9fc;
+            color: #224abe;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+    
+            <h1>Réservation TravelPro</h1>
+            <p>Confirmation de réservation #{{ reservation.idReservation }}</p>
+        </div>
+
+        <div class="details">
+            <h2 class="section-title">Informations du Client</h2>
+            <p><strong>Nom :</strong> {{ client.utilisateur ? client.utilisateur.nomUtilisateur : 'Non spécifié' }}</p>
+            <p><strong>Prénom :</strong> {{ client.utilisateur ? client.utilisateur.prenom : 'Non spécifié' }}</p>
+            <p><strong>Email :</strong> {{ client.utilisateur ? client.utilisateur.mailUtilisateur : 'Non spécifié' }}</p>
+        </div>
+
+        <div class="details">
+            <h2 class="section-title">Détails de la Réservation</h2>
+            <p><strong>Statut :</strong> <span class="status">
+                {% if reservation.statut == 'en_attente' %}
+                    En attente
+                {% elseif reservation.statut == 'confirme' %}
+                    Confirmé
+                {% elseif reservation.statut == 'annule' %}
+                    Annulé
+                {% else %}
+                    {{ reservation.statut }}
+                {% endif %}
+            </span></p>
+            {% if reservation.hotel %}
+                <h3>Hôtel</h3>
+                <table class="table">
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ reservation.hotel.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ville</th>
+                        <td>{{ reservation.hotel.ville }}</td>
+                    </tr>
+                    <tr>
+                        <th>Type de chambre</th>
+                        <td>{{ reservation.hotel.typeDeChambre }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix par nuit</th>
+                        <td>{{ reservation.hotel.prixParNuit }} TND</td>
+                    </tr>
+                    <tr>
+                        <th>Check-in</th>
+                        <td>{{ reservation.hotel.dateCheckIn ? reservation.hotel.dateCheckIn|date('d/m/Y') : 'Non spécifié' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Check-out</th>
+                        <td>{{ reservation.hotel.dateCheckOut ? reservation.hotel.dateCheckOut|date('d/m/Y') : 'Non spécifié' }}</td>
+                    </tr>
+                </table>
+            {% endif %}
+            {% if reservation.billetAvion %}
+                <h3>Billet d'avion</h3>
+                <table class="table">
+                    <tr>
+                        <th>Compagnie</th>
+                        <td>{{ reservation.billetAvion.compagnie }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ville de départ</th>
+                        <td>{{ reservation.billetAvion.villeDepart }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ville d'arrivée</th>
+                        <td>{{ reservation.billetAvion.villeArrivee }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de départ</th>
+                        <td>{{ reservation.billetAvion.dateDepart|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Classe</th>
+                        <td>{{ reservation.billetAvion.classBillet }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix</th>
+                        <td>{{ reservation.billetAvion.prix }} TND</td>
+                    </tr>
+                </table>
+            {% endif %}
+            {% if reservation.voiture %}
+                <h3>Voiture</h3>
+                <table class="table">
+                    <tr>
+                        <th>Marque</th>
+                        <td>{{ reservation.voiture.marque }}</td>
+                    </tr>
+                    <tr>
+                        <th>Modèle</th>
+                        <td>{{ reservation.voiture.modele }}</td>
+                    </tr>
+                    <tr>
+                        <th>Année</th>
+                        <td>{{ reservation.voiture.annee }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de location</th>
+                        <td>{{ reservation.voiture.dateDeLocation|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de remise</th>
+                        <td>{{ reservation.voiture.dateDeRemise|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix par jour</th>
+                        <td>{{ reservation.voiture.prixParJour }} TND</td>
+                    </tr>
+                </table>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <p>TravelPro - {{ 'now'|date('Y') }} | Contactez-nous : +216 78123123 | support@travelpro.com</p>
+            <p>Généré le {{ 'now'|date('d/m/Y H:i') }}</p>
+        </div>
+    </div>
+</body>
+</html>
