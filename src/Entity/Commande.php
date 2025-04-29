@@ -32,17 +32,24 @@ class Commande
     #[ORM\JoinColumn(name: 'id_client', referencedColumnName: 'id_client')]
     private ?Client $client = null;
 
+<<<<<<< HEAD
     #[ORM\Column(type: 'float', nullable: false)]
     #[Assert\NotBlank]
+=======
+    #[ORM\Column(type: 'decimal', nullable: false)]
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?float $montant_total = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $date_commande = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+<<<<<<< HEAD
     #[Assert\NotBlank( 
         message: 'il faut remplir la status.'
     )]
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?string $status = null;
 
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'commandes')]

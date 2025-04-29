@@ -6,7 +6,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Constraints as Assert;
+=======
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 use App\Repository\ProduitRepository;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -18,7 +22,11 @@ class Produit
     #[ORM\Column(type: 'integer')]
     private ?int $id_produit = null;
 
+<<<<<<< HEAD
     public function getId(): ?int
+=======
+    public function getId_produit(): ?int
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     {
         return $this->id_produit;
     }
@@ -31,7 +39,10 @@ class Produit
 
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $nom_produit = null;
+<<<<<<< HEAD
     
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 
     public function getNom_produit(): ?string
     {
@@ -44,8 +55,12 @@ class Produit
         return $this;
     }
 
+<<<<<<< HEAD
     #[ORM\Column(type: 'decimal', nullable: true)]
     #[Assert\NotBlank]
+=======
+    #[ORM\Column(type: 'decimal', nullable: false)]
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?float $prix_achat = null;
 
     public function getPrix_achat(): ?float
@@ -60,8 +75,12 @@ class Produit
     }
 
     #[ORM\Column(type: 'integer', nullable: false)]
+<<<<<<< HEAD
     #[Assert\NotBlank]
     private ?int $quantite_produit = null;    
+=======
+    private ?int $quantite_produit = null;
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 
     public function getQuantite_produit(): ?int
     {
@@ -75,7 +94,11 @@ class Produit
     }
 
     #[ORM\Column(type: 'decimal', nullable: true)]
+<<<<<<< HEAD
     private ?float $prix_vente = null;    
+=======
+    private ?float $prix_vente = null;
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 
     public function getPrix_vente(): ?float
     {
@@ -89,9 +112,12 @@ class Produit
     }
 
     #[ORM\Column(type: 'string', nullable: true)]
+<<<<<<< HEAD
     #[Assert\NotBlank( 
         message: 'il faut choisir un photo nom du produit.'
     )]
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?string $image_path = null;
 
     public function getImage_path(): ?string
@@ -250,4 +276,8 @@ class Produit
         return $this;
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610

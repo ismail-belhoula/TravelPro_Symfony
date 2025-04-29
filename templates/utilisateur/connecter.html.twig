@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+  <a href="{{ path('app_utilisateur_index') }}" class="return-link">← Retour à la page d’accueil</a>
+
+  <div class="login_box">
+    <div class="login-header">
+      <span>Connexion</span>
+    </div>
+
+    {# Affichage des messages flash d'erreur #}
+    {% for message in app.flashes('error') %}
+      <div style="color: red; font-size: 14px; margin-bottom: 10px;">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <form method="post"      data-turbo="false">
+      <div class="input_box">
+        <input type="email" name="email" required class="input-field" placeholder=" ">
+        <label class="label">Adresse e-mail</label>
+        <i class="bx bx-envelope icon"></i>
+      </div>
+
+      <div class="input_box">
+        <input type="password" name="password" required class="input-field" placeholder=" ">
+        <label class="label">Mot de passe</label>
+        <i class="bx bx-lock icon"></i>
+      </div>
+
+      <div class="input_box" style="text-align: right; margin-top: -10px;">
+       <a href="{{ path('app_utilisateur_forgot_password') }}" style="color: inherit; text-decoration: none;">
+  Mot de passe oublié ? 
+  <span style="border-bottom: 1px solid #01b3a7; color: #ffffff;">Cliquer ici</span>
+</a>
+
+      </div>
+
+      <div class="input_box">
+        <input type="submit" class="input-submit" value="Se connecter">
+      </div>
+
+      <div class="separator">
+        <hr class="line"><span>ou</span><hr class="line">
+      </div>
+
+      <div class="social-icons">
+        <a href="#" class="icon-circle google"><i class='bx bxl-google'></i></a>
+        <a href="#" class="icon-circle facebook"><i class='bx bxl-facebook'></i></a>
+        <a href="#" class="icon-circle whatsapp"><i class='bx bxl-whatsapp'></i></a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

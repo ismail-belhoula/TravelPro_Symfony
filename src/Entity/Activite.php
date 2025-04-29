@@ -2,11 +2,20 @@
 
 namespace App\Entity;
 
+<<<<<<< HEAD
 use App\Repository\ActiviteRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+=======
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+use App\Repository\ActiviteRepository;
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 
 #[ORM\Entity(repositoryClass: ActiviteRepository::class)]
 #[ORM\Table(name: 'activite')]
@@ -15,6 +24,7 @@ class Activite
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer',name:'idActivite')]
+<<<<<<< HEAD
     private ?int $id_activite = null;
 
     #[ORM\Column(type: 'string', nullable: false,name:'nomActivite')]
@@ -81,6 +91,38 @@ class Activite
         return $this;
     }
 
+=======
+    private ?int $idActivite = null;
+
+    public function getIdActivite(): ?int
+    {
+        return $this->idActivite;
+    }
+
+    public function setIdActivite(int $idActivite): self
+    {
+        $this->idActivite = $idActivite;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: false,name:'nomActivite')]
+    private ?string $nomActivite = null;
+
+    public function getNomActivite(): ?string
+    {
+        return $this->nomActivite;
+    }
+
+    public function setNomActivite(string $nomActivite): self
+    {
+        $this->nomActivite = $nomActivite;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: false)]
+    private ?string $description = null;
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     public function getDescription(): ?string
     {
         return $this->description;
@@ -92,6 +134,7 @@ class Activite
         return $this;
     }
 
+<<<<<<< HEAD
     public function getDate_debut(): ?\DateTimeInterface
     {
         return $this->date_debut;
@@ -114,6 +157,40 @@ class Activite
         return $this;
     }
 
+=======
+    #[ORM\Column(type: 'date', nullable: false,name:'dateDebutA')]
+    private ?\DateTimeInterface $dateDebutA = null;
+
+    public function getDateDebutA(): ?\DateTimeInterface
+    {
+        return $this->dateDebutA;
+    }
+
+    public function setDateDebutA(\DateTimeInterface $dateDebutA): self
+    {
+        $this->dateDebutA = $dateDebutA;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'date', nullable: false,name:'dateFinA')]
+    private ?\DateTimeInterface $dateFinA = null;
+
+    public function getDateFinA(): ?\DateTimeInterface
+    {
+        return $this->dateFinA;
+    }
+
+    public function setDateFinA(\DateTimeInterface $dateFinA): self
+    {
+        $this->dateFinA = $dateFinA;
+        return $this;
+    }
+
+    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'activites')]
+    #[ORM\JoinColumn(name: 'idEvent', referencedColumnName: 'idEvent')]
+    private ?Evenement $evenement = null;
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     public function getEvenement(): ?Evenement
     {
         return $this->evenement;
@@ -125,6 +202,7 @@ class Activite
         return $this;
     }
 
+<<<<<<< HEAD
     public function getNomActivite(): ?string
     {
         return $this->nom_activite;
@@ -157,4 +235,6 @@ class Activite
         $this->date_fin = $date_fin;
         return $this;
     }
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 }

@@ -1,3 +1,5 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+        # Pour forcer l'envoi synchrone en dev
+        message_bus: false

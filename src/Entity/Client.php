@@ -5,7 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+<<<<<<< HEAD
 
+=======
+use Symfony\Component\Validator\Constraints as Assert;
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 use App\Repository\ClientRepository;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -17,7 +21,11 @@ class Client
     #[ORM\Column(type: 'integer')]
     private ?int $id_client = null;
 
+<<<<<<< HEAD
     public function getId(): ?int
+=======
+    public function getId_client(): ?int
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     {
         return $this->id_client;
     }
@@ -29,6 +37,11 @@ class Client
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+<<<<<<< HEAD
+=======
+    #[Assert\NotBlank(message: "L'adresse ne peut pas être vide.")]
+    #[Assert\Length(min: 10, max: 255, minMessage: "L'adresse doit contenir au moins {{ limit }} caractères.", maxMessage: "L'adresse ne peut pas dépasser {{ limit }} caractères.")]
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?string $addresse_client = null;
 
     public function getAddresse_client(): ?string
@@ -43,6 +56,15 @@ class Client
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+<<<<<<< HEAD
+=======
+    #[Assert\NotBlank(message: "Le numéro de téléphone ne peut pas être vide.")]
+    #[Assert\Length(min: 8, max: 8, minMessage: "Le numéro de téléphone doit contenir au moins {{ limit }} caractères.", maxMessage: "Le numéro de téléphone ne peut pas dépasser {{ limit }} caractères.")]
+    #[Assert\Regex(
+        pattern: "/^\+?[0-9]{8,8}$/",
+        message: "Le numéro de téléphone doit être valide (ex: +1234567890)."
+    )]
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?string $num_tel_client = null;
 
     public function getNum_tel_client(): ?string
@@ -72,6 +94,10 @@ class Client
     }
 
     #[ORM\Column(type: 'string', nullable: true)]
+<<<<<<< HEAD
+=======
+    #[Assert\Url(message: "L'URL de l'image doit être valide.")]
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     private ?string $image_url = null;
 
     public function getImage_url(): ?string
@@ -88,6 +114,7 @@ class Client
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'client')]
     private Collection $commandes;
 
+<<<<<<< HEAD
     /**
      * @return Collection<int, Commande>
      */
@@ -96,6 +123,17 @@ class Client
         if (!$this->commandes instanceof Collection) {
             $this->commandes = new ArrayCollection();
         }
+=======
+    public function __construct()
+    {
+        $this->commandes = new ArrayCollection();
+        $this->demandeValidations = new ArrayCollection();
+        $this->voitures = new ArrayCollection();
+    }
+
+    public function getCommandes(): Collection
+    {
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
         return $this->commandes;
     }
 
@@ -116,6 +154,7 @@ class Client
     #[ORM\OneToMany(targetEntity: DemandeValidation::class, mappedBy: 'client')]
     private Collection $demandeValidations;
 
+<<<<<<< HEAD
     /**
      * @return Collection<int, DemandeValidation>
      */
@@ -124,6 +163,10 @@ class Client
         if (!$this->demandeValidations instanceof Collection) {
             $this->demandeValidations = new ArrayCollection();
         }
+=======
+    public function getDemandeValidations(): Collection
+    {
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
         return $this->demandeValidations;
     }
 
@@ -153,6 +196,7 @@ class Client
     )]
     private Collection $voitures;
 
+<<<<<<< HEAD
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -168,6 +212,10 @@ class Client
         if (!$this->voitures instanceof Collection) {
             $this->voitures = new ArrayCollection();
         }
+=======
+    public function getVoitures(): Collection
+    {
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
         return $this->voitures;
     }
 
@@ -184,6 +232,7 @@ class Client
         $this->getVoitures()->removeElement($voiture);
         return $this;
     }
+<<<<<<< HEAD
 
     public function getIdClient(): ?int
     {
@@ -226,4 +275,6 @@ class Client
         return $this;
     }
 
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 }

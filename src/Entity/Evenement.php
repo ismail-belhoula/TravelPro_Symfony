@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+<<<<<<< HEAD
 use App\Repository\EvenementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,11 +16,23 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Table(name: 'evenement')]
 #[Vich\Uploadable]
 
+=======
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+use App\Repository\EvenementRepository;
+
+#[ORM\Entity(repositoryClass: EvenementRepository::class)]
+#[ORM\Table(name: 'evenement')]
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 class Evenement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer',name:'idEvent')]
+<<<<<<< HEAD
     private ?int $id_event = null;
 
     #[ORM\Column(type: 'string', nullable: false ,name:'nomEvent')]
@@ -96,6 +109,38 @@ private ?float $longitude = null;
         return $this;
     }
 
+=======
+    private ?int $idEvent = null;
+
+    public function getIdEvent(): ?int
+    {
+        return $this->idEvent;
+    }
+
+    public function setIdEvent(int $idEvent): self
+    {
+        $this->idEvent = $idEvent;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: false,name:'nomEvent')]
+    private ?string $nomEvent = null;
+
+    public function getNomEvent(): ?string
+    {
+        return $this->nomEvent;
+    }
+
+    public function setNomEvent(string $nomEvent): self
+    {
+        $this->nomEvent = $nomEvent;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: false)]
+    private ?string $lieu = null;
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     public function getLieu(): ?string
     {
         return $this->lieu;
@@ -107,6 +152,7 @@ private ?float $longitude = null;
         return $this;
     }
 
+<<<<<<< HEAD
     public function getDate_debut(): ?\DateTimeInterface
     {
         return $this->date_debut;
@@ -129,6 +175,39 @@ private ?float $longitude = null;
         return $this;
     }
 
+=======
+    #[ORM\Column(type: 'date', nullable: false,name:'dateDebutE')]
+    private ?\DateTimeInterface $dateDebutE = null;
+
+    public function getDateDebutE(): ?\DateTimeInterface
+    {
+        return $this->dateDebutE;
+    }
+
+    public function setDateDebutE(\DateTimeInterface $dateDebutE): self
+    {
+        $this->dateDebutE = $dateDebutE;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'date', nullable: false,name:'dateFinE')]
+    private ?\DateTimeInterface $dateFinE = null;
+
+    public function getDateFinE(): ?\DateTimeInterface
+    {
+        return $this->dateFinE;
+    }
+
+    public function setDateFinE(\DateTimeInterface $dateFinE): self
+    {
+        $this->dateFinE = $dateFinE;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: false)]
+    private ?string $type = null;
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     public function getType(): ?string
     {
         return $this->type;
@@ -140,16 +219,27 @@ private ?float $longitude = null;
         return $this;
     }
 
+<<<<<<< HEAD
+=======
+    #[ORM\Column(type: 'string', nullable: false)]
+    private ?string $image = null;
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     public function getImage(): ?string
     {
         return $this->image;
     }
 
+<<<<<<< HEAD
     public function setImage(?string $image): static
+=======
+    public function setImage(string $image): self
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     {
         $this->image = $image;
         return $this;
     }
+<<<<<<< HEAD
     
 
     public function setImageFile(?File $imageFile = null): void
@@ -185,11 +275,65 @@ public function setLongitude(float $longitude): static
     $this->longitude = $longitude;
     return $this;
 }
+=======
+
+    #[ORM\Column(type: 'integer', nullable: false,name:'idReservation')]
+    private ?int $idReservation = null;
+
+    public function getIdReservation(): ?int
+    {
+        return $this->idReservation;
+    }
+
+    public function setIdReservation(int $idReservation): self
+    {
+        $this->idReservation = $idReservation;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'decimal', nullable: false)]
+    private ?float $latitude = null;
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(float $latitude): self
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'decimal', nullable: false)]
+    private ?float $longitude = null;
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(float $longitude): self
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
+
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'evenement')]
+    private Collection $activites;
+
+    public function __construct()
+    {
+        $this->activites = new ArrayCollection();
+    }
+
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     /**
      * @return Collection<int, Activite>
      */
     public function getActivites(): Collection
     {
+<<<<<<< HEAD
         return $this->activites;
     }
 
@@ -250,3 +394,26 @@ public function setLongitude(float $longitude): static
         return $this->setDate_fin($date_fin);
     }
 }
+=======
+        if (!$this->activites instanceof Collection) {
+            $this->activites = new ArrayCollection();
+        }
+        return $this->activites;
+    }
+
+    public function addActivite(Activite $activite): self
+    {
+        if (!$this->getActivites()->contains($activite)) {
+            $this->getActivites()->add($activite);
+        }
+        return $this;
+    }
+
+    public function removeActivite(Activite $activite): self
+    {
+        $this->getActivites()->removeElement($activite);
+        return $this;
+    }
+
+}
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610

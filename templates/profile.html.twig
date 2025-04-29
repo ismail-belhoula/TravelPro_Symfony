@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vCard - Personal Portfolio | @coding.stella</title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+    <link rel="stylesheet" href="{{ asset('css/style3.css') }}">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body style="background-color: #ffffff;">
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+<aside class="sidebar" data-sidebar>
+
+  <div class="sidebar-info">
+
+    {% set image = app.session.get('client_image') %}
+
+<figure class="avatar-box">
+  {% if image is not empty %}
+    {% if image starts with 'http' %}
+      <img src="{{ image }}" alt="Photo de profil" width="80">
+    {% else %}
+      <img src="{{ app.session.get('client_image') }}" alt="Photo de profil" width="80">
+    {% endif %}
+  {% else %}
+    <img src="{{ app.session.get('client_image') }}" alt="Photo par défaut" width="80">
+  {% endif %}
+</figure>
+
+    <div class="info-content">
+      <h1 class="name" title="{{ app.session.get('utilisateur_nom') ~ ' ' ~ app.session.get('utilisateur_prenom') }}">
+        {{ app.session.get('utilisateur_nom') }} {{ app.session.get('utilisateur_prenom') }}
+      </h1>
+      <p class="title">{{ app.session.get('utilisateur_role')|capitalize }}</p>
+    </div>
+
+    <button class="info_more-btn" data-sidebar-btn>
+      <span>Show Contacts</span>
+      <ion-icon name="chevron-down"></ion-icon>
+    </button>
+
+  </div>
+
+  <div class="sidebar-info_more">
+
+    <div class="separator"></div>
+
+    <ul class="contacts-list">
+
+      {# Email #}
+      {% if app.session.get('utilisateur_email') %}
+        <li class="contact-item">
+          <div class="icon-box">
+            <ion-icon name="mail-outline"></ion-icon>
+          </div>
+          <div class="contact-info">
+            <p class="contact-title">Email</p>
+            <a href="mailto:{{ app.session.get('utilisateur_email') }}" class="contact-link">
+              {{ app.session.get('utilisateur_email') }}
+            </a>
+          </div>
+        </li>
+      {% endif %}
+
+      {# Téléphone #}
+      {% if app.session.get('client_telephone') %}
+        <li class="contact-item">
+          <div class="icon-box">
+            <ion-icon name="phone-portrait-outline"></ion-icon>
+          </div>
+          <div class="contact-info">
+            <p class="contact-title">Phone</p>
+            <a href="tel:{{ app.session.get('client_telephone') }}" class="contact-link">
+              {{ app.session.get('client_telephone') }}
+            </a>
+          </div>
+        </li>
+      {% endif %}
+
+      {# Date de naissance fixe (exemple à remplacer si besoin) #}
+      <li class="contact-item">
+        <div class="icon-box">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+        <div class="contact-info">
+          <p class="contact-title">Birthday</p>
+          <time datetime="1982-06-23">June 23, 1982</time>
+        </div>
+      </li>
+
+      {# Adresse du client #}
+      {% if app.session.get('client_adresse') %}
+        <li class="contact-item">
+          <div class="icon-box">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="contact-info">
+            <p class="contact-title">Location</p>
+            <address>{{ app.session.get('client_adresse') }}</address>
+          </div>
+        </li>
+      {% endif %}
+
+    </ul>
+
+    <div class="separator"></div>
+
+    <ul class="social-list">
+      <li class="social-item">
+        <a href="#" class="social-link">
+          <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+      </li>
+      <li class="social-item">
+        <a href="#" class="social-link">
+          <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+      </li>
+      <li class="social-item">
+        <a href="#" class="social-link">
+          <ion-icon name="logo-instagram"></ion-icon>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+</aside>
+
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link data-page="about">About</button>
+          </li>
+
+
+         <li class="navbar-item">
+  <button class="navbar-link" data-nav-link data-page="contact">Modifier</button>
+</li>
+
+
+
+      <!--
+        
+ <li class="navbar-item">
+ <a class="navbar-link" href="{{ path('envoyerdemende') }}">Envoyer demande</a>
+            
+          </li>
+
+       -->      
+
+{% if app.session.get('utilisateur_role') == 'Client' %}
+  <li class="navbar-item">
+<button class="navbar-link" data-nav-link data-page="blog2">Envoyer demande</button>
+  </li>
+{% else %}
+<li class="navbar-item">
+            <button class="navbar-link" data-nav-link data-page="blog">Liste de demande</button>
+          </li>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="navbar-item">
+  <a class="navbar-link" href="{{ path('app_logout') }}">Déconnecter</a>
+</li>
+
+
+          <li class="navbar-item">
+
+
+          <form action="{{ path('app_utilisateur_delete') }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer votre compte ?');" >
+    <input type="hidden" name="_token" value="{{ csrf_token('delete_compte') }}">
+    <button type="submit" class="navbar-link">
+        Supprimer
+    </button>
+</form>
+
+ <!-- 
+<a  class="navbar-link" href="{{ path('app_utilisateur_delete') }}" onclick="return confirm('Voulez-vous vraiment supprimer votre compte ?');">
+    Supprimer
+</a>
+--!>
+          <!--  <button class="navbar-link" data-nav-link data-page="resume">Supprimer</button> --!>
+          </li>
+
+
+          
+         
+
+         
+         
+
+
+
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">à propos de nous </h2>
+        </header>
+<section class="about-text">
+  {% if app.user and 'ROLE_CLIENT' in app.user.roles %}
+    <!-- Contenu pour le client -->
+    <p>
+      En tant que client, vous avez accès à plusieurs fonctionnalités pour faciliter vos démarches. Vous pouvez choisir une ville selon votre préférence, puis effectuer des réservations de services comme la location de voitures ou la réservation d’hôtels, avec un large choix d’offres adaptées à vos besoins.
+    </p>
+
+    <p>
+      Vous avez également la possibilité de commander ou acheter des articles depuis notre boutique intégrée. Si vous rencontrez un problème ou souhaitez partager votre avis, vous pouvez lire ou créer une réclamation concernant un service. Enfin, vous avez aussi la possibilité de contacter l’administrateur via une demande dédiée, et bien d'autres tâches pour enrichir votre expérience utilisateur. Profitez pleinement de tous nos services, pensés pour votre confort et votre satisfaction !
+    </p>
+
+  {% else %}
+    <!-- Contenu pour l'administrateur avec une version simplifiée -->
+    <p>
+En tant qu'administrateur, vous gérez les utilisateurs, les réservations et les réclamations. Vous pouvez ajouter, modifier ou supprimer des comptes clients et superviser les demandes de service. Vous avez également la possibilité de valider ou annuler des réservations de voitures et d'hôtels.
+
+    </p>
+    <p>
+Vous gérez les offres de la boutique, mettez à jour les stocks et appliquez des promotions. Vous êtes aussi responsable de la gestion des villes et des services dans chaque région pour assurer une couverture optimale.
+    </p>
+    <p>
+Enfin, vous avez accès à des rapports détaillés pour suivre l'activité des utilisateurs et améliorer les services proposés. Utilisez vos outils pour offrir une expérience fluide et satisfaisante à vos clients.
+    </p>
+  {% endif %}
+</section>
+
+
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">liste de produits</h3>
+
+
+
+
+        {{ include('utilisateur/ListeProduit.html.twig', { produits: produits }) }}
+
+
+       
+        </section>
+
+
+        <!--
+          - testimonials
+        
+
+        <section class="testimonials">
+
+          <h3 class="h3 testimonials-title">services </h3>
+
+          <ul class="testimonials-list has-scrollbar">
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="" alt="Daniel lewis" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Daniel lewis</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                    lot of experience
+                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                    consectetur adipiscing
+                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="" alt="Jessica miller" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Jessica miller</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                    lot of experience
+                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                    consectetur adipiscing
+                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="" alt="Emily evans" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Emily evans</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                    lot of experience
+                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                    consectetur adipiscing
+                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="../../assets/images/esprit.png" alt="Henry william" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Henry william</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                    lot of experience
+                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                    consectetur adipiscing
+                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+        </section>
+
+-->
+        <!--
+          - testimonials modal
+        -->
+
+        <div class="modal-container" data-modal-container>
+
+          <div class="overlay" data-overlay></div>
+
+          <section class="testimonials-modal">
+
+            <button class="modal-close-btn" data-modal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="../../assets/images/esprit.png"  alt="Daniel lewis" width="80" data-modal-img>
+              </figure>
+
+              <img src="../../assets/images/esprit.png"  alt="quote icon">
+            </div>
+
+            <div class="modal-content">
+
+              <h4 class="h3 modal-title" data-modal-title>Daniel lewis</h4>
+
+              <time datetime="2021-06-14">14 June, 2021</time>
+
+              <div data-modal-text>
+                <p>
+                  Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                  lot of experience
+                  and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                  consectetur adipiscing
+                  elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <!--
+          - clients
+        -->
+
+        <section class="clients">
+
+          <h3 class="h3 clients-title">Clients</h3>
+
+          <ul class="clients-list has-scrollbar">
+
+                
+        {{ include('utilisateur/Clients.html.twig', { clients: clients }) }}
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">University school of the arts</h4>
+
+              <span>2007 — 2008</span>
+
+              <p class="timeline-text">
+                Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et
+                quas molestias
+                exceptur.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">New york academy of art</h4>
+
+              <span>2006 — 2007</span>
+
+              <p class="timeline-text">
+                Ratione voluptatem sequi nesciunt, facere quisquams facere menda ossimus, omnis voluptas assumenda est
+                omnis..
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">High school of art and design</h4>
+
+              <span>2002 — 2004</span>
+
+              <p class="timeline-text">
+                Duis aute irure dolor in reprehenderit in voluptate, quila voluptas mag odit aut fugit, sed consequuntur
+                magni dolores
+                eos.
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Creative director</h4>
+
+              <span>2015 — Present</span>
+
+              <p class="timeline-text">
+                Nemo enim ipsam voluptatem blanditiis praesentium voluptum delenit atque corrupti, quos dolores et qvuas
+                molestias
+                exceptur.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Art director</h4>
+
+              <span>2013 — 2015</span>
+
+              <p class="timeline-text">
+                Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et
+                quas molestias
+                exceptur.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Web designer</h4>
+
+              <span>2010 — 2013</span>
+
+              <p class="timeline-text">
+                Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et
+                quas molestias
+                exceptur.
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="skill">
+
+          <h3 class="h3 skills-title">My skills</h3>
+
+          <ul class="skills-list content-card">
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Web design</h5>
+                <data value="80">80%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 80%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Graphic design</h5>
+                <data value="70">70%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 70%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Branding</h5>
+                <data value="90">90%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">WordPress</h5>
+                <data value="50">50%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 50%;"></div>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #PORTFOLIO
+      -->
+
+      <article class="portfolio" data-page="portfolio">
+
+        <header>
+          <h2 class="h2 article-title">Portfolio</h2>
+        </header>
+
+        <section class="projects">
+
+          <ul class="filter-list">
+
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Web design</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Applications</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Web development</button>
+            </li>
+
+          </ul>
+
+          <div class="filter-select-box">
+
+            <button class="filter-select" data-select>
+
+              <div class="select-value" data-selecct-value>Select category</div>
+
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+
+            </button>
+
+            <ul class="select-list">
+
+              <li class="select-item">
+                <button data-select-item>All</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Web design</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Applications</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Web development</button>
+              </li>
+
+            </ul>
+
+          </div>
+
+          <ul class="project-list">
+
+            <li class="project-item  active" data-filter-item data-category="web development">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="finance" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Finance</h3>
+
+                <p class="project-category">Web development</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web development">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="orizon" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Orizon</h3>
+
+                <p class="project-category">Web development</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web design">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="fundo" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Fundo</h3>
+
+                <p class="project-category">Web design</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="applications">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="brawlhalla" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Brawlhalla</h3>
+
+                <p class="project-category">Applications</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web design">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="dsm." loading="lazy">
+                </figure>
+
+                <h3 class="project-title">DSM.</h3>
+
+                <p class="project-category">Web design</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web design">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="metaspark" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">MetaSpark</h3>
+
+                <p class="project-category">Web design</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web development">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="summary" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Summary</h3>
+
+                <p class="project-category">Web development</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="applications">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="task manager" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Task Manager</h3>
+
+                <p class="project-category">Applications</p>
+
+              </a>
+            </li>
+
+            <li class="project-item  active" data-filter-item data-category="web development">
+              <a href="#">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="../../assets/images/esprit.png"  alt="arrival" loading="lazy">
+                </figure>
+
+                <h3 class="project-title">Arrival</h3>
+
+                <p class="project-category">Web development</p>
+
+              </a>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!--
+        - #BLOG
+      -->
+
+      <article class="blog" data-page="blog">
+
+        <header>
+          <h2 class="h2 article-title">Liste de demande</h2>
+        </header>
+
+        <section class="blog-posts">
+
+          <ul class="blog-posts-list">
+
+
+        {{ include('demande.html.twig', { demandes: demandes }) }}
+
+
+
+    
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!--
+        - #BLOG2
+      -->
+
+      <article class="blog" data-page="blog2">
+
+        <header>
+          <h2 class="h2 article-title">Envoyer demande</h2>
+        </header>
+
+
+        <section class="contact-form">
+
+          <h3 class="h3 form-title">Modifer Form</h3>
+
+        <form action="{{ path('envoyerdemende') }}" method="POST" class="form" data-form>
+
+  
+        <textarea name="description" class="form-input" placeholder="description" required data-form-input></textarea>
+
+        <button class="form-btn" type="submit" data-form-btn>
+         <span>Envoyer</span>
+        </button>
+       </form>
+
+        </section>
+
+      </article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!--
+        - #CONTACT
+      -->
+
+      <article class="contact" data-page="contact">
+
+        <header>
+          <h2 class="h2 article-title">Modifer</h2>
+        </header>
+
+      
+
+        <section class="contact-form">
+
+
+          <h3 class="h3 form-title">Modifer Form</h3>
+
+         <form action="{{ path('app_modifier_profil') }}" method="POST" class="form" data-form  enctype="multipart/form-data">
+
+
+
+
+
+
+
+
+
+<div style="margin-bottom: 25px; display: flex; flex-direction: column; align-items: center;">
+    <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="previewImage(this)" style="display: none;">
+    
+    <!-- Conteneur pour les images -->
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25px">
+        <!-- Aperçu de la nouvelle image -->
+        <div id="imagePreview" style="margin-top: 10px; display: none;">
+            <img id="preview" src="#" alt="Aperçu de l'image" style="
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 3px solid #ddd;">
+        </div>
+        
+        <!-- Affichage de l'image actuelle depuis image_url -->
+        {% if app.session.get('client_image') %}
+        <div id="currentImage" style="margin-top: 10px;">
+            <img src="{{ app.session.get('client_image') }}"  alt="Photo actuelle" style="
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 3px solid #ddd;">
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Bouton personnalisé -->
+    <button type="button" onclick="document.getElementById('avatar').click()" style="
+        padding: 8px 15px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 15px;">
+        Choisir une image
+    </button>
+</div>
+
+<script>
+function previewImage(input) {
+    const preview = document.getElementById('preview');
+    const imagePreview = document.getElementById('imagePreview');
+    const currentImage = document.getElementById('currentImage');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            
+            if (currentImage) {
+                currentImage.style.display = 'none';
+            }
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+
+
+
+
+
+  <div class="input-wrapper">
+    <input type="text" name="nom" class="form-input" placeholder="Nom" required data-form-input value="{{ app.session.get('utilisateur_nom') }}">
+    <input type="text" name="prenom" class="form-input" placeholder="Prenom" required data-form-input value="{{ app.session.get('utilisateur_prenom') }}">
+  </div>
+  <div style="margin-bottom: 25px;">
+    <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input value="{{ app.session.get('utilisateur_email') }}">
+  </div>
+  <div style="margin-bottom: 25px;">
+    <input type="text" name="num" class="form-input" placeholder="Num" required data-form-input value="{{ app.session.get('client_telephone') }}">
+  </div>
+  <div style="margin-bottom: 25px;">
+    <input type="text" name="adresse" class="form-input" placeholder="Localisation" required data-form-input value="{{ app.session.get('client_adresse') }}">
+  </div>
+
+  <button class="form-btn" type="submit" data-form-btn>
+    <span>Modifier</span>
+  </button>
+
+
+
+
+
+
+
+  
+</form>
+
+
+
+
+
+
+                 {% for message in app.flashes('error') %}
+  <div style="color: red; font-size: 14px; margin-bottom: 10px;">
+    {{ message }}
+  </div>
+{% endfor %}
+
+{% for message in app.flashes('success') %}
+  <div style="color: green; font-size: 14px; margin-bottom: 10px;">
+    {{ message }}
+  </div>
+{% endfor %}
+             <!--
+                  si le modification nest pas fait correctemet elle afficher le erre sous le formuler isi
+               -->
+
+
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!--
+    - custom js link
+  -->
+<script src="{{ asset('js/script2.js') }}"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

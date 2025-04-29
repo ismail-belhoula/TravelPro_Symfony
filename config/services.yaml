@@ -8,6 +8,9 @@ parameters:
     app.base_url: '%env(APP_URL)%'
 
 
+    cloudinary.cloud_name: 'dm4vfjtms'
+    cloudinary.api_key: ''
+    cloudinary.api_secret: ''
 services:
     # default configuration for services in *this* file
     _defaults:

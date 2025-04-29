@@ -13,6 +13,21 @@
             "./src/Repository/.gitignore"
         ]
     },
+<<<<<<< HEAD
+=======
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "1f5514cfa15b947298df4d771e694e578d4c204d"
+        },
+        "files": [
+            "./src/DataFixtures/AppFixtures.php"
+        ]
+    },
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     "doctrine/doctrine-migrations-bundle": {
         "version": "3.4",
         "recipe": {
@@ -127,7 +142,10 @@
             "./src/Kernel.php"
         ]
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     "symfony/google-mailer": {
         "version": "6.4",
         "recipe": {
@@ -137,7 +155,10 @@
             "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
         }
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     "symfony/mailer": {
         "version": "6.4",
         "recipe": {
@@ -312,6 +333,7 @@
     },
     "twig/extra-bundle": {
         "version": "v3.20.0"
+<<<<<<< HEAD
     },
     "vich/uploader-bundle": {
         "version": "2.6",
@@ -321,5 +343,7 @@
             "version": "1.13",
             "ref": "1b3064c2f6b255c2bc2f56461aaeb76b11e07e36"
         }
+=======
+>>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     }
 }

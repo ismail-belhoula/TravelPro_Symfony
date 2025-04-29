@@ -1,0 +1,10 @@
+ {% for client in clients %} {# <-- Vérifiez l'orthographe ici #}
+        <li class="clients-item">
+            <a href="#">
+                <img src="{{ client.image_url ?? asset('assets/images/default-client.png') }}" 
+                     alt="{{ client.utilisateur.nom ?? 'Client' }}">
+            </a>
+        </li>
+    {% else %}
+        <li>Aucun client trouvé.</li>
+    {% endfor %}

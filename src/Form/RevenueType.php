@@ -38,4 +38,3 @@ class RevenueType extends AbstractType
         ]);
     }
 }
-

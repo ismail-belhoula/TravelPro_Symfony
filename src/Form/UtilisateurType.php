@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,12 +15,12 @@ class UtilisateurType extends AbstractType
     {
         $builder
             ->add('nom_utilisateur')
-            ->add('Prenom')
+            ->add('prenom')
             ->add('mail_utilisateur')
-            ->add('mot_de_passe_utilisateur')
-            ->add('role_utilisateur')
-            ->add('code_verification')
-            ->add('etat')
+            ->add('mot_de_passe_utilisateur', PasswordType::class)
+            // Champs pour Client
+            ->add('adresse', TextType::class, ['mapped' => false])
+            ->add('telephone', TextType::class, ['mapped' => false])
         ;
     }
 
@@ -29,3 +31,5 @@ class UtilisateurType extends AbstractType
         ]);
     }
 }
+
+

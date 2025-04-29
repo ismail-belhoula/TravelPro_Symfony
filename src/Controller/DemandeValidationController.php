@@ -78,4 +78,20 @@ final class DemandeValidationController extends AbstractController
 
         return $this->redirectToRoute('app_demande_validation_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
+
+
+
+
+
+    #[Route('/blog', name: 'app_blog')]
+    public function blog(DemandeValidationRepository $demandeRepo): Response
+    {
+        return $this->render('demande.html.twig', [
+            'demandes' => $demandeRepo->findAll(),
+        ]);
+    }
 }
