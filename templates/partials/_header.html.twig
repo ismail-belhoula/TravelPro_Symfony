@@ -59,8 +59,19 @@
                         <div class="unit-body"><a class="link-phone" href="tel:#">+216 78123123</a></div>
                       </div>
                     </li>
-                  </ul><a class="button button-md button-default-outline-2 button-ujarak" href="#">Se Connecter</a></ul><a class="button button-md button-default-outline-2 button-ujarak" href="#">S'inscrire
-                  </a>
+                  </ul>
+                  
+                  
+                  {% if not app.session.get('utilisateur_id') %}
+
+  <a class="button button-md button-default-outline-2 button-ujarak" href="{{ path('app_login') }}">Se Connecter</a>
+{% endif %}
+
+                  </ul>
+                            {% if not app.session.get('utilisateur_id') %}
+ 
+  <a class="button button-md button-default-outline-2 button-ujarak" href="{{ path('app_inscription') }}">S'inscrire</a>
+{% endif %}
 
                 </div>
               </div>
@@ -95,6 +106,9 @@
                             </li>
                             <li class="rd-nav-item {{ app.request.get('_route') == 'boutique' ? 'active' : '' }}">
                                 <a class="rd-nav-link" href="{{ path('boutique') }}">Boutique</a>
+                            </li>
+                            <li class="rd-nav-item {{ app.request.get('_route') == 'app_profile' ? 'active' : '' }}">
+                                 <a class="rd-nav-link" href="{{ path('app_profile') }}">Profile</a>
                             </li>
                         </ul>
 

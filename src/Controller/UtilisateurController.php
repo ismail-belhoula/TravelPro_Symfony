@@ -9,6 +9,7 @@ use Cloudinary\Api\Exception\ApiError;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 // Ajoutez ce use statement avec les autres imports
 use App\Entity\Client;
+use App\Entity\Produit;
 use App\Entity\Utilisateur;
 use App\Form\UtilisateurType;
 use App\Repository\UtilisateurRepository;
@@ -44,6 +45,8 @@ public function profile(SessionInterface $session, DemandeValidationRepository $
     $clientId = $session->get('client_id');
     $demandes = [];
     $clients=[];
+    $produits=[];
+
     if ($clientId) {
         $demandes = $repo->findAll();
         $clients = $clientRepository->findAll(); // ou findByUser() si tu veux filtrer
@@ -53,8 +56,8 @@ public function profile(SessionInterface $session, DemandeValidationRepository $
     return $this->render('profile.html.twig', [
         'demandes' => $demandes,
         'clients' => $clients,
-        'produits' => $produits,
-
+       // 'produits' => $produits,
+        'produits' => [],
     ]);
 }
 

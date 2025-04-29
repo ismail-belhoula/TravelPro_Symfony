@@ -61,15 +61,12 @@ class DemandeValidation
     #[ORM\Column(type: 'datetime', nullable: false)]
     private ?\DateTimeInterface $date_demande = null;
 
-<<<<<<< HEAD
-=======
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $descriptionfr = null;
 
->>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
     public function getDate_demande(): ?\DateTimeInterface
     {
         return $this->date_demande;
@@ -93,8 +90,6 @@ class DemandeValidation
         return $this;
     }
 
-<<<<<<< HEAD
-=======
     public function getDescription(): ?string
     {
         return $this->description;
@@ -119,5 +114,4 @@ class DemandeValidation
         return $this;
     }
 
->>>>>>> b39d0b1912e6a6ee1011519a7b43b8945158b610
 }
