@@ -16,28 +16,58 @@ class VoitureRepository extends ServiceEntityRepository
         parent::__construct($registry, Voiture::class);
     }
 
-    //    /**
-    //     * @return Voiture[] Returns an array of Voiture objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByCriteria(?string $dateDebut, ?string $dateFin): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.disponible = :disponible')
+            ->andWhere('v.dateDeLocation <= :dateDebut')
+            ->andWhere('v.dateDeRemise >= :dateFin')
+            ->setParameter('disponible', true)
+            ->setParameter('dateDebut', new \DateTime($dateDebut))
+            ->setParameter('dateFin', new \DateTime($dateFin))
+            ->orderBy('v.prixParJour', 'ASC');
 
-    //    public function findOneBySomeField($value): ?Voiture
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Search cars by query string.
+     *
+     * @param string $query Search query
+     * @return Voiture[] Array of Voiture entities
+     */
+    public function searchByQuery(string $query): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->where('v.marque LIKE :query')
+            ->orWhere('v.modele LIKE :query')
+            ->orWhere('CAST(v.annee AS string) LIKE :query')
+            ->orWhere('CAST(v.prixParJour AS string) LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('v.marque', 'ASC');
+
+        // Log the query for debugging
+        $sql = $qb->getQuery()->getSQL();
+        $parameters = $qb->getQuery()->getParameters();
+        error_log("searchByQuery SQL: $sql");
+        error_log("searchByQuery Parameters: " . print_r($parameters, true));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function save(Voiture $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Voiture $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }

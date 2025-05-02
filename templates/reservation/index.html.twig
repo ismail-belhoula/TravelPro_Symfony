@@ -9,7 +9,7 @@
     <meta name="author" content="">
 
     {% block title %}
-        <title>Gestion Des billets d'avion</title>
+        <title>Gestion Des Réservations</title>
     {% endblock %}
 
     <!-- Custom fonts for this template -->
@@ -126,18 +126,18 @@
             </div>
 
              <!-- Nav Item - Tables -->
-            <li class="nav-item active">
-                <a class="nav-link" href="voiture">
+             <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_voiture_index') }}">
                      <i class="fas fa-fw fa-chart-area"></i>
                     <span>Table voitures</span></a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="hotel">
+           <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_hotel_index') }}">
                      <i class="fas fa-fw fa-chart-area"></i>
                     <span>Table hotel</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="billetavion">
+                <a class="nav-link" href="{{ path('app_billetavion_index') }}">
                      <i class="fas fa-fw fa-chart-area"></i>
                     <span>Table billet avion</span></a>
             </li>
@@ -147,11 +147,6 @@
                     <span>Table reservation</span></a>
             </li>
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="commande">
-                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>table </span></a>
-            </li>
 
              <!-- Divider -->
             <hr class="sidebar-divider">
@@ -220,7 +215,7 @@
                                 <form id="searchFormMobile" class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" id="searchInputMobile" class="form-control bg-light border-0 small"
-                                            placeholder="Rechercher par compagnie, ville..." aria-label="Search"
+                                            placeholder="Rechercher par nom, statut..." aria-label="Search"
                                             aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">
@@ -407,12 +402,12 @@
                     {% endfor %}
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Gestion des billets d'avion</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Gestion des Réservations</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Liste des billets d'avion</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des réservations</h6>
                         </div>
                         <div class="card-body">
                             <div id="searchLoading">Recherche en cours...</div>
@@ -421,48 +416,41 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Compagnie</th>
-                                            <th>Classe Billet</th>
-                                            <th>Ville Départ</th>
-                                            <th>Ville Arrivée</th>
-                                            <th>Date Départ</th>
-                                            <th>Date Arrivée</th>
-                                            <th>Prix</th>
+                                            <th>Nom</th>
+                                            <th>Prénom</th>
+                                            <th>Voiture</th>
+                                            <th>Billet Avion</th>
+                                            <th>Hotel</th>
+                                            <th>Statut</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="billetavionTableBody">
-                                        {% for billetavion in billetavions %}
+                                    <tbody id="reservationTableBody">
+                                        {% for reservation in reservations %}
                                             <tr>
-                                                <td>{{ billetavion.compagnie }}</td>
-                                                <td>{{ billetavion.classBillet }}</td>
-                                                <td>{{ billetavion.villeDepart }}</td>
-                                                <td>{{ billetavion.villeArrivee }}</td>
-                                                <td>{{ billetavion.dateDepart ? billetavion.dateDepart|date('Y-m-d') : '' }}</td>
-                                                <td>{{ billetavion.dateArrivee ? billetavion.dateArrivee|date('Y-m-d') : '' }}</td>
-                                                <td>{{ billetavion.prix }}</td>
+                                                <td>{{ reservation.client and reservation.client.utilisateur ? reservation.client.utilisateur.nomUtilisateur : '' }}</td>
+                                                <td>{{ reservation.client and reservation.client.utilisateur ? reservation.client.utilisateur.Prenom : '' }}</td>
+                                                <td>{{ reservation.voiture ? reservation.voiture.marque : '' }}</td>
+                                                <td>{{ reservation.billetAvion ? reservation.billetAvion.compagnie : '' }}</td>
+                                                <td>{{ reservation.hotel ? reservation.hotel.nom : '' }}</td>
+                                                <td>{{ reservation.statut }}</td>
                                                 <td>
                                                     <div class="action-buttons">
-                                                        <a href="{{ path('app_billetavion_show', {'id_billetavion': billetavion.idBilletavion}) }}" class="btn btn-sm btn-primary">Voir</a>
-                                                        <a href="{{ path('app_billetavion_edit', {'id_billetavion': billetavion.idBilletavion}) }}" class="btn btn-sm btn-secondary">Modifier</a>
-                                                        <form method="post" action="{{ path('app_billetavion_delete', {'id_billetavion': billetavion.idBilletavion}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce billet d\'avion ?');">
-                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ billetavion.idBilletavion) }}">
-                                                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
-                                                        </form>
+                                                        <a href="{{ path('app_reservation_show', {'id_reservation': reservation.idReservation}) }}" class="btn">Voir</a>
+                                                        <a href="{{ path('app_reservation_edit', {'id_reservation': reservation.idReservation}) }}" class="btn">Modifier</a>
+                                                        {% include "reservation/_delete_form.html.twig" with {'reservation': reservation, 'redirect_to': 'app_reservation_index'} %}
                                                     </div>
                                                 </td>
                                             </tr>
                                         {% else %}
                                             <tr>
-                                                <td colspan="8">Aucun billet d'avion trouvé</td>
+                                                <td colspan="7">Aucune réservation trouvée</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{{ path('app_billetavion_new') }}" class="btn btn-primary">
-                                <i class="fas fa-plus-circle"></i> Ajouter un nouveau billet d'avion
-                            </a>
+                            
                         </div>
                     </div>
                     {% endblock %}
@@ -475,7 +463,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Votre Société {{ "now"|date('Y') }}</span>
+                        <span>Copyright © Votre Société {{ "now"|date('Y') }}</span>
                     </div>
                 </div>
             </footer>
@@ -545,53 +533,51 @@
             },
             "stateSave": true,
             "columnDefs": [
-                { "orderable": false, "targets": [7] } // Désactiver le tri sur la colonne Actions
+                { "orderable": false, "targets": [6] } // Désactiver le tri sur la colonne Actions
             ]
         });
 
         // Stocker les données initiales
         const initialData = [];
-        jQuery('#billetavionTableBody tr').each(function() {
+        jQuery('#reservationTableBody tr').each(function() {
             const row = jQuery(this);
             initialData.push({
-                compagnie: row.find('td:eq(0)').text(),
-                classBillet: row.find('td:eq(1)').text(),
-                villeDepart: row.find('td:eq(2)').text(),
-                villeArrivee: row.find('td:eq(3)').text(),
-                dateDepart: row.find('td:eq(4)').text(),
-                dateArrivee: row.find('td:eq(5)').text(),
-                prix: row.find('td:eq(6)').text(),
-                actions: row.find('td:eq(7)').html()
+                nom: row.find('td:eq(0)').text(),
+                prenom: row.find('td:eq(1)').text(),
+                voiture: row.find('td:eq(2)').text(),
+                billetAvion: row.find('td:eq(3)').text(),
+                hotel: row.find('td:eq(4)').text(),
+                statut: row.find('td:eq(5)').text(),
+                actions: row.find('td:eq(6)').html()
             });
         });
         console.log('Données initiales stockées :', initialData);
 
         // Fonction pour mettre à jour le tableau
-        function updateTable(billetavions) {
+        function updateTable(reservations) {
             dataTable.clear().draw();
             
-            if (!billetavions || billetavions.length === 0) {
+            if (!reservations || reservations.length === 0) {
                 dataTable.row.add([
-                    '', '', '', '', '', '', '',
-                    '<td colspan="8" class="text-center">Aucun billet d\'avion trouvé</td>'
+                    '', '', '', '', '', '',
+                    '<td colspan="7" class="text-center">Aucune réservation trouvée</td>'
                 ]).draw();
                 return;
             }
             
-            billetavions.forEach(billetavion => {
+            reservations.forEach(reservation => {
                 dataTable.row.add([
-                    billetavion.compagnie || '',
-                    billetavion.classBillet || '',
-                    billetavion.villeDepart || '',
-                    billetavion.villeArrivee || '',
-                    billetavion.dateDepart || '',
-                    billetavion.dateArrivee || '',
-                    billetavion.prix || '',
+                    reservation.nom || '',
+                    reservation.prenom || '',
+                    reservation.voiture || '',
+                    reservation.billetAvion || '',
+                    reservation.hotel || '',
+                    reservation.statut || '',
                     `<div class="action-buttons">
-                        <a href="${billetavion.showUrl}" class="btn btn-sm btn-primary">Voir</a>
-                        <a href="${billetavion.editUrl}" class="btn btn-sm btn-secondary">Modifier</a>
-                        <form method="post" action="${billetavion.deleteUrl}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce billet d\\'avion ?');">
-                            <input type="hidden" name="_token" value="${billetavion._token}">
+                        <a href="${reservation.showUrl}" class="btn btn-sm btn-primary">Voir</a>
+                        <a href="${reservation.editUrl}" class="btn btn-sm btn-secondary">Modifier</a>
+                        <form method="post" action="${reservation.deleteUrl}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                            <input type="hidden" name="_token" value="${reservation._token}">
                             <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                         </form>
                     </div>`
@@ -618,7 +604,7 @@
             searchTimer = setTimeout(() => {
                 console.log('Envoi de la requête AJAX pour la recherche :', query);
                 jQuery.ajax({
-                    url: '{{ path('app_billetavion_quick_search') }}',
+                    url: '{{ path('app_reservation_quick_search') }}',
                     method: 'GET',
                     data: { query: query },
                     dataType: 'json',
@@ -631,7 +617,7 @@
                             updateTable([]);
                             return;
                         }
-                        updateTable(response.billetavions);
+                        updateTable(response.reservations);
                     },
                     error: function(xhr, status, error) {
                         console.error('Erreur AJAX:', status, error, xhr.responseText);

@@ -102,10 +102,16 @@
                                 <a class="rd-nav-link" href="{{ path('about') }}">A Propos</a>
                             </li>
                             <li class="rd-nav-item {{ app.request.get('_route') == 'contact' ? 'active' : '' }}">
-                                <a class="rd-nav-link" href="{{ path('contact') }}">Contacter Nous</a>
+                                <a class="rd-nav-link" href="{{ path('contact') }}">Contacter</a>
                             </li>
                             <li class="rd-nav-item {{ app.request.get('_route') == 'boutique' ? 'active' : '' }}">
                                 <a class="rd-nav-link" href="{{ path('boutique') }}">Boutique</a>
+                            </li>
+                            <li class="rd-nav-item {{ app.request.get('_route') == 'reserver' ? 'active' : '' }}">
+                                <a class="rd-nav-link" href="{{ path('app_reservation_new') }}">Reserver</a>
+                            </li>
+                            <li class="rd-nav-item {{ app.request.get('_route') == 'mes reservation' ? 'active' : '' }}">
+                                <a class="rd-nav-link" href="{{ path('app_reservations_client') }}">  Reservations</a>
                             </li>
                             <li class="rd-nav-item {{ app.request.get('_route') == 'app_profile' ? 'active' : '' }}">
                                  <a class="rd-nav-link" href="{{ path('app_profile') }}">Profile</a>

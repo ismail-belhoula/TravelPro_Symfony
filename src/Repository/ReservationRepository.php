@@ -7,10 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Reservation|null find($id, $lockMode = null, $lockVersion = null)
- * @method Reservation|null findOneBy(array $criteria, array $orderBy = null)
- * @method Reservation[]    findAll()
- * @method Reservation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<Reservation>
  */
 class ReservationRepository extends ServiceEntityRepository
 {
@@ -19,5 +16,34 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    // Add custom methods as needed
+    /**
+     * Search reservations by query string.
+     *
+     * @param string $query
+     * @return Reservation[]
+     */
+    public function searchByQuery(string $query): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.client', 'c')
+            ->leftJoin('c.utilisateur', 'u')
+            ->leftJoin('r.voiture', 'v')
+            ->leftJoin('r.billetAvion', 'b')
+            ->leftJoin('r.hotel', 'h')
+            ->where('u.nomUtilisateur LIKE :query')
+            ->orWhere('u.prenom LIKE :query')
+            ->orWhere('v.marque LIKE :query')
+            ->orWhere('b.compagnie LIKE :query')
+            ->orWhere('h.nom LIKE :query')
+            ->orWhere('r.statut LIKE :query')
+            ->setParameter('query', '%' . $query . '%');
+
+        // Log the query for debugging
+        $sql = $qb->getQuery()->getSQL();
+        $parameters = $qb->getQuery()->getParameters();
+        error_log("searchByQuery SQL: $sql");
+        error_log("searchByQuery Parameters: " . print_r($parameters, true));
+
+        return $qb->getQuery()->getResult();
+    }
 }

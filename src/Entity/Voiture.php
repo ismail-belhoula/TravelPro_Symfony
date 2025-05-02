@@ -6,7 +6,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use App\Repository\VoitureRepository;
 
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
@@ -15,7 +14,7 @@ class Voiture
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: "id_voiture", type: 'integer')]
     private ?int $id_voiture = null;
 
     public function getId_voiture(): ?int
@@ -29,7 +28,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(name: "Marque", type: 'string', nullable: false)]
     private ?string $marque = null;
 
     public function getMarque(): ?string
@@ -43,7 +42,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(name: "Modele", type: 'string', nullable: false)]
     private ?string $modele = null;
 
     public function getModele(): ?string
@@ -57,7 +56,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Column(name: "Annee", type: 'integer', nullable: false)]
     private ?int $annee = null;
 
     public function getAnnee(): ?int
@@ -71,7 +70,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'decimal', nullable: false)]
+    #[ORM\Column(name: "PrixParJour", type: 'float', nullable: false)]
     private ?float $prixParJour = null;
 
     public function getPrixParJour(): ?float
@@ -85,7 +84,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'boolean', nullable: false)]
+    #[ORM\Column(name: "Disponible", type: 'boolean', nullable: true)]
     private ?bool $disponible = null;
 
     public function isDisponible(): ?bool
@@ -99,7 +98,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(name: "DateDeLocation", type: 'date', nullable: false)]
     private ?\DateTimeInterface $dateDeLocation = null;
 
     public function getDateDeLocation(): ?\DateTimeInterface
@@ -113,7 +112,7 @@ class Voiture
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(name: "DateDeRemise", type: 'date', nullable: false)]
     private ?\DateTimeInterface $dateDeRemise = null;
 
     public function getDateDeRemise(): ?\DateTimeInterface
@@ -127,51 +126,38 @@ class Voiture
         return $this;
     }
 
-    #[ORM\ManyToMany(targetEntity: Billetavion::class, inversedBy: 'voitures')]
-    #[ORM\JoinTable(
-        name: 'reservation',
-        joinColumns: [
-            new ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id_voiture')
-        ],
-        inverseJoinColumns: [
-            new ORM\JoinColumn(name: 'id_billetAvion', referencedColumnName: 'id_billetavion')
-        ]
-    )]
-    private Collection $billetavions;
-
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'voiture', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $reservations;
+    
     public function __construct()
     {
-        $this->billetavions = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
-
+    
     /**
-     * @return Collection<int, Billetavion>
+     * @return Collection<int, Reservation>
      */
-    public function getBilletavions(): Collection
+    public function getReservations(): Collection
     {
-        if (!$this->billetavions instanceof Collection) {
-            $this->billetavions = new ArrayCollection();
-        }
-        return $this->billetavions;
+        return $this->reservations;
     }
-
-    public function addBilletavion(Billetavion $billetavion): self
+    
+    public function addReservation(Reservation $reservation): self
     {
-        if (!$this->getBilletavions()->contains($billetavion)) {
-            $this->getBilletavions()->add($billetavion);
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setVoiture($this);
         }
         return $this;
     }
-
-    public function removeBilletavion(Billetavion $billetavion): self
+    
+    public function removeReservation(Reservation $reservation): self
     {
-        $this->getBilletavions()->removeElement($billetavion);
+        if ($this->reservations->removeElement($reservation)) {
+            if ($reservation->getVoiture() === $this) {
+                $reservation->setVoiture(null);
+            }
+        }
         return $this;
     }
-
-    public function getIdVoiture(): ?int
-    {
-        return $this->id_voiture;
-    }
-
 }

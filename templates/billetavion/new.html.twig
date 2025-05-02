@@ -1,11 +1,204 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Billetavion{% endblock %}
+{% block title %}Nouveau Billet Avion{% endblock %}
 
 {% block body %}
-    <h1>Create new Billetavion</h1>
+    <style>
+        :root {
+            --blue-light: #4e73df;
+            --blue-dark: #224abe;
+            --gray-light: #f8f9fc;
+            --text-dark: #343a40;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    {{ include('billetavion/_form.html.twig') }}
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
 
-    <a href="{{ path('app_billetavion_index') }}">back to list</a>
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue-dark);
+        }
+
+        .product-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-image {
+            width: 420px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        .product-form {
+            flex-grow: 1;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .form-group-horizontal {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-group-horizontal label {
+            flex: 0 0 120px;
+            font-weight: 600;
+            color: var(--blue-dark);
+            margin-right: 1rem;
+        }
+
+        .form-group-horizontal .form-control {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-group-checkbox label {
+            flex: 0 0 120px;
+            font-weight: 600;
+            color: var(--blue-dark);
+            margin-right: 1rem;
+        }
+
+        .form-group-checkbox input {
+            width: auto;
+            transform: scale(1.2);
+            margin-right: 0.5rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--blue-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+            color: white;
+            background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .error-message {
+            display: block;
+            color: #d32f2f;
+            background-color: #ffebee;
+            border-left: 4px solid #d32f2f;
+            padding: 8px 12px;
+            margin: 5px 0 0 120px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            width: calc(100% - 120px);
+        }
+
+        .invalid-field {
+            border-color: #d32f2f !important;
+            background-color: #fff3f3;
+        }
+
+        .invalid-label {
+            color: #d32f2f !important;
+            font-weight: 600;
+        }
+    </style>
+    <h1>Ajouter une nouvelle billet d'avion</h1>
+
+    <div class="product-container">
+        <img src="{{ asset('images/motive.png') }}" alt="Image hôtel" class="product-image" />
+
+        <div class="product-form">
+            {{ form_start(form) }}
+
+            {% for field in form %}
+                {% if field.vars.name != '_token' %}
+                    {% if field.vars.block_prefixes|last == 'checkbox' %}
+                        <div class="form-group-checkbox">
+                            {{ form_label(field, null, {
+                                'label_attr': {'class': field.vars.errors|length ? 'invalid-label' : ''}
+                            }) }}
+                            {{ form_widget(field, {
+                                'attr': {
+                                    'class': field.vars.errors|length ? 'invalid-field' : ''
+                                }
+                            }) }}
+                        </div>
+                    {% else %}
+                        <div class="form-group-horizontal">
+                            {{ form_label(field, null, {
+                                'label_attr': {'class': field.vars.errors|length ? 'invalid-label' : ''}
+                            }) }}
+                            {{ form_widget(field, {
+                                'attr': {
+                                    'class': 'form-control' ~ (field.vars.errors|length ? ' invalid-field' : '')
+                                }
+                            }) }}
+                        </div>
+                    {% endif %}
+                    {% if field.vars.errors|length %}
+                        <div class="error-message">
+                            {% for error in field.vars.errors %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="form-actions">
+                <a href="{{ path('app_billetavion_index') }}" class="btn">Retour à la liste</a>
+                <button class="btn">Enregistrer</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

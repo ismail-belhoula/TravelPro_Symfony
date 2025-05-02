@@ -1,50 +1,151 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Billetavion{% endblock %}
+{% block title %}Détails du billet d'avion{% endblock %}
 
 {% block body %}
-    <h1>Billetavion</h1>
+    <style>
+        :root {
+            --blue-light: #4e73df;
+            --blue-dark: #224abe;
+            --gray-light: #f8f9fc;
+            --text-dark: #343a40;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id_billetavion</th>
-                <td>{{ billetavion.idBilletavion }}</td>
-            </tr>
-            <tr>
-                <th>Compagnie</th>
-                <td>{{ billetavion.compagnie }}</td>
-            </tr>
-            <tr>
-                <th>Class_Billet</th>
-                <td>{{ billetavion.classBillet }}</td>
-            </tr>
-            <tr>
-                <th>VilleDepart</th>
-                <td>{{ billetavion.villeDepart }}</td>
-            </tr>
-            <tr>
-                <th>VilleArrivee</th>
-                <td>{{ billetavion.villeArrivee }}</td>
-            </tr>
-            <tr>
-                <th>DateDepart</th>
-                <td>{{ billetavion.dateDepart ? billetavion.dateDepart|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateArrivee</th>
-                <td>{{ billetavion.dateArrivee ? billetavion.dateArrivee|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Prix</th>
-                <td>{{ billetavion.prix }}</td>
-            </tr>
-        </tbody>
-    </table>
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
 
-    <a href="{{ path('app_billetavion_index') }}">back to list</a>
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue-dark);
+        }
 
-    <a href="{{ path('app_billetavion_edit', {'id_billetavion': billetavion.id_billetavion}) }}">edit</a>
+        .billet-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    {{ include('billetavion/_delete_form.html.twig') }}
+        .billet-image {
+            width: 420px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        .billet-info {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            flex: 0 0 140px;
+            font-weight: 600;
+            color: var(--blue-dark);
+        }
+
+        .info-value {
+            flex: 1;
+            background-color: #f1f3f5;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+        }
+
+        .actions {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .actions a,
+        .actions button {
+            display: inline-block;
+            margin: 0 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+            color: white;
+            background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .actions a:hover,
+        .actions button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+    </style>
+
+    <h1>Détails du billet d'avion</h1>
+
+    <div class="billet-container">
+        <img src="{{ asset('images/motive.png') }}" alt="Image de l'avion" class="billet-image" />
+
+        <div class="billet-info">
+            <div class="info-item">
+                <div class="info-label">ID:</div>
+                <div class="info-value">{{ billetavion.idBilletavion }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Compagnie:</div>
+                <div class="info-value">{{ billetavion.compagnie }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Classe:</div>
+                <div class="info-value">{{ billetavion.classBillet }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Départ:</div>
+                <div class="info-value">{{ billetavion.villeDepart }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Arrivée:</div>
+                <div class="info-value">{{ billetavion.villeArrivee }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Date de départ:</div>
+                <div class="info-value">{{ billetavion.dateDepart ? billetavion.dateDepart|date('Y-m-d') : '-' }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Date d'arrivée:</div>
+                <div class="info-value">{{ billetavion.dateArrivee ? billetavion.dateArrivee|date('Y-m-d') : '-' }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prix:</div>
+                <div class="info-value">{{ billetavion.prix }} TND</div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ path('app_billetavion_index') }}">Retour à la liste</a>
+                <form method="post" action="{{ path('app_billetavion_delete', {'id_billetavion': billetavion.idBilletavion}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet billet davion ?');"
+                style="display: inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ billetavion.idBilletavion) }}">
+    <button class="btn">Delete</button>
+</form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

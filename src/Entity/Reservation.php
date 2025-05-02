@@ -3,104 +3,82 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReservationRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
- * @ORM\Table(name="reservation")
- */
+#[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[ORM\Table(name: 'reservation')]
 class Reservation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    private $id_reservation;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "id_reservation", type: 'integer')]
+    private ?int $id_reservation = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $id_voiture;
+    #[ORM\ManyToOne(targetEntity: Voiture::class, inversedBy: 'reservations')]
+#[ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id_voiture', onDelete: 'CASCADE')]
+private ?Voiture $voiture = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $id_billetAvion;
+#[ORM\ManyToOne(targetEntity: Billetavion::class, inversedBy: 'reservations')]
+#[ORM\JoinColumn(name: 'id_billetAvion', referencedColumnName: 'id_billetavion', onDelete: 'CASCADE')]
+private ?Billetavion $billetAvion = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $id_hotel;
+#[ORM\ManyToOne(targetEntity: Hotel::class, inversedBy: 'reservations')]
+#[ORM\JoinColumn(name: 'id_hotel', referencedColumnName: 'id_hotel', onDelete: 'CASCADE')]
+private ?Hotel $hotel = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $id_client;
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'reservations')]
+    #[ORM\JoinColumn(name: 'id_client', referencedColumnName: 'id_client')]
+    private ?Client $client = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $statut;
-
-    // Getters and setters
+    #[ORM\Column(type: 'string', length: 50)]
+    private ?string $statut = null;
 
     public function getIdReservation(): ?int
     {
         return $this->id_reservation;
     }
 
-    public function setIdReservation(int $id_reservation): self
+    public function getVoiture(): ?Voiture
     {
-        $this->id_reservation = $id_reservation;
+        return $this->voiture;
+    }
 
+    public function setVoiture(?Voiture $voiture): self
+    {
+        $this->voiture = $voiture;
         return $this;
     }
 
-    public function getIdVoiture(): ?int
+    public function getBilletAvion(): ?Billetavion
     {
-        return $this->id_voiture;
+        return $this->billetAvion;
     }
 
-    public function setIdVoiture(?int $id_voiture): self
+    public function setBilletAvion(?Billetavion $billetAvion): self
     {
-        $this->id_voiture = $id_voiture;
-
+        $this->billetAvion = $billetAvion;
         return $this;
     }
 
-    public function getIdBilletAvion(): ?int
+    public function getHotel(): ?Hotel
     {
-        return $this->id_billetAvion;
+        return $this->hotel;
     }
 
-    public function setIdBilletAvion(?int $id_billetAvion): self
+    public function setHotel(?Hotel $hotel): self
     {
-        $this->id_billetAvion = $id_billetAvion;
-
+        $this->hotel = $hotel;
         return $this;
     }
 
-    public function getIdHotel(): ?int
+    public function getClient(): ?Client
     {
-        return $this->id_hotel;
+        return $this->client;
     }
 
-    public function setIdHotel(?int $id_hotel): self
+    public function setClient(?Client $client): self
     {
-        $this->id_hotel = $id_hotel;
-
-        return $this;
-    }
-
-    public function getIdClient(): ?int
-    {
-        return $this->id_client;
-    }
-
-    public function setIdClient(?int $id_client): self
-    {
-        $this->id_client = $id_client;
-
+        $this->client = $client;
         return $this;
     }
 
@@ -112,7 +90,6 @@ class Reservation
     public function setStatut(string $statut): self
     {
         $this->statut = $statut;
-
         return $this;
     }
 }

@@ -6,8 +6,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use App\Repository\BilletavionRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BilletavionRepository::class)]
 #[ORM\Table(name: 'billetavion')]
@@ -15,22 +15,88 @@ class Billetavion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: "id_billetavion", type: 'integer')]
     private ?int $id_billetavion = null;
 
-    public function getId_billetavion(): ?int
+    #[ORM\Column(name: "compagnie", type: 'string', length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "La compagnie est obligatoire")]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-ZÀ-ÿ\s\-']+$/",
+        message: "La compagnie ne doit contenir que des lettres"
+    )]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "La compagnie ne peut pas dépasser {{ limit }} caractères"
+    )]
+    private ?string $compagnie = null;
+
+    #[ORM\Column(name: "class_Billet", type: 'string', length: 50, nullable: false)]
+    #[Assert\NotBlank(message: "La classe est obligatoire")]
+    #[Assert\Choice(
+        choices: ["economique", "affaire", "premiere"],
+        message: "La classe doit être économique, affaire ou première"
+    )]
+    private ?string $class_Billet = null;
+
+    #[ORM\Column(name: "villeDepart", type: 'string', length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "La ville de départ est obligatoire")]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-ZÀ-ÿ\s\-']+$/",
+        message: "La ville de départ ne doit contenir que des lettres"
+    )]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "La ville de départ ne peut pas dépasser {{ limit }} caractères"
+    )]
+    private ?string $villeDepart = null;
+
+    #[ORM\Column(name: "villeArrivee", type: 'string', length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "La ville d'arrivée est obligatoire")]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-ZÀ-ÿ\s\-']+$/",
+        message: "La ville d'arrivée ne doit contenir que des lettres"
+    )]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "La ville d'arrivée ne peut pas dépasser {{ limit }} caractères"
+    )]
+    private ?string $villeArrivee = null;
+
+    #[ORM\Column(name: "dateDepart", type: 'date', nullable: false)]
+    #[Assert\NotBlank(message: "La date de départ est obligatoire")]
+    #[Assert\GreaterThanOrEqual(
+        value: "today",
+        message: "La date de départ doit être aujourd'hui ou ultérieure"
+    )]
+    private ?\DateTimeInterface $dateDepart = null;
+
+    #[ORM\Column(name: "dateArrivee", type: 'date', nullable: false)]
+    #[Assert\NotBlank(message: "La date d'arrivée est obligatoire")]
+    #[Assert\Expression(
+        "this.getDateDepart() === null or this.getDateArrivee() === null or this.getDateArrivee() > this.getDateDepart()",
+        message: "La date d'arrivée doit être après la date de départ"
+    )]
+    private ?\DateTimeInterface $dateArrivee = null;
+
+    #[ORM\Column(name: "prix", type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    #[Assert\NotBlank(message: "Le prix est obligatoire")]
+    #[Assert\Positive(message: "Le prix doit être positif")]
+    #[Assert\Type(
+        type: "numeric",
+        message: "Le prix doit être un nombre"
+    )]
+    private ?string $prix = null;
+
+    public function getIdBilletavion(): ?int
     {
         return $this->id_billetavion;
     }
 
-    public function setId_billetavion(int $id_billetavion): self
+    public function setIdBilletavion(int $id): self
     {
-        $this->id_billetavion = $id_billetavion;
+        $this->id_billetavion = $id;
         return $this;
     }
-
-    #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $compagnie = null;
 
     public function getCompagnie(): ?string
     {
@@ -43,22 +109,16 @@ class Billetavion
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $class_Billet = null;
-
-    public function getClass_Billet(): ?string
+    public function getClassBillet(): ?string
     {
         return $this->class_Billet;
     }
 
-    public function setClass_Billet(string $class_Billet): self
+    public function setClassBillet(string $class_Billet): self
     {
         $this->class_Billet = $class_Billet;
         return $this;
     }
-
-    #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $villeDepart = null;
 
     public function getVilleDepart(): ?string
     {
@@ -71,9 +131,6 @@ class Billetavion
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $villeArrivee = null;
-
     public function getVilleArrivee(): ?string
     {
         return $this->villeArrivee;
@@ -84,9 +141,6 @@ class Billetavion
         $this->villeArrivee = $villeArrivee;
         return $this;
     }
-
-    #[ORM\Column(type: 'date', nullable: false)]
-    private ?\DateTimeInterface $dateDepart = null;
 
     public function getDateDepart(): ?\DateTimeInterface
     {
@@ -99,9 +153,6 @@ class Billetavion
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
-    private ?\DateTimeInterface $dateArrivee = null;
-
     public function getDateArrivee(): ?\DateTimeInterface
     {
         return $this->dateArrivee;
@@ -113,77 +164,53 @@ class Billetavion
         return $this;
     }
 
-    #[ORM\Column(type: 'decimal', nullable: false)]
-    private ?float $prix = null;
-
-    public function getPrix(): ?float
+    public function getPrix(): ?string
     {
         return $this->prix;
     }
 
-    public function setPrix(float $prix): self
+    public function setPrix(string $prix): self
     {
         $this->prix = $prix;
         return $this;
     }
 
-    #[ORM\ManyToMany(targetEntity: Voiture::class, inversedBy: 'billetavions')]
-    #[ORM\JoinTable(
-        name: 'reservation',
-        joinColumns: [
-            new ORM\JoinColumn(name: 'id_billetAvion', referencedColumnName: 'id_billetavion')
-        ],
-        inverseJoinColumns: [
-            new ORM\JoinColumn(name: 'id_voiture', referencedColumnName: 'id_voiture')
-        ]
-    )]
-    private Collection $voitures;
+    
+
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'billetAvion', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $reservations;
 
     public function __construct()
     {
-        $this->voitures = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
-
+    
     /**
-     * @return Collection<int, Voiture>
+     * @return Collection<int, Reservation>
      */
-    public function getVoitures(): Collection
+    public function getReservations(): Collection
     {
-        if (!$this->voitures instanceof Collection) {
-            $this->voitures = new ArrayCollection();
-        }
-        return $this->voitures;
+        return $this->reservations;
     }
-
-    public function addVoiture(Voiture $voiture): self
+    
+    public function addReservation(Reservation $reservation): self
     {
-        if (!$this->getVoitures()->contains($voiture)) {
-            $this->getVoitures()->add($voiture);
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setBilletAvion($this);
         }
         return $this;
     }
-
-    public function removeVoiture(Voiture $voiture): self
+    
+    public function removeReservation(Reservation $reservation): self
     {
-        $this->getVoitures()->removeElement($voiture);
+        if ($this->reservations->removeElement($reservation)) {
+            if ($reservation->getBilletAvion() === $this) {
+                $reservation->setBilletAvion(null);
+            }
+        }
         return $this;
     }
-
-    public function getIdBilletavion(): ?int
-    {
-        return $this->id_billetavion;
-    }
-
-    public function getClassBillet(): ?string
-    {
-        return $this->class_Billet;
-    }
-
-    public function setClassBillet(string $class_Billet): static
-    {
-        $this->class_Billet = $class_Billet;
-
-        return $this;
-    }
-
+    
 }
+

@@ -1,13 +1,213 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Voiture{% endblock %}
+{% block title %}Modifier Voiture{% endblock %}
 
 {% block body %}
-    <h1>Edit Voiture</h1>
+    <style>
+        :root {
+            --blue-light: #4e73df;
+            --blue-dark: #224abe;
+            --gray-light: #f8f9fc;
+            --text-dark: #343a40;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    {{ include('voiture/_form.html.twig', {'button_label': 'Update'}) }}
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 2rem;
+        }
 
-    <a href="{{ path('app_voiture_index') }}">back to list</a>
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue-dark);
+        }
 
-    {{ include('voiture/_delete_form.html.twig') }}
+        .product-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-image {
+            width: 420px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        .product-form {
+            flex-grow: 1;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .form-group-horizontal {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-group-horizontal label {
+            flex: 0 0 120px;
+            font-weight: 600;
+            color: var(--blue-dark);
+            margin-right: 1rem;
+        }
+
+        .form-group-horizontal .form-control {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-group-checkbox label {
+            flex: 0 0 120px;
+            font-weight: 600;
+            color: var(--blue-dark);
+            margin-right: 1rem;
+            order: 1;
+        }
+
+        .form-group-checkbox input {
+            order: 2;
+            width: auto;
+            transform: scale(1.2);
+            margin-right: 0.5rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--blue-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+            color: white;
+            background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+     
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .invalid-field {
+            border-color: #d32f2f !important;
+            background-color: #fff3f3;
+        }
+
+        .invalid-label {
+            color: #d32f2f !important;
+            font-weight: 600;
+        }
+
+        .form-group-checkbox .validation-error {
+            margin-left: 120px;
+            width: auto;
+        }
+    </style>
+
+    <h1>Modifier une voiture</h1>
+
+    <div class="product-container">
+        <img src="{{ asset('images/motive.png') }}" alt="Image du motive" class="product-image" />
+
+        <div class="product-form">
+             {{ form_start(form) }}
+                <div class="form-group-horizontal">
+                    {{ form_label(form.marque) }}
+                    {{ form_widget(form.marque, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.marque) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.modele) }}
+                    {{ form_widget(form.modele, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.modele) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.annee) }}
+                    {{ form_widget(form.annee, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.annee) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.prixParJour) }}
+                    {{ form_widget(form.prixParJour, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.prixParJour) }}
+                </div>
+
+                <div class="form-group-checkbox">
+                    {{ form_label(form.disponible) }}
+                    {{ form_widget(form.disponible) }}
+                    <div class="validation-error">
+                        {{ form_errors(form.disponible) }}
+                    </div>
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.dateDeLocation) }}
+                    {{ form_widget(form.dateDeLocation, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateDeLocation) }}
+                </div>
+
+                <div class="form-group-horizontal">
+                    {{ form_label(form.dateDeRemise) }}
+                    {{ form_widget(form.dateDeRemise, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateDeRemise) }}
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ path('app_voiture_index') }}" class="btn">Retour à la liste</a>
+                    <button class="btn">Enregistrer</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

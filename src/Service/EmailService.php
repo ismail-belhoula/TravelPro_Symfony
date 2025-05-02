@@ -7,6 +7,9 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
+
 class EmailService
 {
     private $mailer;
@@ -26,6 +29,23 @@ class EmailService
                    <p>Nous vous remercions pour votre commande. Veuillez trouver ci-joint votre facture.</p>
                    <p>Cordialement,<br>L\'équipe TravelPro</p>')
             ->attach($pdfContent, 'facture-' . $orderId . '.pdf', 'application/pdf');
+
+        $this->mailer->send($email);
+    }
+    public function sendReservationConfirmation(
+        string $to,
+        string $clientName,
+        array $reservationDetails
+    ): void {
+        $email = (new TemplatedEmail())
+            ->from('no-reply@travelpro.com')
+            ->to($to)
+            ->subject('Confirmation de votre réservation')
+            ->htmlTemplate('emails/reservation_confirmation.html.twig')
+            ->context([
+                'clientName' => $clientName,
+                'reservationDetails' => $reservationDetails,
+            ]);
 
         $this->mailer->send($email);
     }
