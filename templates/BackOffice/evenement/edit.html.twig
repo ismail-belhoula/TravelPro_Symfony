@@ -84,7 +84,66 @@
     </div>
 </div>
 {% endblock %}
+{% block js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+    let map;
+    let marker;
 
+    const modalEl = document.getElementById('mapModal');
+    const latitudeInput = document.querySelector('input[name*="[latitude]"]');
+    const longitudeInput = document.querySelector('input[name*="[longitude]"]');
+    const latText = document.getElementById('current-lat');
+    const lonText = document.getElementById('current-lon');
+
+    modalEl.addEventListener('shown.bs.modal', function () {
+        if (!map) {
+            // Create the map ONLY after modal is visible
+            map = L.map('map').setView([36.753, 10.286], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+
+            // Restore marker if inputs already have values
+            if (latitudeInput && longitudeInput && latitudeInput.value && longitudeInput.value) {
+                const lat = parseFloat(latitudeInput.value);
+                const lon = parseFloat(longitudeInput.value);
+                marker = L.marker([lat, lon]).addTo(map);
+                map.setView([lat, lon], 13);
+            }
+
+            map.on('click', function (e) {
+                const lat = e.latlng.lat.toFixed(6);
+                const lon = e.latlng.lng.toFixed(6);
+
+                if (marker) {
+                    marker.remove();
+                }
+
+                marker = L.marker([lat, lon]).addTo(map);
+
+                if (latitudeInput && longitudeInput) {
+                    latitudeInput.value = lat;
+                    longitudeInput.value = lon;
+                }
+                if (latText) latText.textContent = lat;
+                if (lonText) lonText.textContent = lon;
+            });
+        } else {
+            // Refresh map size if already created
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 200);
+        }
+    });
+});
+
+
+</script>
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script>
