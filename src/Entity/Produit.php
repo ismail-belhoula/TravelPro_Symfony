@@ -88,10 +88,8 @@ class Produit
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    #[Assert\NotBlank( 
-        message: 'il faut choisir un photo nom du produit.'
-    )]
+    #[ORM\Column(type: 'string', nullable: false)]
+
     private ?string $image_path = null;
 
     public function getImage_path(): ?string

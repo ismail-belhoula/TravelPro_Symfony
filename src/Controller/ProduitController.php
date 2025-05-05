@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-
 #[Route('/produit')]
 final class ProduitController extends AbstractController
 {
@@ -26,13 +25,34 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/new', name: 'app_produit_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle image upload (if present)
+            $imageFile = $form->get('imageFile')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                try {
+                    // Move the uploaded file to the designated directory
+                    $imageFile->move(
+                        $this->getParameter('produit_images_directory'),
+                        $newFilename
+                    );
+                    // Set the image path on the product entity
+                    $produit->setImagePath($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Erreur lors du téléchargement de l\'image');
+                }
+            }
+
             $entityManager->persist($produit);
             $entityManager->flush();
 
@@ -58,41 +78,44 @@ final class ProduitController extends AbstractController
     {
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle image upload (if present)
             $imageFile = $form->get('imageFile')->getData();
-    
+
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-    
+
                 try {
+                    // Move the uploaded file to the designated directory
                     $imageFile->move(
                         $this->getParameter('produit_images_directory'),
                         $newFilename
                     );
+                    // Set the image path on the product entity
                     $produit->setImagePath($newFilename);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Erreur lors du téléchargement de l\'image');
                 }
             }
-    
+
             $entityManager->flush();
-    
+
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }
-    
+
         return $this->render('produit/edit.html.twig', [
             'produit' => $produit,
             'form' => $form,
         ]);
     }
-    
+
     #[Route('/{id_produit}', name: 'app_produit_delete', methods: ['POST'])]
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$produit->getId_produit(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$produit->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($produit);
             $entityManager->flush();
         }
