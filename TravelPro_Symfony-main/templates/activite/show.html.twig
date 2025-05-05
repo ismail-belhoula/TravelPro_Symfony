@@ -1,0 +1,74 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Activités de l'événement - {{ evenement.nomEvent }}{% endblock %}
+
+{% block stylesheets %}
+ {{ parent() }}
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+    .page-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+    }
+    .activite-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        transition: transform 0.2s ease;
+    }
+    .activite-card:hover {
+        transform: translateY(-5px);
+    }
+    .activite-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #34495e;
+    }
+    .activite-desc {
+        color: #6c757d;
+        margin: 0.5rem 0 1rem;
+    }
+    .activite-dates {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+    .back-btn {
+        margin-top: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="page-title text-center">Activités liées à : <span style="color:#2980b9;">{{ evenement.nomEvent }}</span></h1>
+
+    {% if activites is empty %}
+        <div class="alert alert-info text-center">
+            Aucune activité n’est associée à cet événement pour le moment.
+        </div>
+    {% else %}
+        <div class="row">
+            {% for activite in activites %}
+                <div class="col-md-4 mb-4">
+                    <div class="activite-card">
+                        <div class="activite-title">{{ activite.nomActivite }}</div>
+                        <div class="activite-desc">{{ activite.description }}</div>
+                        <div class="activite-dates">
+                            📅 Du {{ activite.dateDebut|date('d M Y') }} au {{ activite.dateFin|date('d M Y') }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="text-center back-btn">
+        <a href="{{ path('front_event') }}" class="btn btn-outline-primary">← Retour aux événements</a>
+    </div>
+</div>
+{% endblock %}

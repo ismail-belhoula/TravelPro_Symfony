@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vérification{% endblock %}
+
+{% block stylesheets %}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+  <a href="{{ path('app_utilisateur_index') }}" class="return-link">← Retour à la page d’accueil</a>
+
+  <div class="login_box">
+    <div class="login-header">
+      <span>Vérification</span>
+    </div>
+
+    {# Affichage des messages flash d'erreur et de succès #}
+    {% for message in app.flashes('error') %}
+      <div style="color: red; font-size: 14px; margin-bottom: 10px;">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+      <div style="color: green; font-size: 14px; margin-bottom: 10px;">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <form method="post" action="{{ path('app_verification') }}" data-turbo="false">
+      <div class="input_box">
+        <input type="text" name="verification_code" pattern="\d{6}" maxlength="6" required class="input-field" placeholder=" " autofocus>
+        <label class="label">Code de vérification</label>
+        <i class="bx bx-lock icon"></i>
+      </div>
+
+      <div class="input_box">
+        <input type="submit" class="input-submit" value="Vérifier">
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

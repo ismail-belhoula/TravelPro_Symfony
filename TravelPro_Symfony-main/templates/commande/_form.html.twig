@@ -1,0 +1,52 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+<div class="card shadow-sm p-4">
+
+    <div class="mb-3">
+        {{ form_label(form.montant_total, 'Montant Total :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.montant_total, {
+            'attr': {
+                'class': 'form-control',
+                'placeholder': 'Entrez le montant (ex: 10.99)',
+                'step': '0.01',
+                'min': '0'
+            }
+        }) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.montant_total) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.date_commande, 'Date de la Commande :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.date_commande, {
+            'attr': {
+                'class': 'form-control',
+                'type': 'date'
+            }
+        }) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.date_commande) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.status, 'Statut de la Commande :', {'label_attr': {'class': 'form-label'}}) }} <span class="text-danger" style="color: red">*</span>
+        {{ form_widget(form.status, {
+            'attr': {
+                'class': 'form-select'
+            }
+        }) }}
+        <div class="invalid-feedback d-block">
+            {{ form_errors(form.status) }}
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">
+            {{ button_label|default('Valider la commande') }}
+        </button>
+    </div>
+</div>
+
+{{ form_end(form) }}

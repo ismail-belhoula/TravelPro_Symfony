@@ -1,0 +1,16 @@
+.products-grid {
+    transition: opacity 0.3s ease;
+}
+
+.search-container {
+    margin-bottom: 2rem;
+}
+
+.form-select {
+    cursor: pointer;
+}
+
+/* Loading state */
+.products-grid[style*="opacity: 0.6"] {
+    pointer-events: none;
+}

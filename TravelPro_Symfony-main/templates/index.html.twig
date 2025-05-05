@@ -1,0 +1,403 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Home - TravelPro{% endblock %}
+
+{% block content %}
+      <!-- Swiper-->
+      <section class="section swiper-container swiper-slider swiper-slider-corporate swiper-pagination-style-2" data-loop="true" data-autoplay="5000" data-simulate-touch="true" data-nav="false" data-direction="vertical">
+        <div class="swiper-wrapper text-left">
+          <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/travelphoto.jpg') }}">
+            <div class="swiper-slide-caption section-md">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h6 class="text-uppercase" data-caption-animate="fadeInRight" data-caption-delay="0">Profitez des meilleures destinations avec votre agence de voyages d'affaires</h6>
+                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Explorez</span><span class="font-weight-bold">Le monde</span></h2><a class="button button-default-outline button-ujarak" href="{{ path('contact') }}" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/cartravel.png') }}">
+            <div class="swiper-slide-caption section-md">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h6 class="text-uppercase" data-caption-animate="fadeInRight" data-caption-delay="0">Une équipe d'experts en voyages professionnels</h6>
+                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Faites confiance</span><span class="font-weight-bold">A notre expérience</span></h2><a class="button button-default-outline button-ujarak" href="{{ path('contact') }}" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/taxitravel.jpg') }}">
+            <div class="swiper-slide-caption section-md">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h6 class="text-uppercase" data-caption-animate="fadeInRight" data-caption-delay="0">Créez votre prochain voyage d'affaires avec nous</h6>
+                    <h2 class="oh font-weight-light" data-caption-animate="slideInUp" data-caption-delay="100"><span>Créez</span><span class="font-weight-bold">Votre visite</span></h2><a class="button button-default-outline button-ujarak" href="{{ path('contact') }}" data-caption-animate="fadeInLeft" data-caption-delay="0">Contacter Nous</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Swiper Pagination-->
+        <div class="swiper-pagination"></div>
+      </section>
+      <!-- Section Box Categories-->
+      <section class="section section-lg section-top-1 bg-gray-4">
+        <div class="container offset-negative-1">
+          <div class="box-categories cta-box-wrap">
+            <div class="box-categories-content">
+              <div class="row justify-content-center">
+                <div class="col-md-4 wow fadeInDown col-9" data-wow-delay=".2s">
+                  <ul class="list-marked-2 box-categories-list">
+                    <li><a href="#"><img src="{{ asset('images/meetingtravel.png') }}" alt="" width="368" height="420"/></a>
+                      <h5 class="box-categories-title">Organisation de conference</h5>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4 wow fadeInDown col-9" data-wow-delay=".2s">
+                  <ul class="list-marked-2 box-categories-list">
+                    <li><a href="#"><img src="{{ asset('images/eventstravel.jpg') }}" alt="" width="368" height="420"/></a>
+                      <h5 class="box-categories-title"> aller aux événements</h5>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4 wow fadeInDown col-9" data-wow-delay=".2s">
+                  <ul class="list-marked-2 box-categories-list">
+                    <li><a href="#"><img src="{{ asset('images/buisness2.png') }}" alt="" width="368" height="420"/></a>
+                      <h5 class="box-categories-title">faire de nouvelles collaborations</h5>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><a class="link-classic wow fadeInUp" href="{{ path('about') }}">A Propos<span></span></a>
+          <!-- Owl Carousel-->
+        </div>
+      </section>
+      <!-- Discover New Horizons-->
+      <section class="section section-sm section-first bg-default text-md-left">
+        <div class="container">
+          <div class="row row-50 align-items-center justify-content-center justify-content-xl-between">
+            <div class="col-lg-6 text-center wow fadeInUp"><img src="{{ asset('images/planetravel.jpg') }}" alt="" width="556" height="382"/>
+            </div>
+            <div class="col-lg-6 wow fadeInRight" data-wow-delay=".1s">
+              <div class="box-width-lg-470">
+                <h3>Découvrez de nouveaux horizons</h3>
+                <!-- Bootstrap tabs-->
+                <div class="tabs-custom tabs-horizontal tabs-line tabs-line-big tabs-line-style-2 text-center text-md-left" id="tabs-7">
+                  <!-- Nav tabs-->
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-7-1" data-toggle="tab">À propos</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-2" data-toggle="tab">Pourquoi nous </a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-3" data-toggle="tab">Notre mission</a></li>
+                  </ul>
+                  <!-- Tab panes-->
+                  <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tabs-7-1">
+                      <p>TravelPro s'engage à offrir à ses clients le meilleur rapport qualité-prix et des prestations de voyage de qualité. Passionnés par les voyages d'affaires, nous vous aidons à gérer votre vie professionnelle.</p>
+                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="{{ path('contact') }}">Contacter Nous</a><a class="button button-black-outline button-md" href="{{ path('about') }}">En savoir plus</a></div>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-7-2">
+                      <p>Nous sommes fiers d’offrir une excellente qualité et un excellent rapport qualité-prix dans nos services de voyage d’affaires, qui vous permettent de découvrir votre destination choisie de manière authentique et enrichissante.</p>
+                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="{{ path('contact') }}">Contacter Nous</a><a class="button button-black-outline button-md" href="{{ path('about') }}">En savoir plus</a></div>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-7-3">
+                      <p>Notre mission est d’offrir une expérience de planification de voyage d’affaires optimale, tout en devenant un guichet unique pour l’ensemble des services de voyage disponibles dans le secteur.</p>
+                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="{{ path('contact') }}">Contacter Nous</a><a class="button button-black-outline button-md" href="{{ path('about') }}">En savoir plus</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+<!-- Nos Services -->
+<section class="section section-sm">
+  <div class="container">
+    <h3>Nos Services</h3>
+    <div class="row row-30">
+
+      <!-- Réservation d'Hôtel -->
+      <div class="col-sm-6 col-lg-4">
+        <article class="box-icon-classic">
+          <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+            <div class="unit-left">
+              <div class="box-icon-classic-icon fl-bigmug-line-hot67"></div>
+            </div>
+            <div class="unit-body">
+              <h5 class="box-icon-classic-title"><a href="#">Réservation d'Hôtel</a></h5>
+              <p class="box-icon-classic-text">Trouvez et réservez les meilleurs hôtels adaptés à vos besoins professionnels.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Réservation de Taxi -->
+      <div class="col-sm-6 col-lg-4">
+        <article class="box-icon-classic">
+          <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+            <div class="unit-left">
+              <div class="box-icon-classic-icon fl-bigmug-line-circular220"></div>
+            </div>
+            <div class="unit-body">
+              <h5 class="box-icon-classic-title"><a href="#">Réservation de Taxi</a></h5>
+              <p class="box-icon-classic-text">Bénéficiez d’un transport rapide et fiable pour tous vos déplacements professionnels.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Réservation de Billets -->
+      <div class="col-sm-6 col-lg-4">
+        <article class="box-icon-classic">
+          <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+            <div class="unit-left">
+              <div class="box-icon-classic-icon fl-bigmug-line-wallet26"></div>
+            </div>
+            <div class="unit-body">
+              <h5 class="box-icon-classic-title"><a href="#">Réservation de Billets</a></h5>
+              <p class="box-icon-classic-text">Réservez vos billets d’avion, de train ou autres en toute simplicité.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Boutique en Ligne -->
+      <div class="col-sm-6 col-lg-4">
+        <article class="box-icon-classic">
+          <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+            <div class="unit-left">
+              <div class="box-icon-classic-icon fl-bigmug-line-favourites5"></div>
+            </div>
+            <div class="unit-body">
+              <h5 class="box-icon-classic-title"><a href="#">Boutique en Ligne</a></h5>
+              <p class="box-icon-classic-text">Achetez des articles essentiels pour vos voyages d'affaires, en ligne et en toute sécurité.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Service Rapide -->
+      <div class="col-sm-6 col-lg-4">
+        <article class="box-icon-classic">
+          <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+            <div class="unit-left">
+              <div class="box-icon-classic-icon fl-bigmug-line-headphones32"></div>
+            </div>
+            <div class="unit-body">
+              <h5 class="box-icon-classic-title"><a href="#">Service Rapide</a></h5>
+              <p class="box-icon-classic-text">Profitez d’un service client réactif et disponible à tout moment pour vous accompagner.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Garantie du Meilleur Prix -->
+      <div class="col-sm-6 col-lg-4">
+        <article class="box-icon-classic">
+          <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+            <div class="unit-left">
+              <div class="box-icon-classic-icon fl-bigmug-line-equalization3"></div>
+            </div>
+            <div class="unit-body">
+              <h5 class="box-icon-classic-title"><a href="#">Garantie du Meilleur Prix</a></h5>
+              <p class="box-icon-classic-text">Nous vous garantissons les meilleurs prix pour tous vos services de voyage d'affaires.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Services pour les voyages d'affaires -->
+<section class="section section-sm bg-default">
+  <div class="container">
+    <h3 class="oh-desktop"><span class="d-inline-block wow slideInDown">Voyages d'Affaires</span></h3>
+    <div class="row row-sm row-40 row-md-50">
+      <div class="col-sm-6 col-md-12 wow fadeInRight">
+        <!-- Service Business -->
+        <article class="product-big">
+          <div class="unit flex-column flex-md-row align-items-md-stretch">
+            <div class="unit-left">
+              <a class="product-big-figure" href="#"><img src="{{ asset('images/hotel2.png') }}" alt="Réservation d'hôtel" width="600" height="366"/></a>
+            </div>
+            <div class="unit-body">
+              <div class="product-big-body">
+                <h5 class="product-big-title"><a href="#">Réservation d'Hôtel</a></h5>
+                <div class="group-sm group-middle justify-content-start">
+                  <div class="product-big-rating">
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star_half"></span>
+                  </div>
+                  <a class="product-big-reviews" href="#">10 avis clients</a>
+                </div>
+                <p class="product-big-text">
+                  Bénéficiez d'une sélection d'hôtels adaptés aux voyages professionnels, combinant confort, emplacement stratégique et services haut de gamme.
+                </p>
+                <a class="button button-black-outline button-ujarak" href="#">Réserver maintenant</a>
+                <div class="product-big-price-wrap"><span class="product-big-price">À partir de 100 TND</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="col-sm-6 col-md-12 wow fadeInLeft">
+        <!-- Service Business -->
+        <article class="product-big">
+          <div class="unit flex-column flex-md-row align-items-md-stretch">
+            <div class="unit-left">
+              <a class="product-big-figure" href="#"><img src="{{ asset('images/tansport.jpg') }}" alt="Réservation de billets & transport" width="600" height="366"/></a>
+            </div>
+            <div class="unit-body">
+              <div class="product-big-body">
+                <h5 class="product-big-title"><a href="#">Billets & Transport</a></h5>
+                <div class="group-sm group-middle justify-content-start">
+                  <div class="product-big-rating">
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star"></span>
+                    <span class="icon material-icons-star_half"></span>
+                  </div>
+                  <a class="product-big-reviews" href="#">8 avis clients</a>
+                </div>
+                <p class="product-big-text">
+                  Réservez rapidement vos billets d’avion, transferts en taxi ou en voiture avec chauffeur pour une expérience professionnelle sans stress.
+                </p>
+                <a class="button button-black-outline button-ujarak" href="#">Réserver un Voyage</a>
+                <div class="product-big-price-wrap"><span class="product-big-price">À partir de 20 TND</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Different People-->
+<section class="section section-sm">
+  <div class="container">
+    <h3 class="title-block find-car oh"><span class="d-inline-block wow slideInUp">Des personnes différentes — une seule mission</span></h3>
+    <div class="row row-30 justify-content-center box-ordered">
+
+      <!-- Member 1 -->
+      <div class="col-sm-6 col-md-5 col-lg-3">
+        <article class="team-modern">
+          <div class="team-modern-header">
+            <a class="team-modern-figure" href="#"><img class="img-circles" src="{{ asset('images/yosr.jpg') }}" alt="" width="118" height="118"/></a>
+            <svg x="0px" y="0px" width="270px" height="70px" viewBox="0 0 270 70" xml:space="preserve">
+              <g><path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"/></g>
+            </svg>
+          </div>
+          <div class="team-modern-caption">
+            <h6 class="team-modern-name"><a href="#">Yosr Samali</a></h6>
+            <p class="team-modern-status">Fondatrice</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="col-sm-6 col-md-5 col-lg-3">
+        <article class="team-modern">
+          <div class="team-modern-header">
+            <a class="team-modern-figure" href="#"><img class="img-circles" src="{{ asset('images/kacem.jpg') }}" alt="" width="118" height="118"/></a>
+            <svg x="0px" y="0px" width="270px" height="70px" viewBox="0 0 270 70" xml:space="preserve">
+              <g><path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"/></g>
+            </svg>
+          </div>
+          <div class="team-modern-caption">
+            <h6 class="team-modern-name"><a href="#">Kacem Trabelsi</a></h6>
+            <p class="team-modern-status">Responsable Financier</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Member 3 -->
+      <div class="col-sm-6 col-md-5 col-lg-3">
+        <article class="team-modern">
+          <div class="team-modern-header">
+            <a class="team-modern-figure" href="#"><img class="img-circles" src="{{ asset('images/ismail.png') }}" alt="" width="118" height="118"/></a>
+            <svg x="0px" y="0px" width="270px" height="70px" viewBox="0 0 270 70" xml:space="preserve">
+              <g><path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"/></g>
+            </svg>
+          </div>
+          <div class="team-modern-caption">
+            <h6 class="team-modern-name"><a href="#">Ismail Belhoula</a></h6>
+            <p class="team-modern-status">Responsable de Boutique</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Member 4 -->
+      <div class="col-sm-6 col-md-5 col-lg-3">
+        <article class="team-modern">
+          <div class="team-modern-header">
+            <a class="team-modern-figure" href="#"><img class="img-circles" src="{{ asset('images/aziz.jpg') }}" alt="" width="118" height="118"/></a>
+            <svg x="0px" y="0px" width="270px" height="70px" viewBox="0 0 270 70" xml:space="preserve">
+              <g><path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"/></g>
+            </svg>
+          </div>
+          <div class="team-modern-caption">
+            <h6 class="team-modern-name"><a href="#">Aziz Guizani</a></h6>
+            <p class="team-modern-status">Responsable des evenements</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Member 5 -->
+      <div class="col-sm-6 col-md-5 col-lg-3">
+        <article class="team-modern">
+          <div class="team-modern-header">
+            <a class="team-modern-figure" href="#"><img class="img-circles" src="{{ asset('images/yassine.jpg') }}" alt="" width="118" height="118"/></a>
+            <svg x="0px" y="0px" width="270px" height="70px" viewBox="0 0 270 70" xml:space="preserve">
+              <g><path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"/></g>
+            </svg>
+          </div>
+          <div class="team-modern-caption">
+            <h6 class="team-modern-name"><a href="#">Yassine Abida</a></h6>
+            <p class="team-modern-status">Responsable des services</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Member 6 -->
+      <div class="col-sm-6 col-md-5 col-lg-3">
+        <article class="team-modern">
+          <div class="team-modern-header">
+            <a class="team-modern-figure" href="#"><img class="img-circles" src="{{ asset('images/ayoub.jpg') }}" alt="" width="118" height="118"/></a>
+            <svg x="0px" y="0px" width="270px" height="70px" viewBox="0 0 270 70" xml:space="preserve">
+              <g><path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"/></g>
+            </svg>
+          </div>
+          <div class="team-modern-caption">
+            <h6 class="team-modern-name"><a href="#">Ayoub Belgacem</a></h6>
+            <p class="team-modern-status">Responsable de Services Technique</p>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Section Abonnement -->
+<section class="section bg-default text-center offset-top-50">
+  <div class="parallax-container" data-parallax-img="{{ asset('images/airport.jpg') }}">
+    <div class="parallax-content section-xl section-inset-custom-1 context-dark bg-overlay-2-21">
+      <div class="container">
+        <h2 class="heading-2 oh font-weight-normal wow slideInDown"><span class="d-block font-weight-semi-bold">Des impressions de première classe</span><span class="d-block font-weight-light">vous attendent !</span></h2>
+        <p class="text-width-medium text-spacing-75 wow fadeInLeft" data-wow-delay=".1s">Notre agence propose aux voyageurs diverses visites et excursions vers des destinations du monde entier. Parcourez notre site web pour trouver votre tour de rêve !</p><a class="button button-secondary button-pipaluk" href="#">Réservez votre voyage d'affaire maintenant</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

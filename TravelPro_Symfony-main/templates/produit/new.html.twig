@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit{% endblock %}
+
+{% block stylesheets %}
+     <link rel="stylesheet" href="{{ asset('css/produit_new.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Ajouter Nouveau Produit</h1>
+
+        <div class="form-container">
+            {{ include('produit/_form.html.twig', {'button_label': ' Ajouter'}) }}
+        </div>
+
+        <div class="actions">
+            <a href="{{ path('app_produit_index') }}">⬅️ Retour</a>
+        </div>
+    </div>
+{% endblock %}

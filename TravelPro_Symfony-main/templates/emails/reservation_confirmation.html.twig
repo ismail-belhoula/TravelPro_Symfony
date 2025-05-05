@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Réservation TravelPro</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 20px; color: #333; font-size: 14px; line-height: 1.6;">
+    <table align="center" style="max-width: 800px; width: 100%; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
+        <tr>
+            <td>
+                <!-- Header -->
+                <table align="center" style="width: 100%; border-bottom: 2px solid #4e73df; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+                    
+                    <tr>
+                        <td>
+                            <h1 style="color: #224abe; margin: 10px 0; font-size: 24px;">Réservation TravelPro</h1>
+                            <p style="margin: 0;">Confirmation de réservation</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Client Info -->
+                <table style="width: 100%; margin-bottom: 20px;">
+                    <tr>
+                        <td>
+                            <h2 style="color: #224abe; font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Informations du Client</h2>
+                            <p style="margin: 5px 0;">
+                                <strong style="display: inline-block; width: 150px; color: #555;">Nom :</strong> {{ clientName }}
+                            </p>
+                            <p style="margin: 5px 0;">
+                                <strong style="display: inline-block; width: 150px; color: #555;">Email :</strong> {{ reservationDetails.email|default('Non spécifié') }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Reservation Details -->
+                <table style="width: 100%; margin-bottom: 20px;">
+                    <tr>
+                        <td>
+                            <h2 style="color: #224abe; font-size: 18px; margin: 20px 0 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Détails de la Réservation</h2>
+                            {% if reservationDetails.hotel %}
+                                <h3 style="margin: 10px 0;">Hôtel</h3>
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                    <tr style="background: #f8f9fc;">
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Nom</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.hotel.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Ville</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.hotel.ville }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Type de chambre</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.hotel.typeDeChambre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Prix par nuit</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.hotel.prixParNuit }} TND</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Check-in</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.hotel.dateCheckIn ? reservationDetails.hotel.dateCheckIn|date('d/m/Y') : 'Non spécifié' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Check-out</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.hotel.dateCheckOut ? reservationDetails.hotel.dateCheckOut|date('d/m/Y') : 'Non spécifié' }}</td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                            {% if reservationDetails.billet %}
+                                <h3 style="margin: 10px 0;">Billet d'avion</h3>
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                    <tr style="background: #f8f9fc;">
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Compagnie</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.billet.compagnie }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Ville de départ</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.billet.villeDepart }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Ville d'arrivée</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.billet.villeArrivee }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Date de départ</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.billet.dateDepart|date('d/m/Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Classe</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.billet.classBillet|default('Non spécifié') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Prix</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.billet.prix|default('Non spécifié') }} TND</td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                            {% if reservationDetails.voiture %}
+                                <h3 style="margin: 10px 0;">Voiture</h3>
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                    <tr style="background: #f8f9fc;">
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Marque</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.voiture.marque }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Modèle</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.voiture.modele }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Année</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.voiture.annee|default('Non spécifié') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Date de location</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.voiture.dateDeLocation|date('d/m/Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Date de remise</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.voiture.dateDeRemise|date('d/m/Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left; color: #224abe;">Prix par jour</th>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">{{ reservationDetails.voiture.prixParJour|default('Non spécifié') }} TND</td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Footer -->
+                <table align="center" style="width: 100%; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; text-align: center;">
+                    <tr>
+                        <td style="color: #666; font-size: 12px;">
+                            <p style="margin: 0;">TravelPro - {{ 'now'|date('Y') }} | Contactez-nous : +216 78123123 | support@travelpro.com</p>
+                            <p style="margin: 0;">Généré le {{ 'now'|date('d/m/Y H:i') }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

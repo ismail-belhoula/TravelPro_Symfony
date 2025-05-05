@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Boutique - TravelPro{% endblock %}
+
+{% block content %}
+      <!-- Breadcrumbs -->
+      <section class="breadcrumbs-custom-inset">
+        <div class="breadcrumbs-custom context-dark bg-overlay-60">
+          <div class="container">
+            <h2 class="breadcrumbs-custom-title">Notre Boutique</h2>
+            <ul class="breadcrumbs-custom-path">
+              <li><a href="{{ path('home') }}">Accueil</a></li>
+              <li class="active">Boutique</li>
+            </ul>
+          </div>
+          <div class="box-position" style="background-image: url('{{ asset('images/boutique-banner.jpg') }}');"></div>
+        </div>
+      </section>
+
+      <!-- Search and Filter Section -->
+      <section class="section section-sm bg-default">
+        <div class="container">
+          <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+              <div class="search-container">
+                <div class="search-bar input-group">
+                  <input type="text" id="productSearch" class="form-control" placeholder="Rechercher un produit...">
+                  <div class="input-group-append">
+                    <button class="btn btn-primary">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sort Options -->
+          <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+              <div class="d-flex justify-content-end">
+                <select id="priceSort" class="form-select" style="width: auto;">
+                  <option value="">Trier par prix</option>
+                  <option value="asc">Prix croissant</option>
+                  <option value="desc">Prix décroissant</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Products Grid -->
+          <div class="row products-grid" id="productsContainer">
+            {% include 'boutique/_products.html.twig' with {'produits': produits} %}
+          </div>
+        </div>
+      </section>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/boutique.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/boutique.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
+{% endblock %}

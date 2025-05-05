@@ -1,0 +1,99 @@
+:root {
+    --blue-light: #4e73df;
+    --blue-dark: #224abe;
+    --gray-light: #f8f9fc;
+    --text-dark: #343a40;
+    --radius: 12px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--gray-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    padding: 2rem;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--blue-dark);
+}
+
+.product-container {
+    display: flex;
+    flex-direction: row; /* Force side-by-side layout */
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.product-image {
+    width: 420px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+}
+
+.product-table {
+    flex-grow: 1;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.table th {
+    background: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.table td {
+    background-color: white;
+}
+
+.actions {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.actions a {
+    display: inline-block;
+    margin: 0 0.5rem;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: var(--radius);
+    color: white;
+    background-image: linear-gradient(180deg, var(--blue-light) 10%, var(--blue-dark) 100%);
+    transition: var(--transition);
+}
+
+.actions a:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+.image-hover {
+transition: transform 0.3s ease;
+}
+
+.image-hover:hover {
+transform: scale(2); /* or 1.5 for smaller zoom */
+z-index: 10;
+position: relative;
+}

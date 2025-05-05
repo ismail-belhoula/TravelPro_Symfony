@@ -1,0 +1,16 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+create_checkout_session:
+    path: /create-checkout-session
+    controller: App\Controller\PaymentController::createCheckoutSession
+    methods: [POST]
+
+
+
+app_register:
+  path: /inscription
+  controller: App\Controller\UtilisateurController::register

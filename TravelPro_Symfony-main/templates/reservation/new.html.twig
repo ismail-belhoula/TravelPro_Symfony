@@ -1,0 +1,515 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Nouvelle Réservation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Montserrat:400,500,600,700%7CPoppins:400%7CTeko:300,400">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+    <style>
+        .ie-panel {
+            display: none;
+            background: #212121;
+            padding: 10px 0;
+            box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);
+            clear: both;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {
+            display: block;
+        }
+        .reservation-form-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 80px;
+            margin-bottom: 50px;
+        }
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4e73df;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #4e73df;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.25);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #4e73df;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: #224abe;
+            transform: translateY(-2px);
+        }
+        .btn-submit {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        .results-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .section-title {
+            color: #224abe;
+            border-bottom: 2px solid #4e73df;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .items-list {
+            margin-bottom: 30px;
+        }
+        .item-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fc;
+        }
+        .item-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        .item-info {
+            flex-grow: 1;
+        }
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #343a40;
+        }
+        .item-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .item-price {
+            font-weight: bold;
+            color: #4e73df;
+            margin-left: 15px;
+            white-space: nowrap;
+            font-size: 1.2rem;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+        .checkbox-container input {
+            margin-right: 8px;
+            transform: scale(1.3);
+        }
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            background: #f8f9fc;
+        }
+        .reservation-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fc;
+            border-radius: 8px;
+        }
+        .summary-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #224abe;
+            font-size: 1.3rem;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .total-price {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #4e73df;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .alert {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .alert-dismissible .close {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            padding: 15px;
+            color: inherit;
+            cursor: pointer;
+        }
+        @media (max-width: 767px) {
+            .item-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .item-price, .checkbox-container {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumbs -->
+    <section class="breadcrumbs-custom-inset">
+        <div class="breadcrumbs-custom context-dark bg-overlay-60">
+            <div class="container">
+                <h2 class="breadcrumbs-custom-title">Nouvelle Réservation</h2>
+                <ul class="breadcrumbs-custom-path">
+                    <li><a href="{{ path('home') }}">Accueil</a></li>
+                    <li class="active">Réserver</li>
+                </ul>
+            </div>
+            <div class="box-position" style="background-image: url('{{ asset('images/people_in_airport_1211_1500x700.jpg') }}');"></div>
+        </div>
+    </section>
+
+    <section class="section section-sm section-first bg-default">
+        <div class="container">
+            <h3 class="text-center wow fadeInDown">Réservation en ligne</h3>
+            <p class="text-center wow fadeInUp" data-wow-delay=".1s">Réservez votre voyage d'affaires en quelques clics</p>
+        </div>
+    </section>
+
+    <section class="section section-sm bg-gray-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="reservation-form-container">
+                        {# Display flash messages #}
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ label }} alert-dismissible wow fadeIn" data-wow-delay=".1s">
+                                    {{ message }}
+                                    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+
+                        {# Formulaire de recherche #}
+                        <form id="searchForm" class="search-form wow fadeIn" data-wow-delay=".2s" method="get">
+                            <div class="form-group">
+                                <label for="villeDepart">Ville de départ</label>
+                                <input type="text" id="villeDepart" name="villeDepart" class="form-control" 
+                                       value="{{ app.request.query.get('villeDepart') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="villeArrivee">Ville d'arrivée</label>
+                                <input type="text" id="villeArrivee" name="villeArrivee" class="form-control" 
+                                       value="{{ app.request.query.get('villeArrivee') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dateDepart">Date de départ</label>
+                                <input type="date" id="dateDepart" name="dateDepart" class="form-control" 
+                                       value="{{ app.request.query.get('dateDepart') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dateArrivee">Date d'arrivée</label>
+                                <input type="date" id="dateArrivee" name="dateArrivee" class="form-control" 
+                                       value="{{ app.request.query.get('dateArrivee') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="typeChambre">Type de chambre</label>
+                                <select id="typeChambre" name="typeChambre" class="form-control" required>
+                                    <option value="single" {{ app.request.query.get('typeChambre') == 'single' ? 'selected' }}>Single</option>
+                                    <option value="double" {{ app.request.query.get('typeChambre') == 'double' ? 'selected' }}>Double</option>
+                                    <option value="triple" {{ app.request.query.get('typeChambre') == 'triple' ? 'selected' }}>Triple</option>
+                                </select>
+                            </div>
+                        </form>
+
+                        {# Formulaire de réservation #}
+                        <form id="reservationForm" method="post" action="{{ path('app_reservation_new') }}">
+                            {# Hôtels disponibles #}
+                            <div class="results-section wow fadeIn" data-wow-delay=".1s" id="hotels-section">
+                                <h2 class="section-title">Hôtels disponibles</h2>
+                                <div class="items-list" id="hotels-list">
+                                    {% if hotels is not empty %}
+                                        {% for hotel in hotels %}
+                                            <div class="item-card">
+                                                <div class="item-info">
+                                                    <div class="item-title">{{ hotel.nom }}</div>
+                                                    <div class="item-details">
+                                                        {{ hotel.ville }} - {{ hotel.nombreEtoile }} étoiles - 
+                                                        Type: {{ hotel.typeDeChambre }}
+                                                    </div>
+                                                </div>
+                                                <div class="item-price">{{ hotel.prixParNuit }} TND/nuit</div>
+                                                <div class="checkbox-container">
+                                                    <input type="radio" id="hotel_{{ hotel.idHotel }}" 
+                                                           name="hotel_id" value="{{ hotel.idHotel }}">
+                                                    <label for="hotel_{{ hotel.idHotel }}">Choisir</label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="no-results">Veuillez remplir les critères pour voir les hôtels disponibles</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {# Billets d'avion disponibles #}
+                            <div class="results-section wow fadeIn" data-wow-delay=".2s" id="billets-section">
+                                <h2 class="section-title">Billets d'avion disponibles</h2>
+                                <div class="items-list" id="billets-list">
+                                    {% if billets is not empty %}
+                                        {% for billet in billets %}
+                                            <div class="item-card">
+                                                <div class="item-info">
+                                                    <div class="item-title">{{ billet.compagnie }}</div>
+                                                    <div class="item-details">
+                                                        {{ billet.villeDepart }} → {{ billet.villeArrivee }} - 
+                                                        Départ: {{ billet.dateDepart|date('d/m/Y') }} - 
+                                                        Classe: {{ billet.classBillet }}
+                                                    </div>
+                                                </div>
+                                                <div class="item-price">{{ billet.prix }} TND</div>
+                                                <div class="checkbox-container">
+                                                    <input type="radio" id="billet_{{ billet.idBilletavion }}" 
+                                                           name="billet_id" value="{{ billet.idBilletavion }}">
+                                                    <label for="billet_{{ billet.idBilletavion }}">Choisir</label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="no-results">Veuillez remplir les critères pour voir les billets disponibles</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {# Voitures disponibles #}
+                            <div class="results-section wow fadeIn" data-wow-delay=".3s" id="voitures-section">
+                                <h2 class="section-title">Voitures disponibles</h2>
+                                <div class="items-list" id="voitures-list">
+                                    {% if voitures is not empty %}
+                                        {% for voiture in voitures %}
+                                            <div class="item-card">
+                                                <div class="item-info">
+                                                    <div class="item-title">{{ voiture.marque }} {{ voiture.modele }}</div>
+                                                    <div class="item-details">
+                                                        Année: {{ voiture.annee }} - 
+                                                        Disponible du {{ voiture.dateDeLocation|date('d/m/Y') }} 
+                                                        au {{ voiture.dateDeRemise|date('d/m/Y') }}
+                                                    </div>
+                                                </div>
+                                                <div class="item-price">{{ voiture.prixParJour }} TND/jour</div>
+                                                <div class="checkbox-container">
+                                                    <input type="radio" id="voiture_{{ voiture.id_voiture }}" 
+                                                           name="voiture_id" value="{{ voiture.id_voiture }}">
+                                                    <label for="voiture_{{ voiture.id_voiture }}">Choisir</label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="no-results">Veuillez remplir les critères pour voir les voitures disponibles</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {# Résumé et soumission #}
+                            <div class="reservation-summary wow fadeInUp" data-wow-delay=".4s">
+                                <h3 class="summary-title">Confirmation de réservation</h3>
+                                
+                                <input type="hidden" name="villeDepart" value="{{ app.request.query.get('villeDepart') }}">
+                                <input type="hidden" name="villeArrivee" value="{{ app.request.query.get('villeArrivee') }}">
+                                <input type="hidden" name="dateDepart" value="{{ app.request.query.get('dateDepart') }}">
+                                <input type="hidden" name="dateArrivee" value="{{ app.request.query.get('dateArrivee') }}">
+                                <input type="hidden" name="typeChambre" value="{{ app.request.query.get('typeChambre') }}">
+                                
+                                <button type="submit" class="btn btn-submit">Enregistrer la réservation</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchForm = document.getElementById('searchForm');
+            const inputs = searchForm.querySelectorAll('input, select');
+            const hotelsList = document.getElementById('hotels-list');
+            const billetsList = document.getElementById('billets-list');
+            const voituresList = document.getElementById('voitures-list');
+
+            // Debounce function to limit the frequency of AJAX calls
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Function to fetch and update search results
+            const fetchResults = debounce(function () {
+                const formData = new FormData(searchForm);
+                const queryParams = new URLSearchParams(formData).toString();
+                fetch('{{ path('app_reservation_search') }}?' + queryParams)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update hotels
+                        hotelsList.innerHTML = '';
+                        if (data.hotels.length > 0) {
+                            data.hotels.forEach(hotel => {
+                                hotelsList.innerHTML += `
+                                    <div class="item-card">
+                                        <div class="item-info">
+                                            <div class="item-title">${hotel.nom}</div>
+                                            <div class="item-details">
+                                                ${hotel.ville} - ${hotel.nombreEtoile} étoiles - Type: ${hotel.typeDeChambre}
+                                            </div>
+                                        </div>
+                                        <div class="item-price">${hotel.prixParNuit} TND/nuit</div>
+                                        <div class="checkbox-container">
+                                            <input type="radio" id="hotel_${hotel.idHotel}" name="hotel_id" value="${hotel.idHotel}">
+                                            <label for="hotel_${hotel.idHotel}">Choisir</label>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            hotelsList.innerHTML = '<div class="no-results">Aucun hôtel trouvé pour ces critères</div>';
+                        }
+
+                        // Update billets
+                        billetsList.innerHTML = '';
+                        if (data.billets.length > 0) {
+                            data.billets.forEach(billet => {
+                                billetsList.innerHTML += `
+                                    <div class="item-card">
+                                        <div class="item-info">
+                                            <div class="item-title">${billet.compagnie}</div>
+                                            <div class="item-details">
+                                                ${billet.villeDepart} → ${billet.villeArrivee} - Départ: ${billet.dateDepart} - Classe: ${billet.classBillet}
+                                            </div>
+                                        </div>
+                                        <div class="item-price">${billet.prix} TND</div>
+                                        <div class="checkbox-container">
+                                            <input type="radio" id="billet_${billet.idBilletavion}" name="billet_id" value="${billet.idBilletavion}">
+                                            <label for="billet_${billet.idBilletavion}">Choisir</label>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            billetsList.innerHTML = '<div class="no-results">Aucun billet d\'avion trouvé pour ces critères</div>';
+                        }
+
+                        // Update voitures
+                        voituresList.innerHTML = '';
+                        if (data.voitures.length > 0) {
+                            data.voitures.forEach(voiture => {
+                                voituresList.innerHTML += `
+                                    <div class="item-card">
+                                        <div class="item-info">
+                                            <div class="item-title">${voiture.marque} ${voiture.modele}</div>
+                                            <div class="item-details">
+                                                Année: ${voiture.annee} - Disponible du ${voiture.dateDeLocation} au ${voiture.dateDeRemise}
+                                            </div>
+                                        </div>
+                                        <div class="item-price">${voiture.prixParJour} TND/jour</div>
+                                        <div class="checkbox-container">
+                                            <input type="radio" id="voiture_${voiture.id_voiture}" name="voiture_id" value="${voiture.id_voiture}">
+                                            <label for="voiture_${voiture.id_voiture}">Choisir</label>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        } else {
+                            voituresList.innerHTML = '<div class="no-results">Aucune voiture trouvée pour ces critères</div>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching search results:', error);
+                        hotelsList.innerHTML = '<div class="no-results">Erreur lors de la recherche</div>';
+                        billetsList.innerHTML = '<div class="no-results">Erreur lors de la recherche</div>';
+                        voituresList.innerHTML = '<div class="no-results">Erreur lors de la recherche</div>';
+                    });
+            }, 500);
+
+            // Add event listeners to inputs
+            inputs.forEach(input => {
+                input.addEventListener('input', fetchResults);
+                input.addEventListener('change', fetchResults);
+            });
+
+            // Initial fetch if form is pre-filled
+            if (searchForm.querySelectorAll('input[value]:not([value=""]), select[value]:not([value=""])').length > 0) {
+                fetchResults();
+            }
+        });
+    </script>
+{% endblock %}

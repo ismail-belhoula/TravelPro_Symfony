@@ -1,0 +1,75 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Détails de l'événement - {{ evenement.nomEvent }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h2 class="display-6 text-primary fw-bold">{{ evenement.nomEvent }}</h2>
+        <p class="text-muted fst-italic">Explorez les détails de cet événement exclusif.</p>
+        <div>
+            <a href="{{ path('app_evenement_index') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+            <a href="{{ path('app_evenement_edit', {'id_event': evenement.idEvent}) }}" class="btn btn-outline-warning">
+                <i class="fas fa-edit me-1"></i> Modifier
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow rounded-4 overflow-hidden">
+        {% if evenement.image %}
+            <img src="{{ asset('uploads/' ~ evenement.image) }}" alt="Image de l'événement" class="img-fluid w-100" style="max-height: 600px; object-fit: cover;">
+        {% else %}
+            <div class="bg-light p-5 text-center text-muted">Aucune image disponible</div>
+        {% endif %}
+        <div class="card-body p-4">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5 class="text-uppercase text-muted">📍 Lieu</h5>
+                    <p class="fs-5">{{ evenement.lieu }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-uppercase text-muted">🧭 Type</h5>
+                    <span class="badge bg-info fs-6">{{ evenement.type }}</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5 class="text-uppercase text-muted">🗓️ Date de début</h5>
+                    <p class="fs-6">{{ evenement.dateDebut ? evenement.dateDebut|date('d M Y') : '-' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-uppercase text-muted">🗓️ Date de fin</h5>
+                    <p class="fs-6">{{ evenement.dateFin ? evenement.dateFin|date('d M Y') : '-' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" action="{{ path('app_evenement_delete', {'id_event': evenement.idEvent}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet événement ?');" class="mt-4 text-end">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.idEvent) }}">
+        <button class="btn btn-outline-danger">
+            <i class="fas fa-trash me-1"></i> Supprimer
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .card {
+            border-radius: 1rem;
+        }
+        .btn {
+            border-radius: 0.5rem;
+        }
+        h5 {
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+    </style>
+{% endblock %}
